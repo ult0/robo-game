@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=3 uid="uid://de5ybowbh66nr"]
+
+[ext_resource type="Texture2D" uid="uid://c8iy5ifv4mco6" path="res://assets/sprites/Cute_Fantasy_Free/Outdoor decoration/Outdoor_Decor_Free.png" id="1_ftdus"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_knnfu"]
+atlas = ExtResource("1_ftdus")
+region = Rect2(0, 48, 16, 16)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_th231"]
+radius = 7.0
+
+[node name="Rock" type="StaticBody2D"]
+y_sort_enabled = true
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+y_sort_enabled = true
+texture = SubResource("AtlasTexture_knnfu")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_th231")
