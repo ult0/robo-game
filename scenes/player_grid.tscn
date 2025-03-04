@@ -1,0 +1,34 @@
+[gd_scene load_steps=4 format=3 uid="uid://ceq86qydg6xe5"]
+
+[ext_resource type="Texture2D" uid="uid://djjgrwmh2tsp1" path="res://icon.svg" id="1_7dxm7"]
+[ext_resource type="Script" path="res://scripts/player_grid.gd" id="1_c5rhp"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_mcby0"]
+size = Vector2(8, 8)
+
+[node name="Player-Grid" type="CharacterBody2D"]
+script = ExtResource("1_c5rhp")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(-1.19209e-07, 7.15256e-07)
+scale = Vector2(0.09375, 0.09375)
+texture = ExtResource("1_7dxm7")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_mcby0")
+
+[node name="left" type="RayCast2D" parent="."]
+target_position = Vector2(-16, 0)
+hit_from_inside = true
+
+[node name="right" type="RayCast2D" parent="."]
+target_position = Vector2(16, 0)
+hit_from_inside = true
+
+[node name="up" type="RayCast2D" parent="."]
+target_position = Vector2(0, -16)
+hit_from_inside = true
+
+[node name="down" type="RayCast2D" parent="."]
+target_position = Vector2(0, 16)
+hit_from_inside = true
