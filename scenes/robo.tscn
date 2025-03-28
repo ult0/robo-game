@@ -1,6 +1,6 @@
 [gd_scene load_steps=41 format=3 uid="uid://bewxrb5apn16"]
 
-[ext_resource type="Script" path="res://scripts/robo.gd" id="1_oduq3"]
+[ext_resource type="Script" uid="uid://dm6xy07410hx8" path="res://scripts/robo.gd" id="1_oduq3"]
 [ext_resource type="Texture2D" uid="uid://bajiuyyj5lse8" path="res://assets/sprites/Cute_Fantasy_Free/Player/Player.png" id="1_pgvw1"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ansni"]

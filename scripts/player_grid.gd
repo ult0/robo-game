@@ -19,7 +19,7 @@ var tween: Tween
 var elapsed_time: float = 1.0
 
 func _ready() -> void:
-	a_star = AStar.create(nav_layer, is_walkable, debug_layer)
+	a_star = AStar.create(nav_layer, is_walkable, 2, debug_layer)
 
 func is_walkable(coord: Vector2) -> bool:
 	return obstacle_layer.get_cell_tile_data(obstacle_layer.local_to_map(coord)) == null
@@ -66,9 +66,9 @@ func move(coord: Vector2) -> void:
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventKey and event.is_pressed() and event.keycode == KEY_SPACE:
-		var path = a_star.find_path(global_position, target.global_position)
-		print(path)
-		moves = path
+		a_star.debug_find_path(global_position, target.global_position)
+		# print(path)
+		# moves = path
 
 
 

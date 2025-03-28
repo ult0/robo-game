@@ -7,6 +7,13 @@ the lowest cost value.
 Based on: https://en.wikipedia.org/wiki/Binary_heap
 """
 var data: Array[Variant] = []
+var find_element_callable: Callable
+
+static func create(_find_element: Callable = Callable()) -> PriorityQueueVar:
+	var queue = PriorityQueueVar.new()
+	queue.data = []
+	queue.find_element_callable = _find_element
+	return queue
 
 func insert(element: Variant, cost: float) -> void:
 	# Add the element to the bottom level of the heap at the leftmost open space
@@ -17,16 +24,32 @@ func insert(element: Variant, cost: float) -> void:
 func extract() -> Variant:
 	if self.is_empty():
 		return null
-	var result: Variant = self.data.pop_front()
-	# If the tree is not empty, replace the root of the heap with the last
-	# element on the last level.
-	if not self.is_empty():
-		self.data.push_front(self.data.pop_back())
-		self._down_heap(0)
+
+	# Store the rot element to return later
+	var result: Variant = self.data[0]
+
+	# If this was the last element, just remove it
+	if self.data.size() == 1:
+		self.data.pop_back()
+		return result["element"]
+
+	# Replace root with last element and remove last element
+	self.data[0] = self.data.pop_back()
+	self._down_heap(0)
+
 	return result["element"]
 
 func is_empty() -> bool:
 	return self.data.is_empty()
+
+func find_element(element: Variant) -> int:
+	if find_element_callable.is_null():
+		for i in range(self.data.size()):
+			if self.data[i]["element"] == element:
+				return i
+		return -1
+	else:
+		return find_element_callable.call(element)
 
 func _get_parent(index: int) -> int:
 	# warning-ignore:integer_division
@@ -45,6 +68,10 @@ func _swap(a_idx: int, b_idx: int) -> void:
 	self.data[b_idx] = a
 
 func _up_heap(index: int) -> void:
+	# If we're at the root (index 0), we can't go up further
+	if index <= 0:
+		return
+	
 	# Compare the added element with its parent; if they are in the correct order, stop.
 	var parent_idx = self._get_parent(index)
 	if self.data[index]["cost"] >= self.data[parent_idx]["cost"]:
@@ -58,11 +85,11 @@ func _down_heap(index: int) -> void:
 	var smallest: int = index
 	var size: int = self.data.size()
 
-	if right_idx < size and self.data[right_idx]["cost"] < self.data[smallest]["cost"]:
-		smallest = right_idx
-
 	if left_idx < size and self.data[left_idx]["cost"] < self.data[smallest]["cost"]:
 		smallest = left_idx
+	
+	if right_idx < size and self.data[right_idx]["cost"] < self.data[smallest]["cost"]:
+		smallest = right_idx
 
 	if smallest != index:
 		self._swap(index, smallest)
