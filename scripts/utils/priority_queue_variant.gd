@@ -39,6 +39,15 @@ func extract() -> Variant:
 
 	return result["element"]
 
+func modify(index: int, new_element: Variant, new_cost: float) -> void:
+	var old_cost = self.data[index]["cost"]
+	self.data[index] = { "element": new_element, "cost": new_cost }
+	# If the new cost is less than the old cost, we need to up-heap
+	if new_cost < old_cost:
+		self._up_heap(index)
+	else:
+		self._down_heap(index)
+
 func is_empty() -> bool:
 	return self.data.is_empty()
 

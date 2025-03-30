@@ -3,7 +3,6 @@ class_name AStar extends Resource
 var nav_layer: TileMapLayer
 var debug_layer: TileMapLayer
 var is_walkable: Callable
-var h_weight: float
 var tile_size: float:
 	get:
 		return nav_layer.tile_set.tile_size.x
@@ -16,39 +15,24 @@ var _frontier: PriorityQueueVar = PriorityQueueVar.create(func(element) -> int:
 )
 var _closed_list: Array[Vector2] = []
 var _current: AStarNode = null
-var _calculated_g: float = 0
 
-var _path: Array[Vector2] = []:
-	set(value):
-		_path = value
-		_frontier.data = []
-		_closed_list = []
-		_current = null
-		_calculated_g = 0
+var directions: Array[Vector2] = [Vector2.UP, Vector2.RIGHT, Vector2.DOWN, Vector2.LEFT]
 
-var coord_label_scene: PackedScene = preload("res://scenes/coord_label.tscn")
+var _path: Array[Vector2] = []
 
-static func create(_nav_layer: TileMapLayer, _is_walkable: Callable, _h_weight: float = 2, _debug_layer: TileMapLayer = null) -> AStar:
+static func create(_nav_layer: TileMapLayer, _is_walkable: Callable, _debug_layer: TileMapLayer = null) -> AStar:
 	var astar = AStar.new();
 	astar.nav_layer = _nav_layer
 	astar.is_walkable = _is_walkable
 	astar.debug_layer = _debug_layer
-	astar.h_weight = _h_weight
 	return astar
-
-func create_label(position: Vector2):
-	var label: Label = coord_label_scene.instantiate()
-	label.global_position = position
-	label.text = str(position)
-	label.name = "Label-" + label.text
-	nav_layer.add_child(label)
 
 func set_debug_tile(position: Vector2, alternate_tile_id: int):
 	if is_instance_valid(debug_layer):
 		debug_layer.set_cell(debug_layer.local_to_map(position), 0, Vector2i(0, 0), alternate_tile_id)
 
 func find_path(start: Vector2, target: Vector2) -> Array[Vector2]:
-	_frontier.insert(AStarNode.create(start, h_weight), 0)
+	_frontier.insert(AStarNode.create(start), 0)
 
 	while !_frontier.is_empty():
 		_current = _frontier.extract()
@@ -58,13 +42,13 @@ func find_path(start: Vector2, target: Vector2) -> Array[Vector2]:
 		# If the current node is the target node, return the path recursively from parent to parent
 		if _current.position == target:
 			print("Path Found!", _current)
-			print(_current.parent)
 			var path: Array[Vector2] = []
 			while _current.parent.parent != null:
 				set_debug_tile(_current.position, 2)
 				path.append(_current.position)
 				_current = _current.parent
 			_path = path
+			reset()
 			return _path
 
 		# If the current node is not the target node, get its neighbors
@@ -73,37 +57,38 @@ func find_path(start: Vector2, target: Vector2) -> Array[Vector2]:
 			# If the neighbor is already in the closed list, skip it
 			if _closed_list.find(neighbor.position) != -1:
 				continue
-			
 
-			# Calculate the g and h values for the neighbor
+			# Calculate the g value for the neighbor
 			neighbor.g = _current.g + tile_size
+
+			# Euclidean distance
 			neighbor.h = (target - neighbor.position).length()
+
 			neighbor.parent = _current
 
 			# If the neighbor is in the frontier but the new path is shorter
 			# remove from frontier and insert back into the frontier to update the position
-			var found_index = _frontier.find_element(neighbor)
-			if found_index and neighbor.f < _frontier.data[found_index]["cost"]:
-				print("Updating Neighbor", neighbor.position)
-				_frontier.data.remove_at(found_index)
-				_frontier.insert(neighbor, neighbor.f)
-
+			var found_index := _frontier.find_element(neighbor)
+			if found_index != -1 and neighbor.g < _frontier.data[found_index]["element"].g:
+				print("Updating Neighbor ", neighbor.position)
+				_frontier.modify(found_index, neighbor, neighbor.f)
 			# If the neighbor is not in the frontier, insert it into the frontier
-			if found_index == -1:
+			elif found_index == -1:
+				print("Adding Neighbor", neighbor.position)
 				_frontier.insert(neighbor, neighbor.f)
 			
 			set_debug_tile(neighbor.position, 3)
 
 	print("No Path Found!")
-	return []	
+	reset()
+	return []
 
 func get_neighbors(current: AStarNode) -> Array[AStarNode]:
 	var neighbors: Array[AStarNode] = []
-	var directions: Array[Vector2] = [Vector2.UP, Vector2.RIGHT, Vector2.DOWN, Vector2.LEFT]
 	for direction in directions:
 		var neighbor := current.position + (direction * Vector2(nav_layer.tile_set.tile_size))
 		if get_tiledata(neighbor) != null and is_position_walkable(neighbor):
-			neighbors.append(AStarNode.create(neighbor, h_weight, current))
+			neighbors.append(AStarNode.create(neighbor, current))
 	return neighbors
 
 func get_tiledata(position: Vector2) -> TileData:
@@ -112,64 +97,67 @@ func get_tiledata(position: Vector2) -> TileData:
 func is_position_walkable(position: Vector2) -> bool:
 	return is_walkable.call(position)
 
-func debug_find_path(start: Vector2, target: Vector2) -> Variant:
-	if _frontier.is_empty():
-		print("Starting at ", start)
-		_frontier.insert(AStarNode.create(start, h_weight), 0)
+func reset() -> void:
+	_frontier.data = []
+	_closed_list = []
+	_current = null
+
+# func debug_find_path(start: Vector2, target: Vector2) -> Variant:
+# 	if _frontier.is_empty():
+# 		print("Starting at ", start)
+# 		_frontier.insert(AStarNode.create(start, h_weight), 0)
 	
-	if !_frontier.is_empty():
-		_current = _frontier.extract()
-		print("Checking and Closing ", _current)
-		print_frontier()
-		_closed_list.append(_current.position)
-		# create_label(_current.position)
-		set_debug_tile(_current.position, 1)
+# 	if !_frontier.is_empty():
+# 		_current = _frontier.extract()
+# 		print("Checking and Closing ", _current)
+# 		print_frontier()
+# 		_closed_list.append(_current.position)
+# 		# create_label(_current.position)
+# 		set_debug_tile(_current.position, 1)
 
-		# If the current node is the target node, return the path recursively from parent to parent
-		if _current.position == target:
-			print("Path Found!", _current)
-			print(_current.parent)
-			var path: Array[Vector2] = []
-			while _current.parent.parent != null:
-				set_debug_tile(_current.position, 2)
-				path.append(_current.position)
-				_current = _current.parent
-			_path = path
-			return _path
+# 		# If the current node is the target node, return the path recursively from parent to parent
+# 		if _current.position == target:
+# 			print("Path Found!", _current)
+# 			var path: Array[Vector2] = []
+# 			while _current.parent.parent != null:
+# 				set_debug_tile(_current.position, 2)
+# 				path.append(_current.position)
+# 				_current = _current.parent
+# 			_path = path
+# 			return _path
 
-		# If the current node is not the target node, get its neighbors
-		# and add them to the frontier if they are not in the closed list
-		for neighbor in get_neighbors(_current):
-			# If the neighbor is already in the closed list, skip it
-			if _closed_list.find(neighbor.position) != -1:
-				continue
+# 		# If the current node is not the target node, get its neighbors
+# 		# and add them to the frontier if they are not in the closed list
+# 		for neighbor in get_neighbors(_current):
+# 			# If the neighbor is already in the closed list, skip it
+# 			if _closed_list.find(neighbor.position) != -1:
+# 				continue
+
+# 			# Calculate the g value for the neighbor
+# 			neighbor.g = _current.g + tile_size
+
+# 			# Euclidean distance
+# 			neighbor.h = (target - neighbor.position).length()
+
+# 			neighbor.parent = _current
+
+# 			# If the neighbor is in the frontier but the new path is shorter
+# 			# remove from frontier and insert back into the frontier to update the position
+# 			var found_index := _frontier.find_element(neighbor)
+# 			if found_index != -1 and neighbor.g < _frontier.data[found_index]["element"].g:
+# 				print("Updating Neighbor ", neighbor.position)
+# 				_frontier.modify(found_index, neighbor, neighbor.f)
+# 			# If the neighbor is not in the frontier, insert it into the frontier
+# 			elif found_index == -1:
+# 				print("Adding Neighbor", neighbor.position)
+# 				_frontier.insert(neighbor, neighbor.f)
 			
-
-			# Calculate the g and h values for the neighbor
-			neighbor.g = _current.g + tile_size
-			neighbor.h = (target - neighbor.position).length()
-			neighbor.parent = _current
-
-			# If the neighbor is in the frontier but the new path is shorter
-			# remove from frontier and insert back into the frontier to update the position
-			var found_index := _frontier.find_element(neighbor)
-			if found_index != -1 and neighbor.f <= _frontier.data[found_index]["cost"]:
-				print("Updating Neighbor ", neighbor.position)
-				_frontier.data.remove_at(found_index)
-				_frontier.insert(neighbor, neighbor.f)
-
-			# If the neighbor is not in the frontier, insert it into the frontier
-			if found_index == -1:
-				print("Adding Neighbor", neighbor.position)
-				_frontier.insert(neighbor, neighbor.f)
-			
-			set_debug_tile(neighbor.position, 3)
-		return _current
-	else:
-		print("No Path Found!")
-		return null
+# 			set_debug_tile(neighbor.position, 3)
+# 		return _current
+# 	else:
+# 		print("No Path Found!")
+# 		return null
 	
-
-func print_frontier():
-	for node in _frontier.data:
-		print(node)
+# func print_frontier():
+# 	for node in _frontier.data:
+# 		print(node)

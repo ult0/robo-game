@@ -19,12 +19,13 @@ var tween: Tween
 var elapsed_time: float = 1.0
 
 func _ready() -> void:
-	a_star = AStar.create(nav_layer, is_walkable, 2, debug_layer)
+	a_star = AStar.create(nav_layer, is_walkable)
 
 func is_walkable(coord: Vector2) -> bool:
 	return obstacle_layer.get_cell_tile_data(obstacle_layer.local_to_map(coord)) == null
 
 func _physics_process(delta: float) -> void:
+	pass
 	# if Input.is_action_just_pressed("up") and !$up.is_colliding():
 	# 	_move(Vector2.UP)
 	# if Input.is_action_just_pressed("down") and !$down.is_colliding():
@@ -64,11 +65,18 @@ func move(coord: Vector2) -> void:
 	tween = create_tween().set_process_mode(Tween.TWEEN_PROCESS_PHYSICS)
 	tween.tween_property($Sprite2D, "global_position", global_position, 0.185).set_trans(Tween.TRANS_SINE)
 
+func move_to(coord: Vector2) -> void:
+	var path = a_star.find_path(global_position, coord)
+	moves = path
+
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventKey and event.is_pressed() and event.keycode == KEY_SPACE:
-		a_star.debug_find_path(global_position, target.global_position)
-		# print(path)
-		# moves = path
+		var path = a_star.find_path(global_position, target.global_position)
+		moves = path
+	elif event is InputEventMouseButton and event.is_pressed():
+		var mouse_position = get_global_mouse_position()
+		var grid_position = Vector2(nav_layer.local_to_map(mouse_position - nav_layer.transform.origin)) * tile_size
+		move_to(grid_position)
 
 
 
