@@ -70,11 +70,11 @@ func find_path(start: Vector2, target: Vector2) -> Array[Vector2]:
 			# remove from frontier and insert back into the frontier to update the position
 			var found_index := _frontier.find_element(neighbor)
 			if found_index != -1 and neighbor.g < _frontier.data[found_index]["element"].g:
-				print("Updating Neighbor ", neighbor.position)
+				# print("Updating Neighbor ", neighbor.position)
 				_frontier.modify(found_index, neighbor, neighbor.f)
 			# If the neighbor is not in the frontier, insert it into the frontier
 			elif found_index == -1:
-				print("Adding Neighbor", neighbor.position)
+				# print("Adding Neighbor", neighbor.position)
 				_frontier.insert(neighbor, neighbor.f)
 			
 			set_debug_tile(neighbor.position, 3)
