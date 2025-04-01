@@ -25,7 +25,6 @@ func is_walkable(coord: Vector2) -> bool:
 	return obstacle_layer.get_cell_tile_data(obstacle_layer.local_to_map(coord)) == null
 
 func _physics_process(delta: float) -> void:
-	pass
 	# if Input.is_action_just_pressed("up") and !$up.is_colliding():
 	# 	_move(Vector2.UP)
 	# if Input.is_action_just_pressed("down") and !$down.is_colliding():
