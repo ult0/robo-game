@@ -32,7 +32,11 @@ func set_debug_tile(position: Vector2, alternate_tile_id: int):
 		debug_layer.set_cell(debug_layer.local_to_map(position), 0, Vector2i(0, 0), alternate_tile_id)
 
 func find_path(start: Vector2, target: Vector2) -> Array[Vector2]:
-	_frontier.insert(AStarNode.create(start), 0)
+	# Converting these to map coordinates first to ensure the algorithm finds the specific coordinates
+	# Should not be necessary if the units are already in map coordinates by offsetting their origin by half the tile size
+	var start_map: Vector2 = nav_layer.local_to_map(start - nav_layer.transform.origin) * nav_layer.tile_set.tile_size
+	var target_map: Vector2 = nav_layer.local_to_map(target - nav_layer.transform.origin) * nav_layer.tile_set.tile_size
+	_frontier.insert(AStarNode.create(start_map), 0)
 
 	while !_frontier.is_empty():
 		_current = _frontier.extract()
@@ -62,7 +66,7 @@ func find_path(start: Vector2, target: Vector2) -> Array[Vector2]:
 			neighbor.g = _current.g + tile_size
 
 			# Euclidean distance
-			neighbor.h = (target - neighbor.position).length()
+			neighbor.h = (target_map - neighbor.position).length()
 
 			neighbor.parent = _current
 
@@ -92,7 +96,7 @@ func get_neighbors(current: AStarNode) -> Array[AStarNode]:
 	return neighbors
 
 func get_tiledata(position: Vector2) -> TileData:
-	return nav_layer.get_cell_tile_data(((position - nav_layer.transform.get_origin()) / nav_layer.tile_set.tile_size.x))
+	return nav_layer.get_cell_tile_data(((position - nav_layer.transform.origin) / nav_layer.tile_set.tile_size.x))
 
 func is_position_walkable(position: Vector2) -> bool:
 	return is_walkable.call(position)

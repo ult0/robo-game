@@ -61,7 +61,7 @@ func find_element(element: Variant) -> int:
 		return find_element_callable.call(element)
 
 func _get_parent(index: int) -> int:
-	# warning-ignore:integer_division
+	@warning_ignore("integer_division")
 	return (index - 1) / 2
 
 func _left_child(index: int) -> int:

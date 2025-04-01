@@ -62,4 +62,5 @@ animations = [{
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_lf63s")
 animation = &"idle"
-frame_progress = 0.825326
+frame_progress = 0.244785
+offset = Vector2(8, 8)
