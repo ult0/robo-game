@@ -1,6 +1,6 @@
 [gd_scene load_steps=15 format=4 uid="uid://8itfr0as6040"]
 
-[ext_resource type="Script" uid="uid://b85gask7dco07" path="res://scripts/layer-manager.gd" id="1_62axn"]
+[ext_resource type="Script" uid="uid://b85gask7dco07" path="res://scripts/ui-layer.gd" id="1_62axn"]
 [ext_resource type="PackedScene" uid="uid://co0s4au8klchy" path="res://scenes/unit.tscn" id="2_ng07u"]
 [ext_resource type="Texture2D" uid="uid://daykxk87vxst2" path="res://assets/sprites/Cute_Fantasy_Free/Tiles/Path_Middle.png" id="2_rirqy"]
 [ext_resource type="Script" uid="uid://dkkjlpeqq2cww" path="res://scripts/unit.gd" id="3_62axn"]
@@ -60,7 +60,6 @@ sources/0 = SubResource("TileSetAtlasSource_m83hc")
 [node name="Game_Grid" type="Node2D"]
 
 [node name="Layers" type="Node2D" parent="."]
-script = ExtResource("1_62axn")
 
 [node name="NavigationLayer" type="TileMapLayer" parent="Layers"]
 unique_name_in_owner = true
@@ -79,6 +78,7 @@ tile_set = SubResource("TileSet_yotsu")
 [node name="UILayer" type="TileMapLayer" parent="Layers"]
 unique_name_in_owner = true
 tile_set = SubResource("TileSet_7udmc")
+script = ExtResource("1_62axn")
 
 [node name="Units" type="Node2D" parent="."]
 

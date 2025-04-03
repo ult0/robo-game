@@ -5,6 +5,7 @@ extends Node2D
 @onready var nav_layer: TileMapLayer = %NavigationLayer
 
 var tween: Tween
+
 var elapsed_time: float = 0.0
 @export var moves_per_second: float = 5.0
 var moves: Array[Vector2] = []
@@ -40,5 +41,5 @@ func move_to(coord: Vector2) -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.is_pressed():
 		var mouse_position = get_global_mouse_position()
-		var grid_position = nav_layer.local_to_map(mouse_position - nav_layer.transform.origin) * nav_layer.tile_set.tile_size
+		var grid_position = nav_layer.local_to_map(mouse_position) * nav_layer.tile_set.tile_size
 		move_to(grid_position)
