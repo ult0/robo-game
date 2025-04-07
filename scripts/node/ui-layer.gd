@@ -6,13 +6,10 @@ var tile_size_half: int = tile_size / 2
 var tile_size_vector: Vector2i = Vector2i(tile_size, tile_size)
 var tile_size_half_vector: Vector2i = Vector2i(tile_size_half, tile_size_half)
 
-# Move to global script
-var aStar: AStar
-func is_walkable(coord: Vector2) -> bool:
-	return %ObstacleLayer.get_cell_tile_data(%ObstacleLayer.local_to_map(coord)) == null
+var selected_unit_position: Vector2
 
 func _ready() -> void:
-	aStar = AStar.create(%NavigationLayer, is_walkable)
+	EventBus.selected_unit_position.connect(func (_position: Vector2) -> void: selected_unit_position = _position)
 
 func _process(_delta: float) -> void:
 	var mouse_position = get_global_mouse_position()
@@ -21,26 +18,24 @@ func _process(_delta: float) -> void:
 		self.erase_cell(last_tile_position)
 		self.set_cell(tile_position, 0, Vector2i(0, 0))
 		last_tile_position = tile_position
-		print("Tile Position: ", last_tile_position)
 		queue_redraw()
 
 func _draw() -> void:
 	if last_tile_position != Vector2i.MAX:
 		# Get player position somehow
-		var start := Vector2.ZERO
+		var start := selected_unit_position
 		# Where mouse is
 		var end := Vector2(last_tile_position) * Vector2(tile_size_vector)
 
-		# draw_line(start, end, Color.CADET_BLUE, 4)
-
-		var path := aStar.find_path(start, end)
+		var path := Navigation.aStar.find_path(start, end)
 		if (path.size() == 0):
 			return
 
 
 		# Draw the path
 		var width = 4
-		var offset = Vector2(tile_size_half_vector)
+		var color = Color.CADET_BLUE
+		color.a = 0.8
 		# Add the start points to the path to draw the first line
 		# path.push_front(Vector2(path[path.size() - 1]) + offset)
 		path.append(Vector2(start))
@@ -50,13 +45,13 @@ func _draw() -> void:
 			var point1 = path[path.size() - (i + 1)]
 			var point2 = path[path.size() - (i + 2)]
 			var direction = (point2 - point1).normalized()
-			line_vectors.append(point1 + offset)
+			line_vectors.append(point1)
 			if i == path.size() - 2:
 				# Draw the last line a little shorter
-				line_vectors.append(point2 + offset - (direction * (width / 2.0)))
+				line_vectors.append(point2 - (direction * (width / 2.0)))
 			else:
-				line_vectors.append(point2 + offset + (direction * (width / 2.0)))
-		draw_multiline(line_vectors, Color.CADET_BLUE, width)
+				line_vectors.append(point2 + (direction * (width / 2.0)))
+		draw_multiline(line_vectors, color, width)
 
 		# Draw the arrow at the end of the path
 		var last_point = line_vectors[line_vectors.size() - 1]
@@ -67,5 +62,5 @@ func _draw() -> void:
 			Vector2(last_point + arrow_direction.rotated(PI / 2) * 4),
 			Vector2(last_point + arrow_direction * 4),
 		]
-		draw_colored_polygon(triangle_vectors, Color.CADET_BLUE)
+		draw_colored_polygon(triangle_vectors, color)
 	

@@ -1,10 +1,12 @@
-[gd_scene load_steps=15 format=4 uid="uid://8itfr0as6040"]
+[gd_scene load_steps=22 format=4 uid="uid://8itfr0as6040"]
 
-[ext_resource type="Script" uid="uid://b85gask7dco07" path="res://scripts/ui-layer.gd" id="1_62axn"]
-[ext_resource type="PackedScene" uid="uid://co0s4au8klchy" path="res://scenes/unit.tscn" id="2_ng07u"]
+[ext_resource type="Script" uid="uid://b85gask7dco07" path="res://scripts/node/ui-layer.gd" id="1_62axn"]
 [ext_resource type="Texture2D" uid="uid://daykxk87vxst2" path="res://assets/sprites/Cute_Fantasy_Free/Tiles/Path_Middle.png" id="2_rirqy"]
-[ext_resource type="Script" uid="uid://dkkjlpeqq2cww" path="res://scripts/unit.gd" id="3_62axn"]
 [ext_resource type="Texture2D" uid="uid://be7fg32lfp6hq" path="res://assets/sprites/tile-select.png" id="3_crrag"]
+[ext_resource type="Script" uid="uid://dg6jxsvdxem0h" path="res://scripts/node/player_units.gd" id="4_1hwd1"]
+[ext_resource type="Script" uid="uid://phs2bfwqjgda" path="res://scripts/resources/unit.res.gd" id="5_m83hc"]
+[ext_resource type="PackedScene" uid="uid://ccy4nflkf5127" path="res://scenes/spawner.tscn" id="6_7udmc"]
+[ext_resource type="PackedScene" uid="uid://caqoipcbr7kuj" path="res://scenes/enemy.tscn" id="7_7udmc"]
 
 [sub_resource type="TileMapPattern" id="TileMapPattern_v5ybh"]
 tile_data = PackedInt32Array(0, 0, 0, 65537, 0, 0)
@@ -24,6 +26,9 @@ physics_layer_0/collision_layer = 1
 sources/0 = SubResource("TileSetAtlasSource_7612m")
 pattern_0 = SubResource("TileMapPattern_v5ybh")
 
+[sub_resource type="TileMapPattern" id="TileMapPattern_m83hc"]
+tile_data = PackedInt32Array(0, 0, 65536, 65536, 0, 65536, 1, 0, 65536, 65537, 0, 65536)
+
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ma45j"]
 texture = ExtResource("2_rirqy")
 0:0/next_alternative_id = 2
@@ -35,6 +40,7 @@ texture = ExtResource("2_rirqy")
 [sub_resource type="TileSet" id="TileSet_ct7w5"]
 physics_layer_0/collision_layer = 1
 sources/0 = SubResource("TileSetAtlasSource_ma45j")
+pattern_0 = SubResource("TileMapPattern_m83hc")
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_hpjoi"]
 texture = ExtResource("2_rirqy")
@@ -52,10 +58,60 @@ sources/0 = SubResource("TileSetAtlasSource_hpjoi")
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_m83hc"]
 texture = ExtResource("3_crrag")
+texture_region_size = Vector2i(20, 20)
 0:0/0 = 0
+0:0/0/modulate = Color(1, 1, 1, 0.705882)
 
 [sub_resource type="TileSet" id="TileSet_7udmc"]
 sources/0 = SubResource("TileSetAtlasSource_m83hc")
+
+[sub_resource type="Resource" id="Resource_7udmc"]
+script = ExtResource("5_m83hc")
+name = "Soldier"
+sprite_path = "res://assets/sprites/Puny-Characters/Soldier-Blue.png"
+max_health = 200
+health = 200
+move_speed = 5
+attack = 20
+defense = 20
+attack_range = 1
+metadata/_custom_type_script = "uid://phs2bfwqjgda"
+
+[sub_resource type="Resource" id="Resource_1hwd1"]
+script = ExtResource("5_m83hc")
+name = "Archer"
+sprite_path = "res://assets/sprites/Puny-Characters/Archer-Green.png"
+max_health = 100
+health = 100
+move_speed = 5
+attack = 25
+defense = 10
+attack_range = 2
+metadata/_custom_type_script = "uid://phs2bfwqjgda"
+
+[sub_resource type="Resource" id="Resource_u7tim"]
+script = ExtResource("5_m83hc")
+name = "Mage"
+sprite_path = "res://assets/sprites/Puny-Characters/Mage-Red.png"
+max_health = 50
+health = 50
+move_speed = 5
+attack = 30
+defense = 5
+attack_range = 3
+metadata/_custom_type_script = "uid://phs2bfwqjgda"
+
+[sub_resource type="Resource" id="Resource_m4q8x"]
+script = ExtResource("5_m83hc")
+name = "Healer"
+sprite_path = "res://assets/sprites/Puny-Characters/Mage-Cyan.png"
+max_health = 50
+health = 50
+move_speed = 5
+attack = 20
+defense = 10
+attack_range = 1
+metadata/_custom_type_script = "uid://phs2bfwqjgda"
 
 [node name="Game_Grid" type="Node2D"]
 
@@ -68,7 +124,7 @@ tile_set = SubResource("TileSet_5d5gd")
 
 [node name="ObstacleLayer" type="TileMapLayer" parent="Layers"]
 unique_name_in_owner = true
-tile_map_data = PackedByteArray("AAD4//7/AAAAAAAAAQD4////AAAAAAAAAQD5////AAAAAAAAAQD5/wAAAAAAAAAAAQD6/wAAAAAAAAAAAQD6/wEAAAAAAAAAAQD7/wEAAAAAAAAAAQD7/wIAAAAAAAAAAQD9//z/AAAAAAAAAQD+//z/AAAAAAAAAQD///z/AAAAAAAAAQAAAPz/AAAAAAAAAQABAPz/AAAAAAAAAQACAPz/AAAAAAAAAQAAAAMAAAAAAAAAAQAAAAQAAAAAAAAAAQABAAQAAAAAAAAAAQACAAQAAAAAAAAAAQADAAQAAAAAAAAAAQAEAAQAAAAAAAAAAQAFAAQAAAAAAAAAAQAGAAQAAAAAAAAAAQAHAAQAAAAAAAAAAQAFAP3/AAAAAAAAAQAGAP7/AAAAAAAAAQAHAP//AAAAAAAAAQAIAP//AAAAAAAAAQAJAAAAAAAAAAAAAQAKAAAAAAAAAAAAAQAHAAEAAAAAAAAAAQAGAAEAAAAAAAAAAQAGAAIAAAAAAAAAAQAFAAIAAAAAAAAAAQAEAAIAAAAAAAAAAQD2/wQAAAAAAAAAAQD3/wQAAAAAAAAAAQD3/wUAAAAAAAAAAQD4/wUAAAAAAAAAAQD5/wUAAAAAAAAAAQD6/wYAAAAAAAAAAQD7/wYAAAAAAAAAAQD0//7/AAAAAAAAAQD0////AAAAAAAAAQD0/wAAAAAAAAAAAQD0/wEAAAAAAAAAAQD0/wIAAAAAAAAAAQDz/wIAAAAAAAAAAQDz/wMAAAAAAAAAAQD3//v/AAAAAAAAAQD4//v/AAAAAAAAAQD4//z/AAAAAAAAAQD5//z/AAAAAAAAAQD6//z/AAAAAAAAAQD+//n/AAAAAAAAAQD9//r/AAAAAAAAAQD8//r/AAAAAAAAAQAIAPr/AAAAAAAAAQAJAPr/AAAAAAAAAQAJAPv/AAAAAAAAAQAKAPv/AAAAAAAAAQAKAPz/AAAAAAAAAQAMAAUAAAAAAAAAAQAMAAYAAAAAAAAAAQALAAYAAAAAAAAAAQAKAAcAAAAAAAAAAQABAAYAAAAAAAAAAQABAAcAAAAAAAAAAQACAAcAAAAAAAAAAQADAAcAAAAAAAAAAQD9/wYAAAAAAAAAAQD+/wYAAAAAAAAAAQD+/wcAAAAAAAAAAQD1//n/AAAAAAAAAQD1//r/AAAAAAAAAQD0//r/AAAAAAAAAQD0//v/AAAAAAAAAQDz//v/AAAAAAAAAQDz//z/AAAAAAAAAQA=")
+tile_map_data = PackedByteArray("AAD4//z/AAAAAAAAAQD4//3/AAAAAAAAAQD5//z/AAAAAAAAAQD5//3/AAAAAAAAAQD1/wEAAAAAAAAAAQD1/wIAAAAAAAAAAQD2/wEAAAAAAAAAAQD2/wIAAAAAAAAAAQD5/wUAAAAAAAAAAQD5/wYAAAAAAAAAAQD6/wUAAAAAAAAAAQD6/wYAAAAAAAAAAQD8/wEAAAAAAAAAAQD8/wIAAAAAAAAAAQD9/wEAAAAAAAAAAQD9/wIAAAAAAAAAAQADAAUAAAAAAAAAAQADAAYAAAAAAAAAAQAEAAUAAAAAAAAAAQAEAAYAAAAAAAAAAQAAAPz/AAAAAAAAAQAAAP3/AAAAAAAAAQABAPz/AAAAAAAAAQABAP3/AAAAAAAAAQAHAAEAAAAAAAAAAQAHAAIAAAAAAAAAAQAIAAEAAAAAAAAAAQAIAAIAAAAAAAAAAQAFAP3/AAAAAAAAAQAFAP7/AAAAAAAAAQAGAP3/AAAAAAAAAQAGAP7/AAAAAAAAAQAJAPn/AAAAAAAAAQAJAPr/AAAAAAAAAQAKAPn/AAAAAAAAAQAKAPr/AAAAAAAAAQD8//n/AAAAAAAAAQD8//r/AAAAAAAAAQD9//n/AAAAAAAAAQD9//r/AAAAAAAAAQDz//r/AAAAAAAAAQDz//v/AAAAAAAAAQD0//r/AAAAAAAAAQD0//v/AAAAAAAAAQD5/wMAAAAAAAAAAQD5/wQAAAAAAAAAAQD2/wAAAAAAAAAAAQD2////AAAAAAAAAQD3//3/AAAAAAAAAQD2//3/AAAAAAAAAQD5/wIAAAAAAAAAAQD3/wIAAAAAAAAAAQD6//z/AAAAAAAAAQD7//z/AAAAAAAAAQD8//z/AAAAAAAAAQD+//n/AAAAAAAAAQD///n/AAAAAAAAAQAAAPn/AAAAAAAAAQABAPn/AAAAAAAAAQACAPn/AAAAAAAAAQADAPn/AAAAAAAAAQAEAPn/AAAAAAAAAQAFAPn/AAAAAAAAAQAGAPn/AAAAAAAAAQAHAPn/AAAAAAAAAQAIAPn/AAAAAAAAAQD7/wYAAAAAAAAAAQD8/wYAAAAAAAAAAQD9/wYAAAAAAAAAAQD+/wYAAAAAAAAAAQABAAYAAAAAAAAAAQACAAYAAAAAAAAAAQAFAAUAAAAAAAAAAQAGAAUAAAAAAAAAAQAHAAUAAAAAAAAAAQAHAAQAAAAAAAAAAQAKAPv/AAAAAAAAAQAKAPz/AAAAAAAAAQAKAP3/AAAAAAAAAQAKAP7/AAAAAAAAAQAKAP//AAAAAAAAAQAKAAAAAAAAAAAAAQAKAAEAAAAAAAAAAQDy/wYAAAAAAAAAAQDz/wYAAAAAAAAAAQDz/wcAAAAAAAAAAQD0/wYAAAAAAAAAAQDz/wUAAAAAAAAAAQDy//v/AAAAAAAAAQDz//n/AAAAAAAAAQDz//z/AAAAAAAAAQD1//r/AAAAAAAAAQALAAYAAAAAAAAAAQAMAAYAAAAAAAAAAQAMAAUAAAAAAAAAAQAMAPr/AAAAAAAAAQAMAPv/AAAAAAAAAQANAPv/AAAAAAAAAQAMAPz/AAAAAAAAAQALAPr/AAAAAAAAAQALAPv/AAAAAAAAAQALAPz/AAAAAAAAAQA=")
 tile_set = SubResource("TileSet_ct7w5")
 
 [node name="DebugLayer" type="TileMapLayer" parent="Layers"]
@@ -82,12 +138,39 @@ script = ExtResource("1_62axn")
 
 [node name="Units" type="Node2D" parent="."]
 
-[node name="PlayerUnits" type="Node2D" parent="Units"]
+[node name="PlayerUnits" type="Node2D" parent="Units" node_paths=PackedStringArray("spawn_locations")]
+script = ExtResource("4_1hwd1")
+spawn_locations = [NodePath("Spawner"), NodePath("Spawner2"), NodePath("Spawner3"), NodePath("Spawner4")]
+player_units = Array[ExtResource("5_m83hc")]([SubResource("Resource_7udmc"), SubResource("Resource_1hwd1"), SubResource("Resource_u7tim"), SubResource("Resource_m4q8x")])
 
-[node name="Unit" parent="Units/PlayerUnits" instance=ExtResource("2_ng07u")]
-script = ExtResource("3_62axn")
+[node name="Spawner" parent="Units/PlayerUnits" instance=ExtResource("6_7udmc")]
+position = Vector2(-216, -8)
+
+[node name="Spawner2" parent="Units/PlayerUnits" instance=ExtResource("6_7udmc")]
+position = Vector2(-216, 8)
+
+[node name="Spawner3" parent="Units/PlayerUnits" instance=ExtResource("6_7udmc")]
+position = Vector2(-216, 24)
+
+[node name="Spawner4" parent="Units/PlayerUnits" instance=ExtResource("6_7udmc")]
+position = Vector2(-216, 40)
 
 [node name="EnemyUnits" type="Node2D" parent="Units"]
+
+[node name="Enemy" parent="Units/EnemyUnits" instance=ExtResource("7_7udmc")]
+position = Vector2(-56, -8)
+
+[node name="Enemy2" parent="Units/EnemyUnits" instance=ExtResource("7_7udmc")]
+position = Vector2(56, -72)
+
+[node name="Enemy3" parent="Units/EnemyUnits" instance=ExtResource("7_7udmc")]
+position = Vector2(-8, 88)
+
+[node name="Enemy4" parent="Units/EnemyUnits" instance=ExtResource("7_7udmc")]
+position = Vector2(8, 88)
+
+[node name="Enemy5" parent="Units/EnemyUnits" instance=ExtResource("7_7udmc")]
+position = Vector2(168, 72)
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position_smoothing_enabled = true

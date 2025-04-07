@@ -27,28 +27,30 @@ static func create(_nav_layer: TileMapLayer, _is_walkable: Callable, _debug_laye
 	astar.debug_layer = _debug_layer
 	return astar
 
-func set_debug_tile(position: Vector2, alternate_tile_id: int):
-	if is_instance_valid(debug_layer):
+func set_debug_tile(position: Vector2, alternate_tile_id: int, debug_mode = false):
+	if is_instance_valid(debug_layer) and debug_mode:
 		debug_layer.set_cell(debug_layer.local_to_map(position), 0, Vector2i(0, 0), alternate_tile_id)
 
-func find_path(start: Vector2, target: Vector2) -> Array[Vector2]:
-	# Converting these to map coordinates first to ensure the algorithm finds the specific coordinates
-	# Should not be necessary if the units are already in map coordinates by offsetting their origin by half the tile size
-	var start_map: Vector2 = nav_layer.local_to_map(start - nav_layer.transform.origin) * nav_layer.tile_set.tile_size
-	var target_map: Vector2 = nav_layer.local_to_map(target - nav_layer.transform.origin) * nav_layer.tile_set.tile_size
-	_frontier.insert(AStarNode.create(start_map), 0)
+func find_path(_start: Vector2, _target: Vector2, debug_mode = false) -> Array[Vector2]:
+	# Snap the start and target positions to the center of the tile
+	# local_to_map() snaps the global position to the top right but in tilemap coordinates
+	# multiply by tile size to get the global position and add half the tile size to center it
+	var start: Vector2 = nav_layer.local_to_map(_start - nav_layer.transform.origin) * nav_layer.tile_set.tile_size + (nav_layer.tile_set.tile_size / 2)
+	var target: Vector2 = nav_layer.local_to_map(_target - nav_layer.transform.origin) * nav_layer.tile_set.tile_size + (nav_layer.tile_set.tile_size / 2)
+
+	_frontier.insert(AStarNode.create(start), 0)
 
 	while !_frontier.is_empty():
 		_current = _frontier.extract()
 		_closed_list.append(_current.position)
-		set_debug_tile(_current.position, 1)
+		set_debug_tile(_current.position, 1, debug_mode)
 
 		# If the current node is the target node, return the path recursively from parent to parent
 		if _current.position == target:
-			print("Path Found!", _current)
+			# print("Path Found!", _current)
 			var path: Array[Vector2] = []
 			while _current.parent.parent != null:
-				set_debug_tile(_current.position, 2)
+				set_debug_tile(_current.position, 2, debug_mode)
 				path.append(_current.position)
 				_current = _current.parent
 			_path = path
@@ -66,7 +68,7 @@ func find_path(start: Vector2, target: Vector2) -> Array[Vector2]:
 			neighbor.g = _current.g + tile_size
 
 			# Euclidean distance
-			neighbor.h = (target_map - neighbor.position).length()
+			neighbor.h = (target - neighbor.position).length()
 
 			neighbor.parent = _current
 
@@ -81,9 +83,9 @@ func find_path(start: Vector2, target: Vector2) -> Array[Vector2]:
 				# print("Adding Neighbor", neighbor.position)
 				_frontier.insert(neighbor, neighbor.f)
 			
-			set_debug_tile(neighbor.position, 3)
+			set_debug_tile(neighbor.position, 3, debug_mode)
 
-	print("No Path Found!")
+	# print("No Path Found!")
 	reset()
 	return []
 
