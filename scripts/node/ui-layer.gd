@@ -6,10 +6,10 @@ var tile_size_half: int = tile_size / 2
 var tile_size_vector: Vector2i = Vector2i(tile_size, tile_size)
 var tile_size_half_vector: Vector2i = Vector2i(tile_size_half, tile_size_half)
 
-var selected_unit_position: Vector2
+var selected_unit: Unit
 
 func _ready() -> void:
-	EventBus.selected_unit_position.connect(func (_position: Vector2) -> void: selected_unit_position = _position)
+	EventBus.unit_selected.connect(func (unit: Unit) -> void: selected_unit = unit)
 
 func _process(_delta: float) -> void:
 	var mouse_position = get_global_mouse_position()
@@ -18,12 +18,13 @@ func _process(_delta: float) -> void:
 		self.erase_cell(last_tile_position)
 		self.set_cell(tile_position, 0, Vector2i(0, 0))
 		last_tile_position = tile_position
-		queue_redraw()
+	if selected_unit:
+			queue_redraw()
 
 func _draw() -> void:
-	if last_tile_position != Vector2i.MAX:
+	if last_tile_position != Vector2i.MAX and selected_unit and !selected_unit.moving:
 		# Get player position somehow
-		var start := selected_unit_position
+		var start := selected_unit.global_position
 		# Where mouse is
 		var end := Vector2(last_tile_position) * Vector2(tile_size_vector)
 

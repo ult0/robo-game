@@ -9,10 +9,10 @@ var tween: Tween
 var elapsed_time: float = 0.0
 @export var moves_per_second: float = 5.0
 var moves: Array[Vector2] = []
+var moving: bool = false
 
 func _ready() -> void:
 	setup_animated_sprite()
-	EventBus.selected_unit_position.emit(global_position)
 
 func setup_animated_sprite() -> void:
 	var animation_name = "idle"
@@ -60,14 +60,15 @@ func setup_animated_sprite() -> void:
 func _physics_process(delta: float) -> void:
 	elapsed_time += delta
 	if elapsed_time >= 1.0 / moves_per_second and moves.size() > 0:
+		moving = true
 		var m = moves.pop_back()
+		if moves.size() == 0: moving = false
 		move(m)
 		elapsed_time = 0.0
 
 func move(coord: Vector2) -> void:
 	var temp_position := global_position
 	global_position = coord
-	EventBus.selected_unit_position.emit(global_position)
 	animatedSprite.global_position = temp_position
 
 	if tween:
@@ -81,7 +82,10 @@ func move_to(coord: Vector2) -> void:
 
 # Temporary inputs to test movement
 func _unhandled_input(event: InputEvent) -> void:
-	if event is InputEventMouseButton and event.is_pressed():
+	if event is InputEventMouseButton and event.is_pressed() and event.button_index == MOUSE_BUTTON_LEFT:
 		var mouse_position = get_global_mouse_position()
-		var grid_position = Navigation.NavigationLayer.local_to_map(mouse_position) * Navigation.NavigationLayer.tile_set.tile_size
-		move_to(grid_position)
+		var tile_position := Navigation.NavigationLayer.local_to_map(mouse_position)
+		var global_tile_position: Vector2 = Navigation.NavigationLayer.map_to_local(tile_position)
+		if global_tile_position == self.global_position:
+			print("Selecting Unit: ", unit_resource.name)
+			EventBus.unit_selected.emit(self)

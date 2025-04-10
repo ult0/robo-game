@@ -1,0 +1,12 @@
+[gd_scene load_steps=2 format=3 uid="uid://dfsn3pjfakbh1"]
+
+[ext_resource type="Texture2D" uid="uid://k5q8hwnbnveo" path="res://assets/sprites/container.png" id="1_beckw"]
+
+[node name="UIContainer" type="NinePatchRect"]
+offset_right = 76.0
+offset_bottom = 37.0
+texture = ExtResource("1_beckw")
+patch_margin_left = 5
+patch_margin_top = 5
+patch_margin_right = 5
+patch_margin_bottom = 5

@@ -21,6 +21,10 @@ LayerNames="*res://addons/layerNames/layerNames.gd"
 EventBus="*res://scripts/global/event_bus.gd"
 Navigation="*res://scripts/global/navigation.gd"
 
+[debug]
+
+gdscript/warnings/integer_division=0
+
 [display]
 
 window/size/viewport_width=495

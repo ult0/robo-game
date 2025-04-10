@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://24ms5ekd0gfc"]
+
+[ext_resource type="PackedScene" uid="uid://6wd6paja8lm5" path="res://scenes/selected_unit_display.tscn" id="1_nt7q6"]
+
+[node name="UI" type="CanvasLayer"]
+
+[node name="SelectedUnitDisplay" parent="." instance=ExtResource("1_nt7q6")]
