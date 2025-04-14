@@ -1,11 +1,6 @@
 extends TileMapLayer
 
 var last_tile_position: Vector2i = Vector2i.MAX
-var tile_size: int = self.tile_set.tile_size.x
-var tile_size_half: int = tile_size / 2
-var tile_size_vector: Vector2i = Vector2i(tile_size, tile_size)
-var tile_size_half_vector: Vector2i = Vector2i(tile_size_half, tile_size_half)
-
 var selected_unit: Unit
 
 func _ready() -> void:
@@ -18,6 +13,7 @@ func _process(_delta: float) -> void:
 		self.erase_cell(last_tile_position)
 		self.set_cell(tile_position, 0, Vector2i(0, 0))
 		last_tile_position = tile_position
+	
 	if selected_unit:
 			queue_redraw()
 
@@ -26,17 +22,15 @@ func _draw() -> void:
 		# Get player position somehow
 		var start := selected_unit.global_position
 		# Where mouse is
-		var end := Vector2(last_tile_position) * Vector2(tile_size_vector)
+		var end := Vector2(last_tile_position) * TileMapUtils.tile_size_vector2
 
 		var path := Navigation.aStar.find_path(start, end)
 		if (path.size() == 0):
 			return
 
-
 		# Draw the path
 		var width = 4
 		var color = Color.CADET_BLUE
-		color.a = 0.8
 		# Add the start points to the path to draw the first line
 		# path.push_front(Vector2(path[path.size() - 1]) + offset)
 		path.append(Vector2(start))

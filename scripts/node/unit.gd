@@ -62,7 +62,9 @@ func _physics_process(delta: float) -> void:
 	if elapsed_time >= 1.0 / moves_per_second and moves.size() > 0:
 		moving = true
 		var m = moves.pop_back()
-		if moves.size() == 0: moving = false
+		if moves.size() == 0: 
+			moving = false
+			EventBus.unit_selected.emit(null)
 		move(m)
 		elapsed_time = 0.0
 
@@ -78,7 +80,8 @@ func move(coord: Vector2) -> void:
 
 func move_to(coord: Vector2) -> void:
 	var path = Navigation.aStar.find_path(global_position, coord)
-	moves = path
+	if path.size() <= unit_resource.move_speed:
+		moves = path
 
 # Temporary inputs to test movement
 func _unhandled_input(event: InputEvent) -> void:
@@ -87,5 +90,4 @@ func _unhandled_input(event: InputEvent) -> void:
 		var tile_position := Navigation.NavigationLayer.local_to_map(mouse_position)
 		var global_tile_position: Vector2 = Navigation.NavigationLayer.map_to_local(tile_position)
 		if global_tile_position == self.global_position:
-			print("Selecting Unit: ", unit_resource.name)
 			EventBus.unit_selected.emit(self)

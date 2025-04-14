@@ -16,8 +16,6 @@ var _frontier: PriorityQueueVar = PriorityQueueVar.create(func(element) -> int:
 var _closed_list: Array[Vector2] = []
 var _current: AStarNode = null
 
-var directions: Array[Vector2] = [Vector2.UP, Vector2.RIGHT, Vector2.DOWN, Vector2.LEFT]
-
 var _path: Array[Vector2] = []
 
 static func create(_nav_layer: TileMapLayer, _is_walkable: Callable, _debug_layer: TileMapLayer = null) -> AStar:
@@ -91,8 +89,8 @@ func find_path(_start: Vector2, _target: Vector2, debug_mode = false) -> Array[V
 
 func get_neighbors(current: AStarNode) -> Array[AStarNode]:
 	var neighbors: Array[AStarNode] = []
-	for direction in directions:
-		var neighbor := current.position + (direction * Vector2(nav_layer.tile_set.tile_size))
+	for direction in TileMapUtils.movement_directions:
+		var neighbor := current.position + Vector2(direction * nav_layer.tile_set.tile_size)
 		if get_tiledata(neighbor) != null and is_position_walkable(neighbor):
 			neighbors.append(AStarNode.create(neighbor, current))
 	return neighbors

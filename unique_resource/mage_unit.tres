@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="UnitResource" load_steps=2 format=3 uid="uid://c6ltt3mam5h78"]
+
+[ext_resource type="Script" uid="uid://phs2bfwqjgda" path="res://scripts/resources/unit.res.gd" id="1_4d6q2"]
+
+[resource]
+script = ExtResource("1_4d6q2")
+name = "Mage"
+sprite_path = "res://assets/sprites/Puny-Characters/Mage-Red.png"
+max_health = 50
+health = 50
+move_speed = 5
+attack = 30
+defense = 5
+attack_range = 3
+metadata/_custom_type_script = "uid://phs2bfwqjgda"

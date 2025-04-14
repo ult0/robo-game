@@ -38,6 +38,10 @@ window/stretch/mode="canvas_items"
 
 enabled=PackedStringArray("res://addons/layerNames/plugin.cfg")
 
+[global_group]
+
+unit=""
+
 [input]
 
 left={

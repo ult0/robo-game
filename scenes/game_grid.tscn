@@ -1,19 +1,23 @@
-[gd_scene load_steps=36 format=4 uid="uid://8itfr0as6040"]
+[gd_scene load_steps=38 format=4 uid="uid://8itfr0as6040"]
 
 [ext_resource type="Script" uid="uid://b85gask7dco07" path="res://scripts/node/ui-layer.gd" id="1_62axn"]
 [ext_resource type="Script" uid="uid://d24v7ccnagesb" path="res://scripts/node/game_manager.gd" id="1_pdvre"]
 [ext_resource type="Texture2D" uid="uid://c4w80mpwlmtm" path="res://assets/sprites/Puny-Characters/Environment/Grass1.png" id="2_ab1w6"]
 [ext_resource type="Texture2D" uid="uid://daykxk87vxst2" path="res://assets/sprites/Cute_Fantasy_Free/Tiles/Path_Middle.png" id="2_rirqy"]
-[ext_resource type="Texture2D" uid="uid://be7fg32lfp6hq" path="res://assets/sprites/tile-select.png" id="3_crrag"]
 [ext_resource type="Texture2D" uid="uid://dvo8kerbl8c0v" path="res://assets/sprites/Puny-Characters/Environment/Grass2.png" id="3_pdvre"]
-[ext_resource type="Script" uid="uid://dg6jxsvdxem0h" path="res://scripts/node/player_units.gd" id="4_1hwd1"]
 [ext_resource type="Texture2D" uid="uid://b7ussm5xgn5r3" path="res://assets/sprites/Puny-Characters/Environment/Dirt.png" id="4_mcpko"]
 [ext_resource type="Texture2D" uid="uid://dyptcyxwkl304" path="res://assets/sprites/Puny-Characters/Environment/punyworld-dungeon-tileset.png" id="5_0c8dq"]
-[ext_resource type="Script" uid="uid://phs2bfwqjgda" path="res://scripts/resources/unit.res.gd" id="5_m83hc"]
 [ext_resource type="PackedScene" uid="uid://ccy4nflkf5127" path="res://scenes/spawner.tscn" id="6_7udmc"]
 [ext_resource type="Texture2D" uid="uid://delhvqyqv0252" path="res://assets/sprites/Puny-Characters/Environment/punyworld-overworld-tileset.png" id="6_t2oak"]
-[ext_resource type="PackedScene" uid="uid://caqoipcbr7kuj" path="res://scenes/enemy.tscn" id="7_7udmc"]
 [ext_resource type="PackedScene" uid="uid://24ms5ekd0gfc" path="res://scenes/ui.tscn" id="8_1hwd1"]
+[ext_resource type="Script" uid="uid://csjyhe0gismrd" path="res://scripts/node/overlay_layer.gd" id="8_mi3k7"]
+[ext_resource type="Texture2D" uid="uid://be7fg32lfp6hq" path="res://assets/sprites/tile-select.png" id="8_t2oak"]
+[ext_resource type="PackedScene" uid="uid://d1ilia4pde6jk" path="res://scenes/unit_group.tscn" id="10_ab1w6"]
+[ext_resource type="Resource" uid="uid://cl3duluh4v5rh" path="res://unique_resource/soldier_unit.tres" id="12_mi3k7"]
+[ext_resource type="Resource" uid="uid://b6jrdwe28px1p" path="res://unique_resource/archer_unit.tres" id="13_e1rtc"]
+[ext_resource type="Resource" uid="uid://c6ltt3mam5h78" path="res://unique_resource/mage_unit.tres" id="14_748t8"]
+[ext_resource type="Resource" uid="uid://vdg5qbiyqpke" path="res://unique_resource/healer_unit.tres" id="15_t7mc4"]
+[ext_resource type="Resource" uid="uid://uyywr0ds7k1q" path="res://unique_resource/enemy_unit.tres" id="17_mi3k7"]
 
 [sub_resource type="TileMapPattern" id="TileMapPattern_v5ybh"]
 tile_data = PackedInt32Array(0, 0, 0, 65537, 0, 0)
@@ -2050,62 +2054,24 @@ texture = ExtResource("2_rirqy")
 [sub_resource type="TileSet" id="TileSet_yotsu"]
 sources/0 = SubResource("TileSetAtlasSource_hpjoi")
 
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_m83hc"]
-texture = ExtResource("3_crrag")
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_t2oak"]
+texture = ExtResource("6_t2oak")
+21:4/0 = 0
+22:4/0 = 0
+22:5/0 = 0
+21:5/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_mi3k7"]
+sources/0 = SubResource("TileSetAtlasSource_t2oak")
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_as1xg"]
+texture = ExtResource("8_t2oak")
 texture_region_size = Vector2i(20, 20)
+use_texture_padding = false
 0:0/0 = 0
-0:0/0/modulate = Color(1, 1, 1, 0.705882)
 
 [sub_resource type="TileSet" id="TileSet_7udmc"]
-sources/0 = SubResource("TileSetAtlasSource_m83hc")
-
-[sub_resource type="Resource" id="Resource_7udmc"]
-script = ExtResource("5_m83hc")
-name = "Soldier"
-sprite_path = "res://assets/sprites/Puny-Characters/Soldier-Blue.png"
-max_health = 200
-health = 200
-move_speed = 5
-attack = 20
-defense = 20
-attack_range = 1
-metadata/_custom_type_script = "uid://phs2bfwqjgda"
-
-[sub_resource type="Resource" id="Resource_1hwd1"]
-script = ExtResource("5_m83hc")
-name = "Archer"
-sprite_path = "res://assets/sprites/Puny-Characters/Archer-Green.png"
-max_health = 100
-health = 100
-move_speed = 5
-attack = 25
-defense = 10
-attack_range = 2
-metadata/_custom_type_script = "uid://phs2bfwqjgda"
-
-[sub_resource type="Resource" id="Resource_u7tim"]
-script = ExtResource("5_m83hc")
-name = "Mage"
-sprite_path = "res://assets/sprites/Puny-Characters/Mage-Red.png"
-max_health = 50
-health = 50
-move_speed = 5
-attack = 30
-defense = 5
-attack_range = 3
-metadata/_custom_type_script = "uid://phs2bfwqjgda"
-
-[sub_resource type="Resource" id="Resource_m4q8x"]
-script = ExtResource("5_m83hc")
-name = "Healer"
-sprite_path = "res://assets/sprites/Puny-Characters/Mage-Cyan.png"
-max_health = 50
-health = 50
-move_speed = 5
-attack = 20
-defense = 10
-attack_range = 1
-metadata/_custom_type_script = "uid://phs2bfwqjgda"
+sources/0 = SubResource("TileSetAtlasSource_as1xg")
 
 [node name="Game_Grid" type="Node2D"]
 script = ExtResource("1_pdvre")
@@ -2126,6 +2092,11 @@ tile_set = SubResource("TileSet_ct7w5")
 unique_name_in_owner = true
 tile_set = SubResource("TileSet_yotsu")
 
+[node name="OverlayLayer" type="TileMapLayer" parent="Layers"]
+unique_name_in_owner = true
+tile_set = SubResource("TileSet_mi3k7")
+script = ExtResource("8_mi3k7")
+
 [node name="UILayer" type="TileMapLayer" parent="Layers"]
 unique_name_in_owner = true
 tile_set = SubResource("TileSet_7udmc")
@@ -2133,39 +2104,50 @@ script = ExtResource("1_62axn")
 
 [node name="Units" type="Node2D" parent="."]
 
-[node name="PlayerUnits" type="Node2D" parent="Units" node_paths=PackedStringArray("spawn_locations")]
-script = ExtResource("4_1hwd1")
-spawn_locations = [NodePath("Spawner"), NodePath("Spawner2"), NodePath("Spawner3"), NodePath("Spawner4")]
-player_units = Array[ExtResource("5_m83hc")]([SubResource("Resource_7udmc"), SubResource("Resource_1hwd1"), SubResource("Resource_u7tim"), SubResource("Resource_m4q8x")])
+[node name="PlayerUnits" parent="Units" instance=ExtResource("10_ab1w6")]
 
 [node name="Spawner" parent="Units/PlayerUnits" instance=ExtResource("6_7udmc")]
 position = Vector2(-216, -8)
+unit_resource = ExtResource("12_mi3k7")
 
 [node name="Spawner2" parent="Units/PlayerUnits" instance=ExtResource("6_7udmc")]
 position = Vector2(-216, 8)
+unit_resource = ExtResource("13_e1rtc")
 
 [node name="Spawner3" parent="Units/PlayerUnits" instance=ExtResource("6_7udmc")]
 position = Vector2(-216, 24)
+unit_resource = ExtResource("14_748t8")
 
 [node name="Spawner4" parent="Units/PlayerUnits" instance=ExtResource("6_7udmc")]
 position = Vector2(-216, 40)
+unit_resource = ExtResource("15_t7mc4")
 
-[node name="EnemyUnits" type="Node2D" parent="Units"]
+[node name="EnemyUnits" parent="Units" instance=ExtResource("10_ab1w6")]
+type = 1
 
-[node name="Enemy" parent="Units/EnemyUnits" instance=ExtResource("7_7udmc")]
-position = Vector2(-56, -8)
+[node name="Spawner" parent="Units/EnemyUnits" instance=ExtResource("6_7udmc")]
+position = Vector2(-56, -72)
+unit_resource = ExtResource("17_mi3k7")
 
-[node name="Enemy2" parent="Units/EnemyUnits" instance=ExtResource("7_7udmc")]
-position = Vector2(56, -72)
+[node name="Spawner2" parent="Units/EnemyUnits" instance=ExtResource("6_7udmc")]
+position = Vector2(-50, 8)
+unit_resource = ExtResource("17_mi3k7")
 
-[node name="Enemy3" parent="Units/EnemyUnits" instance=ExtResource("7_7udmc")]
-position = Vector2(-8, 88)
+[node name="Spawner3" parent="Units/EnemyUnits" instance=ExtResource("6_7udmc")]
+position = Vector2(152, 58)
+unit_resource = ExtResource("17_mi3k7")
 
-[node name="Enemy4" parent="Units/EnemyUnits" instance=ExtResource("7_7udmc")]
-position = Vector2(8, 88)
+[node name="Spawner4" parent="Units/EnemyUnits" instance=ExtResource("6_7udmc")]
+position = Vector2(39, -59)
+unit_resource = ExtResource("17_mi3k7")
 
-[node name="Enemy5" parent="Units/EnemyUnits" instance=ExtResource("7_7udmc")]
-position = Vector2(168, 72)
+[node name="Spawner5" parent="Units/EnemyUnits" instance=ExtResource("6_7udmc")]
+position = Vector2(-8, 103)
+unit_resource = ExtResource("17_mi3k7")
+
+[node name="Spawner6" parent="Units/EnemyUnits" instance=ExtResource("6_7udmc")]
+position = Vector2(8, 103)
+unit_resource = ExtResource("17_mi3k7")
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position_smoothing_enabled = true

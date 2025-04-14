@@ -1,4 +1,14 @@
-[gd_scene format=3 uid="uid://ccy4nflkf5127"]
+[gd_scene load_steps=3 format=3 uid="uid://ccy4nflkf5127"]
 
-[node name="Spawner" type="Marker2D"]
-gizmo_extents = 8.0
+[ext_resource type="Script" uid="uid://c3nhgn7bimrhp" path="res://scripts/spawner.gd" id="1_2vbf6"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8xlu4"]
+size = Vector2(14, 14)
+
+[node name="Spawner" type="Area2D"]
+monitoring = false
+monitorable = false
+script = ExtResource("1_2vbf6")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_8xlu4")
