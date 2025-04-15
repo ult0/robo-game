@@ -1,52 +1,46 @@
 extends Node2D
 class_name UnitGroup
 
-enum Type {
-	Unit,
+enum UnitType {
+	Player,
 	Enemy
 }
-@export var type: Type = Type.Unit
-@export var unit_spawners: Array[Spawner] = []
-
+@export var type: UnitType = UnitType.Player
 var current_units: Array[Unit] = []
-var selected_unit: Unit = null
-var unit_scene: PackedScene = preload("res://scenes/unit.tscn")
-var enemy_scene: PackedScene = preload("res://scenes/enemy.tscn")
+var selected_unit: Unit = null:
+	set(unit):
+		unit_selected.emit(unit)
+		selected_unit = unit
+signal unit_selected(unit: Unit)
 
 func _ready() -> void:
-	var scene: PackedScene
-	if type == Type.Unit:
-		scene = unit_scene
-		EventBus.unit_selected.connect(func (unit: Unit) -> void: selected_unit = unit)
-	elif type == Type.Enemy:
-		scene = enemy_scene
-		EventBus.enemy_selected.connect(func (enemy: Unit) -> void: selected_unit = enemy)
-	else:
-		print("Unknown type: ", type)
+	initialize_units()
 
-	var children = get_children()
-	for child in children:
+func on_unit_selected(unit: Unit) -> void:
+	selected_unit = unit
+
+func on_unit_unselected(unit: Unit) -> void:
+	if selected_unit == unit:
+		selected_unit = null
+
+func initialize_units() -> void:
+	var spawners: Array[Spawner] = []
+	for child in get_children():
 		if child is Spawner:
-			unit_spawners.push_back(child)
-		else:
-			print("Child is not a Spawner: ", child.name)
-	
-	for i in range(unit_spawners.size()):
-		print("Spawning unit: ", unit_spawners[i].unit_resource.name)
-		var unit: Unit = scene.instantiate()
-		unit.unit_resource = unit_spawners[i].unit_resource
-		unit.global_position = unit_spawners[i].global_position
-		unit.name = unit.unit_resource.name + str(i)
-		current_units.push_back(unit)
-		add_child(unit)
-
-	if type == Type.Unit:
-		EventBus.update_player_units.emit(current_units)
-	elif type == Type.Enemy:
-		EventBus.update_enemy_units.emit(current_units)
+			spawners.push_back(child)
+	if spawners.size():
+		for i in range(spawners.size()):
+			print("Spawning unit: ", spawners[i].unit_resource.name)
+			add_unit(spawners[i].spawn_unit())
 	else:
-		print("Unknown type: ", type)
+		printerr("No unit spawners found in UnitGroup: " + name)
 
-func _unhandled_input(event: InputEvent) -> void:
-	if event is InputEventMouseButton and event.is_pressed() and event.button_index == MOUSE_BUTTON_LEFT and selected_unit and type == Type.Unit:
-		selected_unit.move_to(get_global_mouse_position())
+func add_unit(unit: Unit) -> void:
+	current_units.push_back(unit)
+	unit.selected.connect(on_unit_selected)
+	unit.unselected.connect(on_unit_unselected)
+	add_child(unit)
+
+func remove_unit(unit: Unit) -> void:
+	current_units.erase(unit)
+	unit.queue_free()

@@ -23,7 +23,7 @@ static func get_tile_position(global_coord: Vector2) -> Vector2:
 
 ## Takes a global coordinate and returns the center point of the tile that contains it as a global coordinate
 static func get_tile_center_position(global_coord: Vector2) -> Vector2:
-	return get_tile_coord(global_coord) + tile_size_half_vector2
+	return get_tile_position(global_coord) + tile_size_half_vector2
 
 ## Takes a tile coordinate and returns the global position as a Vector2
 static func get_global_position_from_tile(tile_coord: Vector2i) -> Vector2:

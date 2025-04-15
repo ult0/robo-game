@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=3 uid="uid://bpku2rpj1qmjo"]
+
+[ext_resource type="Script" uid="uid://evi6xn2qaj0" path="res://scripts/tile_selector.gd" id="1_dyagc"]
+[ext_resource type="Texture2D" uid="uid://be7fg32lfp6hq" path="res://assets/sprites/tile-select.png" id="1_lwx5o"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_lwx5o"]
+size = Vector2(12, 12)
+
+[node name="TileSelector" type="Node2D"]
+z_index = 1
+script = ExtResource("1_dyagc")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_lwx5o")
+
+[node name="Area2D" type="Area2D" parent="."]
+input_pickable = false
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("RectangleShape2D_lwx5o")

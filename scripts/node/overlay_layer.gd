@@ -1,20 +1,29 @@
 extends TileMapLayer
 
+var selected_player: Unit = null
 var selected_unit_walkable_tiles: Array[Vector2i] = []
 var move_tile_coord: Vector2i = Vector2i(21, 5)
 
 func _ready() -> void:
-	EventBus.unit_selected.connect(on_selected_unit)
+	EventBus.player_selected.connect(on_selected_player)
 
-func on_selected_unit(unit: Unit) -> void:
-	if unit:
-		for tile in selected_unit_walkable_tiles:
-			erase_cell(tile)
-		selected_unit_walkable_tiles = get_walkable_tiles(unit)
-		for tile in get_walkable_tiles(unit):
-			set_cell(tile, 0, move_tile_coord, 0)
+func _process(_delta: float) -> void:
+	if selected_player and !selected_player.moving:
+		erase_walkable_tiles()
+		selected_unit_walkable_tiles = get_walkable_tiles(selected_player)
+		draw_walkable_tiles()
 	else:
-		for tile in selected_unit_walkable_tiles:
+		erase_walkable_tiles()
+
+func on_selected_player(unit: Unit) -> void:
+	selected_player = unit
+
+func draw_walkable_tiles() -> void:
+	for tile in selected_unit_walkable_tiles:
+			set_cell(tile, 0, move_tile_coord, 0)
+
+func erase_walkable_tiles() -> void:
+	for tile in selected_unit_walkable_tiles:
 			erase_cell(tile)
 	
 func get_walkable_tiles(unit: Unit) -> Array[Vector2i]:
@@ -28,22 +37,24 @@ func get_walkable_tiles(unit: Unit) -> Array[Vector2i]:
 			if !checked_tiles.has(frontier[j]):
 				checked_tiles[frontier[j]] = true
 				frontier.append_array(get_neighbor_coords(frontier[j]))
-			
-	# while !frontier.is_empty() && move_range > 0:
-	# 	var current_tile: Vector2i = frontier.pop_front()
-	# 	move_range -= 1
-	# 	checked_tiles[current_tile] = true
-	# 	var neighbors = get_neighbor_coords(current_tile)
-	# 	for neighbor in neighbors:
-	# 		if !checked_tiles.has(neighbor):
-	# 			frontier.append(neighbor)
 
-	return checked_tiles.keys() as Array[Vector2i]
+	var walkable_tiles = checked_tiles.keys() as Array[Vector2i]
+	var walkable_tiles_without_players = walkable_tiles.filter(func(tile: Vector2i) -> bool: return !Navigation.tile_contains_player(TileMapUtils.get_global_position_from_tile(tile)))
+	return walkable_tiles_without_players
 
 func get_neighbor_coords(tile_coord: Vector2i) -> Array[Vector2i]:
 	var neighbors: Array[Vector2i] = []
 	for direction in TileMapUtils.movement_directions:
 		var neighbor := tile_coord + direction
-		if Navigation.is_walkable(neighbor, true):
+		# Can't move through obstacles or enemies
+		var containsObstacle := Navigation.tile_contains_obstacle(TileMapUtils.get_global_position_from_tile(neighbor))
+		var containsEnemy := Navigation.tile_contains_enemy(TileMapUtils.get_global_position_from_tile(neighbor))
+		if !containsObstacle and !containsEnemy:
 			neighbors.append(neighbor)
 	return neighbors
+
+func is_tile_walkable(coord: Vector2) -> bool:
+	for tile in selected_unit_walkable_tiles:
+		if tile == Vector2i(TileMapUtils.get_tile_coord(coord)):
+			return true
+	return false

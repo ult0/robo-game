@@ -1,4 +1,4 @@
-[gd_scene load_steps=38 format=4 uid="uid://8itfr0as6040"]
+[gd_scene load_steps=40 format=4 uid="uid://8itfr0as6040"]
 
 [ext_resource type="Script" uid="uid://b85gask7dco07" path="res://scripts/node/ui-layer.gd" id="1_62axn"]
 [ext_resource type="Script" uid="uid://d24v7ccnagesb" path="res://scripts/node/game_manager.gd" id="1_pdvre"]
@@ -13,6 +13,8 @@
 [ext_resource type="Script" uid="uid://csjyhe0gismrd" path="res://scripts/node/overlay_layer.gd" id="8_mi3k7"]
 [ext_resource type="Texture2D" uid="uid://be7fg32lfp6hq" path="res://assets/sprites/tile-select.png" id="8_t2oak"]
 [ext_resource type="PackedScene" uid="uid://d1ilia4pde6jk" path="res://scenes/unit_group.tscn" id="10_ab1w6"]
+[ext_resource type="PackedScene" uid="uid://bpku2rpj1qmjo" path="res://scenes/tile_selector.tscn" id="11_748t8"]
+[ext_resource type="Script" uid="uid://fs7xaii7frki" path="res://scripts/node/unit_manager.gd" id="11_e1rtc"]
 [ext_resource type="Resource" uid="uid://cl3duluh4v5rh" path="res://unique_resource/soldier_unit.tres" id="12_mi3k7"]
 [ext_resource type="Resource" uid="uid://b6jrdwe28px1p" path="res://unique_resource/archer_unit.tres" id="13_e1rtc"]
 [ext_resource type="Resource" uid="uid://c6ltt3mam5h78" path="res://unique_resource/mage_unit.tres" id="14_748t8"]
@@ -2102,50 +2104,53 @@ unique_name_in_owner = true
 tile_set = SubResource("TileSet_7udmc")
 script = ExtResource("1_62axn")
 
-[node name="Units" type="Node2D" parent="."]
+[node name="TileSelector" parent="Layers/UILayer" instance=ExtResource("11_748t8")]
 
-[node name="PlayerUnits" parent="Units" instance=ExtResource("10_ab1w6")]
+[node name="UnitManager" type="Node2D" parent="."]
+script = ExtResource("11_e1rtc")
 
-[node name="Spawner" parent="Units/PlayerUnits" instance=ExtResource("6_7udmc")]
+[node name="PlayerUnits" parent="UnitManager" instance=ExtResource("10_ab1w6")]
+
+[node name="Spawner" parent="UnitManager/PlayerUnits" instance=ExtResource("6_7udmc")]
 position = Vector2(-216, -8)
 unit_resource = ExtResource("12_mi3k7")
 
-[node name="Spawner2" parent="Units/PlayerUnits" instance=ExtResource("6_7udmc")]
+[node name="Spawner2" parent="UnitManager/PlayerUnits" instance=ExtResource("6_7udmc")]
 position = Vector2(-216, 8)
 unit_resource = ExtResource("13_e1rtc")
 
-[node name="Spawner3" parent="Units/PlayerUnits" instance=ExtResource("6_7udmc")]
+[node name="Spawner3" parent="UnitManager/PlayerUnits" instance=ExtResource("6_7udmc")]
 position = Vector2(-216, 24)
 unit_resource = ExtResource("14_748t8")
 
-[node name="Spawner4" parent="Units/PlayerUnits" instance=ExtResource("6_7udmc")]
+[node name="Spawner4" parent="UnitManager/PlayerUnits" instance=ExtResource("6_7udmc")]
 position = Vector2(-216, 40)
 unit_resource = ExtResource("15_t7mc4")
 
-[node name="EnemyUnits" parent="Units" instance=ExtResource("10_ab1w6")]
+[node name="EnemyUnits" parent="UnitManager" instance=ExtResource("10_ab1w6")]
 type = 1
 
-[node name="Spawner" parent="Units/EnemyUnits" instance=ExtResource("6_7udmc")]
+[node name="Spawner" parent="UnitManager/EnemyUnits" instance=ExtResource("6_7udmc")]
 position = Vector2(-56, -72)
 unit_resource = ExtResource("17_mi3k7")
 
-[node name="Spawner2" parent="Units/EnemyUnits" instance=ExtResource("6_7udmc")]
+[node name="Spawner2" parent="UnitManager/EnemyUnits" instance=ExtResource("6_7udmc")]
 position = Vector2(-50, 8)
 unit_resource = ExtResource("17_mi3k7")
 
-[node name="Spawner3" parent="Units/EnemyUnits" instance=ExtResource("6_7udmc")]
+[node name="Spawner3" parent="UnitManager/EnemyUnits" instance=ExtResource("6_7udmc")]
 position = Vector2(152, 58)
 unit_resource = ExtResource("17_mi3k7")
 
-[node name="Spawner4" parent="Units/EnemyUnits" instance=ExtResource("6_7udmc")]
+[node name="Spawner4" parent="UnitManager/EnemyUnits" instance=ExtResource("6_7udmc")]
 position = Vector2(39, -59)
 unit_resource = ExtResource("17_mi3k7")
 
-[node name="Spawner5" parent="Units/EnemyUnits" instance=ExtResource("6_7udmc")]
+[node name="Spawner5" parent="UnitManager/EnemyUnits" instance=ExtResource("6_7udmc")]
 position = Vector2(-8, 103)
 unit_resource = ExtResource("17_mi3k7")
 
-[node name="Spawner6" parent="Units/EnemyUnits" instance=ExtResource("6_7udmc")]
+[node name="Spawner6" parent="UnitManager/EnemyUnits" instance=ExtResource("6_7udmc")]
 position = Vector2(8, 103)
 unit_resource = ExtResource("17_mi3k7")
 

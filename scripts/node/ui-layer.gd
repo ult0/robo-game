@@ -1,31 +1,22 @@
 extends TileMapLayer
 
+@onready var tileSelector: TileSelector = $TileSelector
 var last_tile_position: Vector2i = Vector2i.MAX
-var selected_unit: Unit
+var selected_player: Unit
 
 func _ready() -> void:
-	EventBus.unit_selected.connect(func (unit: Unit) -> void: selected_unit = unit)
+	EventBus.player_selected.connect(func (unit: Unit) -> void: selected_player = unit)
 
 func _process(_delta: float) -> void:
-	var mouse_position = get_global_mouse_position()
-	var tile_position = self.local_to_map(mouse_position)
-	if last_tile_position != tile_position:
-		self.erase_cell(last_tile_position)
-		self.set_cell(tile_position, 0, Vector2i(0, 0))
-		last_tile_position = tile_position
-	
-	if selected_unit:
-			queue_redraw()
+	queue_redraw()
 
 func _draw() -> void:
-	if last_tile_position != Vector2i.MAX and selected_unit and !selected_unit.moving:
-		# Get player position somehow
-		var start := selected_unit.global_position
-		# Where mouse is
-		var end := Vector2(last_tile_position) * TileMapUtils.tile_size_vector2
-
+	if tileSelector.last_tile_entered != Vector2.INF and selected_player and !selected_player.moving:
+		var start := selected_player.global_position
+		var end := tileSelector.last_tile_entered
 		var path := Navigation.aStar.find_path(start, end)
-		if (path.size() == 0):
+		
+		if (path.size() == 0  or path.size() > selected_player.unit_resource.move_speed):
 			return
 
 		# Draw the path

@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://co0s4au8klchy"]
+[gd_scene load_steps=11 format=3 uid="uid://co0s4au8klchy"]
 
 [ext_resource type="Script" uid="uid://dkkjlpeqq2cww" path="res://scripts/node/unit.gd" id="1_k673f"]
 [ext_resource type="Texture2D" uid="uid://oxa1pfv4ndfw" path="res://assets/sprites/Puny-Characters/Soldier-Blue.png" id="1_o7ajc"]
@@ -58,6 +58,9 @@ animations = [{
 "speed": 3.0
 }]
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_k673f"]
+size = Vector2(16, 16)
+
 [node name="Unit" type="Node2D" groups=["unit"]]
 script = ExtResource("1_k673f")
 
@@ -65,3 +68,8 @@ script = ExtResource("1_k673f")
 sprite_frames = SubResource("SpriteFrames_lf63s")
 animation = &"idle"
 frame_progress = 0.244785
+
+[node name="ClickBox" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ClickBox"]
+shape = SubResource("RectangleShape2D_k673f")
