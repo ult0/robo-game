@@ -5,6 +5,10 @@ class_name Unit
 @onready var clickBox: Area2D = $ClickBox
 @export var unit_resource: UnitResource
 
+var tile_coord: Vector2i:
+	get:
+		return TileMapUtils.get_tile_coord(global_position)
+
 signal selected(unit: Unit)
 signal unselected(unit: Unit)
 signal entered_hover(unit: Unit)
@@ -13,7 +17,6 @@ signal exited_hover(unit: Unit)
 var tween: Tween
 
 @export var moves_per_second: float = 5.0
-var moves: Array[Vector2] = []
 var moving: bool = false
 
 func _ready() -> void:
@@ -61,25 +64,25 @@ func setup_animated_sprite() -> void:
 	animatedSprite.animation = animation_name
 	animatedSprite.play(animation_name)
 
-func move() -> void:
-	if moves.size() == 0:
+func move(coords) -> void:
+	if coords.size() == 0:
 		moving = false
-		unselect()
+		select()
 		return
 	moving = true
-	var m = moves.pop_back()
+	var coord = coords.pop_back()
 
 	if tween:
 		tween.kill()
 	tween = create_tween().set_process_mode(Tween.TWEEN_PROCESS_PHYSICS)
-	tween.tween_property(self, "global_position", m, 1.0 / moves_per_second).set_trans(Tween.TRANS_SINE)
-	tween.tween_callback(move)
+	tween.tween_property(self, "global_position", TileMapUtils.get_tile_center_position_from_coord(coord), 1.0 / moves_per_second).set_trans(Tween.TRANS_SINE)
+	tween.tween_callback(move.bind(coords))
 
-func move_to(coord: Vector2) -> void:
-	var path = Navigation.aStar.find_path(global_position, coord)
+func move_to(coord: Vector2i) -> void:
+	var path := Navigation.aStar.find_path(tile_coord, coord)
 	if path.size() <= unit_resource.move_speed:
-		moves = path
-		move()
+		unselect()
+		move(path)
 
 func select() -> void:
 	selected.emit(self)

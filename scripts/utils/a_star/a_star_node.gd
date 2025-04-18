@@ -1,7 +1,7 @@
 class_name AStarNode extends Resource
 
 var parent: AStarNode = null
-var position: Vector2 = Vector2()
+var coord: Vector2i = Vector2i()
 var g: float = 0
 var h: float = 0
 var f: float:
@@ -9,11 +9,11 @@ var f: float:
 		return g + h
 
 
-static func create(_position: Vector2, _parent: AStarNode = AStarNode.new()) -> AStarNode:
+static func create(_coord: Vector2, _parent: AStarNode = AStarNode.new()) -> AStarNode:
 	var node = AStarNode.new()
-	node.position = _position
+	node.coord = _coord
 	node.parent = _parent
 	return node
 
 func _to_string():
-	return "{Position: %s, ParentPosition: %s, G: %s, H: %s, F: %s}" % [position, parent.position, g, h, f]
+	return "{Position: %s, ParentPosition: %s, G: %s, H: %s, F: %s}" % [coord, parent.coord, g, h, f]

@@ -27,29 +27,35 @@ func _ready() -> void:
 	unitManager = currentScene.find_child("UnitManager")
 
 	aStar = AStar.create(
-		NavigationLayer, 
 		is_walkable,
 		DebugLayer
 	)
 
-func is_walkable(coord: Vector2) -> bool:
+func is_walkable(coord: Vector2i) -> bool:
 	var containsObstacle := tile_contains_obstacle(coord)
-	return !containsObstacle
+	var containsEnemy := tile_contains_enemy(coord)
+	var exists := tile_contains_navtile(coord)
+	return exists and !containsObstacle and !containsEnemy
 
-func tile_contains_player(coord: Vector2) -> bool:
-	for unit in unitManager.player_group.current_units:
-		if TileMapUtils.get_tile_coord(unit.global_position) == TileMapUtils.get_tile_coord(coord):
-			return true
-	return false
+func is_attackable(coord: Vector2i) -> bool:
+	var containsPlayer := tile_contains_player(coord)
+	var exists := tile_contains_navtile(coord)
+	return exists and !containsPlayer
 
-func tile_contains_enemy(coord: Vector2) -> bool:
-	for unit in unitManager.enemy_group.current_units:
-		if TileMapUtils.get_tile_coord(unit.global_position) == TileMapUtils.get_tile_coord(coord):
-			return true
-	return false
+func tile_contains_player(coord: Vector2i) -> bool:
+	return tile_contains_navtile(coord) \
+	and unitManager.player_group.current_units.any(func (unit: Unit) -> bool: return unit.tile_coord == coord)
 
-func tile_contains_unit(coord: Vector2) -> bool:
+func tile_contains_enemy(coord: Vector2i) -> bool:
+	return tile_contains_navtile(coord) \
+	and unitManager.enemy_group.current_units.any(func (unit: Unit) -> bool: return unit.tile_coord == coord)
+		
+
+func tile_contains_unit(coord: Vector2i) -> bool:
 	return tile_contains_player(coord) or tile_contains_enemy(coord)
 
-func tile_contains_obstacle(coord: Vector2) -> bool:
-	return ObstacleLayer.get_cell_tile_data(ObstacleLayer.local_to_map(coord)) != null
+func tile_contains_obstacle(coord: Vector2i) -> bool:
+	return ObstacleLayer.get_cell_tile_data(coord) != null
+
+func tile_contains_navtile(coord: Vector2i) -> bool:
+	return NavigationLayer.get_cell_tile_data(coord) != null

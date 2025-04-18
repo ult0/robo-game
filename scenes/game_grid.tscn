@@ -1,9 +1,10 @@
-[gd_scene load_steps=40 format=4 uid="uid://8itfr0as6040"]
+[gd_scene load_steps=41 format=4 uid="uid://8itfr0as6040"]
 
 [ext_resource type="Script" uid="uid://b85gask7dco07" path="res://scripts/node/ui-layer.gd" id="1_62axn"]
 [ext_resource type="Script" uid="uid://d24v7ccnagesb" path="res://scripts/node/game_manager.gd" id="1_pdvre"]
 [ext_resource type="Texture2D" uid="uid://c4w80mpwlmtm" path="res://assets/sprites/Puny-Characters/Environment/Grass1.png" id="2_ab1w6"]
 [ext_resource type="Texture2D" uid="uid://daykxk87vxst2" path="res://assets/sprites/Cute_Fantasy_Free/Tiles/Path_Middle.png" id="2_rirqy"]
+[ext_resource type="Script" uid="uid://cswa7sfylki12" path="res://scripts/node/camera.gd" id="2_t7mc4"]
 [ext_resource type="Texture2D" uid="uid://dvo8kerbl8c0v" path="res://assets/sprites/Puny-Characters/Environment/Grass2.png" id="3_pdvre"]
 [ext_resource type="Texture2D" uid="uid://b7ussm5xgn5r3" path="res://assets/sprites/Puny-Characters/Environment/Dirt.png" id="4_mcpko"]
 [ext_resource type="Texture2D" uid="uid://dyptcyxwkl304" path="res://assets/sprites/Puny-Characters/Environment/punyworld-dungeon-tileset.png" id="5_0c8dq"]
@@ -2078,6 +2079,12 @@ sources/0 = SubResource("TileSetAtlasSource_as1xg")
 [node name="Game_Grid" type="Node2D"]
 script = ExtResource("1_pdvre")
 
+[node name="Camera2D" type="Camera2D" parent="."]
+position_smoothing_enabled = true
+position_smoothing_speed = 10.0
+script = ExtResource("2_t7mc4")
+camera_speed = 250.0
+
 [node name="Layers" type="Node2D" parent="."]
 
 [node name="NavigationLayer" type="TileMapLayer" parent="Layers"]
@@ -2153,8 +2160,5 @@ unit_resource = ExtResource("17_mi3k7")
 [node name="Spawner6" parent="UnitManager/EnemyUnits" instance=ExtResource("6_7udmc")]
 position = Vector2(8, 103)
 unit_resource = ExtResource("17_mi3k7")
-
-[node name="Camera2D" type="Camera2D" parent="."]
-position_smoothing_enabled = true
 
 [node name="UI" parent="." instance=ExtResource("8_1hwd1")]

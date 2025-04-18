@@ -27,8 +27,8 @@ func on_enemy_selected(unit: Unit) -> void:
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("left-click"):
-		if player_group.selected_unit and Navigation.OverlayLayer.is_tile_walkable(Navigation.tileSelector.global_position):
-			player_group.selected_unit.move_to(Navigation.tileSelector.global_position)
+		if player_group.selected_unit and Navigation.OverlayLayer.is_tile_walkable(Navigation.tileSelector.tile_coord):
+			player_group.selected_unit.move_to(Navigation.tileSelector.tile_coord)
 	elif event.is_action_pressed("right-click"):
 		if player_group.selected_unit:
 			player_group.selected_unit.unselect()

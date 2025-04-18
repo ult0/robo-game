@@ -1,30 +1,35 @@
 extends TileMapLayer
 
 @onready var tileSelector: TileSelector = $TileSelector
-var last_tile_position: Vector2i = Vector2i.MAX
 var selected_player: Unit
+var selector_coord: Vector2i
 
 func _ready() -> void:
-	EventBus.player_selected.connect(func (unit: Unit) -> void: selected_player = unit)
+	tileSelector.tile_entered.connect(on_tile_selector_entered)
+	EventBus.player_selected.connect(on_unit_selected)
 
-func _process(_delta: float) -> void:
+func on_tile_selector_entered(coord: Vector2i) -> void:
+	selector_coord = coord
+	queue_redraw()
+
+func on_unit_selected(unit: Unit) -> void:
+	selected_player = unit
 	queue_redraw()
 
 func _draw() -> void:
-	if tileSelector.last_tile_entered != Vector2.INF and selected_player and !selected_player.moving:
-		var start := selected_player.global_position
-		var end := tileSelector.last_tile_entered
-		var path := Navigation.aStar.find_path(start, end)
+	if Navigation.OverlayLayer.is_tile_walkable(selector_coord) and selected_player and !selected_player.moving:
+		var start := selected_player.tile_coord
+		var end := selector_coord
+		var path := Navigation.aStar.find_path(start, end).map(func (coord: Vector2i) -> Vector2: return TileMapUtils.get_tile_center_position_from_coord(coord))
 		
-		if (path.size() == 0  or path.size() > selected_player.unit_resource.move_speed):
+		if (path.is_empty() or path.size() > selected_player.unit_resource.move_speed):
 			return
 
 		# Draw the path
 		var width = 4
 		var color = Color.CADET_BLUE
 		# Add the start points to the path to draw the first line
-		# path.push_front(Vector2(path[path.size() - 1]) + offset)
-		path.append(Vector2(start))
+		path.append(TileMapUtils.get_tile_center_position_from_coord(start))
 
 		var line_vectors: PackedVector2Array = []
 		for i in range(path.size() - 1):
