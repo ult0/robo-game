@@ -79,7 +79,7 @@ func move(coords) -> void:
 	tween.tween_callback(move.bind(coords))
 
 func move_to(coord: Vector2i) -> void:
-	var path := Navigation.aStar.find_path(tile_coord, coord)
+	var path := Level.instance.aStar.find_path(tile_coord, coord)
 	if path.size() <= unit_resource.move_speed:
 		unselect()
 		move(path)

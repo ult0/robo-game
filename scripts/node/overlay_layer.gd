@@ -24,7 +24,7 @@ func on_selected_player(unit: Unit) -> void:
 		var tiles_without_players: Array[Vector2i] = []
 		# This should put all walkable_tiles into 2 groups except the selected player tile will be ignored
 		for coord in walkable_tiles:
-			if Navigation.tile_contains_player(coord) and coord != selected_player.tile_coord:
+			if Level.instance.tile_contains_player(coord) and coord != selected_player.tile_coord:
 				tiles_with_players.append(coord)
 			else:
 				tiles_without_players.append(coord)
@@ -67,7 +67,7 @@ func get_walkable_tiles(unit: Unit) -> Array[Vector2i]:
 	return walkable_tiles.keys() as Array[Vector2i]
 
 func get_walkable_neighbor_coords(tile_coord: Vector2i) -> Array[Vector2i]:
-	return TileMapUtils.get_neighbor_coords(tile_coord, Navigation.is_walkable)
+	return TileMapUtils.get_neighbor_coords(tile_coord, Level.instance.is_walkable)
 
 func get_attack_range_tiles(unit: Unit, walkable_tiles: Array[Vector2i]) -> Array[Vector2i]:
 	var frontier: Array[Vector2i] = walkable_tiles.duplicate()
@@ -86,7 +86,7 @@ func get_attack_range_tiles(unit: Unit, walkable_tiles: Array[Vector2i]) -> Arra
 	return attackable_tiles.keys() as Array[Vector2i]
 
 func get_attackable_nieghbor_coords(tile_coord: Vector2i) -> Array[Vector2i]:
-	return TileMapUtils.get_neighbor_coords(tile_coord, Navigation.is_attackable)
+	return TileMapUtils.get_neighbor_coords(tile_coord, Level.instance.is_attackable)
 		
 # Used in UnitManager
 func is_tile_walkable(coord: Vector2i) -> bool:

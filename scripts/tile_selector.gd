@@ -21,11 +21,11 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
 	var mouse_coord := TileMapUtils.get_tile_coord(get_global_mouse_position())
 	
-	visible = Navigation.tile_contains_navtile(mouse_coord)
+	visible = Level.instance.tile_contains_navtile(mouse_coord)
 	if last_tile_entered != mouse_coord:
 		global_position = TileMapUtils.get_tile_center_position(get_global_mouse_position())
 		last_tile_entered = mouse_coord
-		visible = Navigation.tile_contains_navtile(mouse_coord)
+		visible = Level.instance.tile_contains_navtile(mouse_coord)
 		# if move_tween:
 		# 	move_tween.kill()
 		# move_tween = create_tween().set_process_mode(Tween.TWEEN_PROCESS_PHYSICS)

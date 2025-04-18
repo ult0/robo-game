@@ -17,10 +17,10 @@ func on_unit_selected(unit: Unit) -> void:
 	queue_redraw()
 
 func _draw() -> void:
-	if Navigation.OverlayLayer.is_tile_walkable(selector_coord) and selected_player and !selected_player.moving:
+	if Level.instance.OverlayLayer.is_tile_walkable(selector_coord) and selected_player and !selected_player.moving:
 		var start := selected_player.tile_coord
 		var end := selector_coord
-		var path := Navigation.aStar.find_path(start, end).map(func (coord: Vector2i) -> Vector2: return TileMapUtils.get_tile_center_position_from_coord(coord))
+		var path := Level.instance.aStar.find_path(start, end).map(func (coord: Vector2i) -> Vector2: return TileMapUtils.get_tile_center_position_from_coord(coord))
 		
 		if (path.is_empty() or path.size() > selected_player.unit_resource.move_speed):
 			return

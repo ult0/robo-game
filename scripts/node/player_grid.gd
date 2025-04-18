@@ -19,7 +19,8 @@ var tween: Tween
 var elapsed_time: float = 1.0
 
 func _ready() -> void:
-	a_star = AStar.create(nav_layer, is_walkable)
+	pass
+	# a_star = AStar.create(nav_layer, is_walkable)
 
 func is_walkable(coord: Vector2) -> bool:
 	return obstacle_layer.get_cell_tile_data(obstacle_layer.local_to_map(coord)) == null
