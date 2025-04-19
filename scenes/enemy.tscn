@@ -1,13 +1,12 @@
 [gd_scene load_steps=8 format=3 uid="uid://caqoipcbr7kuj"]
 
 [ext_resource type="Texture2D" uid="uid://cy7jkxnay3qsp" path="res://assets/sprites/Puny-Characters/Orc-Grunt.png" id="1_7p1mj"]
-[ext_resource type="Script" uid="uid://ctyjs1uqmueke" path="res://scripts/enemy.gd" id="1_md0e3"]
+[ext_resource type="Script" uid="uid://ctyjs1uqmueke" path="res://scripts/node/enemy.gd" id="1_md0e3"]
 [ext_resource type="Script" uid="uid://phs2bfwqjgda" path="res://scripts/resources/unit.res.gd" id="2_4ra3w"]
 
 [sub_resource type="Resource" id="Resource_5uy6h"]
 script = ExtResource("2_4ra3w")
 name = "Unit"
-sprite_path = "res://assets/sprites/Puny-Characters/Orc-Grunt.png"
 max_health = 50
 health = 50
 move_speed = 3

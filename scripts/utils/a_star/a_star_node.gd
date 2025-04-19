@@ -1,4 +1,4 @@
-class_name AStarNode extends Resource
+class_name AStarNode extends Object
 
 var parent: AStarNode = null
 var coord: Vector2i = Vector2i()

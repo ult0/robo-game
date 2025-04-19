@@ -1,9 +1,9 @@
-class_name AStar extends Resource
+class_name AStar extends Object
 
 var debug_layer: TileMapLayer
 var is_walkable: Callable
 
-var _frontier: PriorityQueue = PriorityQueue.create()
+var _frontier: PriorityQueue = PriorityQueue.new()
 var _closed_list: Array[Vector2i] = []
 var _current: AStarNode = null
 

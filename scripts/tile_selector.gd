@@ -4,8 +4,8 @@ class_name TileSelector
 var last_tile_entered: Vector2i:
 	set(coord):
 		last_tile_entered = coord
-		tile_entered.emit(coord)
-signal tile_entered(coord: Vector2i)
+		EventBus.tile_selector_coord_changed.emit(coord)
+
 var current_node: Node = null
 var move_tween: Tween = null
 var tile_coord: Vector2i:
@@ -40,10 +40,10 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func on_area_entered(area: Area2D) -> void:
 	current_node = area.owner
-	if area.owner.has_method("on_enter_hover"):
-		area.owner.on_enter_hover()
+	if area.owner.has_method("enter_hover"):
+		area.owner.enter_hover()
 
 func on_area_exited(area: Area2D) -> void:
 	current_node = null
-	if area.owner.has_method("on_exit_hover"):
-		area.owner.on_exit_hover()
+	if area.owner.has_method("exit_hover"):
+		area.owner.exit_hover()

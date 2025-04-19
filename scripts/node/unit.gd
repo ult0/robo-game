@@ -16,11 +16,23 @@ signal exited_hover(unit: Unit)
 
 var tween: Tween
 
+var walkable_tiles: Array[Vector2i] = []
+var attackable_tiles: Array[Vector2i] = []
+var tiles_with_players: Array[Vector2i] = []
+
 @export var moves_per_second: float = 5.0
-var moving: bool = false
+var moving: bool = false:
+	set(value):
+		moving = value
+		if moving: animatedSprite.play("walk") 
+		else: animatedSprite.play("idle")
 
 func _ready() -> void:
-	setup_animated_sprite()
+	set_animation()
+	animatedSprite.play("idle")
+
+func set_animation() -> void:
+	animatedSprite.sprite_frames = unit_resource.animation_resource
 
 func setup_animated_sprite() -> void:
 	var animation_name = "idle"
@@ -46,10 +58,10 @@ func setup_animated_sprite() -> void:
 	# TODO: Fix this to use all frames
 	for x in range(2):
 		# Define the region in the texture for the current frame
-		var frame_region = Rect2(x * frame_width, 0 * frame_height, frame_width, frame_height)
+		var frame_region := Rect2(x * frame_width, 0 * frame_height, frame_width, frame_height)
 		
 		# Create a new image for the frame
-		var frame_image = Image.create(frame_width, frame_height, false, full_image.get_format())
+		var frame_image := Image.create(frame_width, frame_height, false, full_image.get_format())
 		
 		# Copy the region from the full image to the frame image
 		frame_image.blit_rect(full_image, frame_region, Vector2(0, 0))
@@ -90,8 +102,63 @@ func select() -> void:
 func unselect() -> void:
 	unselected.emit(self)
 
-func on_enter_hover() -> void:
+func enter_hover() -> void:
 	entered_hover.emit(self)
 
-func on_exit_hover() -> void:
+func exit_hover() -> void:
 	exited_hover.emit(self)
+
+func take_damage(amount: int) -> void:
+	unit_resource.health -= amount
+	animatedSprite.play("take_damage")
+	if unit_resource.health <= 0:
+		unit_resource.health = 0
+		animatedSprite.play("die")
+
+func heal(amount: int) -> void:
+	unit_resource.health += amount
+	if unit_resource.health > unit_resource.max_health:
+		unit_resource.health = unit_resource.max_health
+
+func is_alive() -> bool:
+	return unit_resource.health > 0
+
+func is_dead() -> bool:
+	return unit_resource.health <= 0
+
+func is_selected() -> bool:
+	return true
+
+func is_moving() -> bool:
+	return moving
+
+func is_attacking() -> bool:
+	return false
+
+func get_walkable_tiles(coord: Vector2i) -> Array[Vector2i]:
+	return TileMapUtils.get_tiles_in_range(
+		[coord],
+		unit_resource.move_speed,
+		Level.instance.is_walkable
+	)
+
+func get_attackable_tiles(starting_tiles: Array[Vector2i]) -> Array[Vector2i]:
+	return TileMapUtils.get_tiles_in_range(
+		starting_tiles,
+		unit_resource.attack_range,
+		Level.instance.is_attackable,
+		func (coord) -> bool: return Level.instance.tile_contains_player(coord)
+	)
+
+func set_tile_options() -> void:
+	for tile in get_walkable_tiles(tile_coord):
+		if Level.instance.tile_contains_player(tile) and tile != tile_coord:
+			tiles_with_players.append(tile)
+		else:
+			walkable_tiles.append(tile)
+	attackable_tiles = get_attackable_tiles(walkable_tiles)
+
+func clear_tile_options() -> void:
+	walkable_tiles.clear()
+	attackable_tiles.clear()
+	tiles_with_players.clear()

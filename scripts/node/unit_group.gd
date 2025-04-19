@@ -17,9 +17,11 @@ func _ready() -> void:
 	initialize_units()
 
 func on_unit_selected(unit: Unit) -> void:
+	unit.set_tile_options()
 	selected_unit = unit
 
 func on_unit_unselected(unit: Unit) -> void:
+	unit.clear_tile_options()
 	if selected_unit == unit:
 		selected_unit = null
 

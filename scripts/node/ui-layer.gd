@@ -5,7 +5,7 @@ var selected_player: Unit
 var selector_coord: Vector2i
 
 func _ready() -> void:
-	tileSelector.tile_entered.connect(on_tile_selector_entered)
+	EventBus.tile_selector_coord_changed.connect(on_tile_selector_entered)
 	EventBus.player_selected.connect(on_unit_selected)
 
 func on_tile_selector_entered(coord: Vector2i) -> void:
@@ -17,7 +17,7 @@ func on_unit_selected(unit: Unit) -> void:
 	queue_redraw()
 
 func _draw() -> void:
-	if Level.instance.OverlayLayer.is_tile_walkable(selector_coord) and selected_player and !selected_player.moving:
+	if selected_player and !selected_player.moving and selected_player.walkable_tiles.has(selector_coord):
 		var start := selected_player.tile_coord
 		var end := selector_coord
 		var path := Level.instance.aStar.find_path(start, end).map(func (coord: Vector2i) -> Vector2: return TileMapUtils.get_tile_center_position_from_coord(coord))

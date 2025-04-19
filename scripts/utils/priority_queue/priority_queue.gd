@@ -1,4 +1,4 @@
-extends RefCounted
+extends Object
 class_name PriorityQueue
 """
 Priority Queue. Min heap priority queue that can take a Vector2 and its
@@ -6,12 +6,12 @@ corresponding cost and then always return the Vector2 in it with
 the lowest cost value.
 Based on: https://en.wikipedia.org/wiki/Binary_heap
 """
-var dict: Dictionary[Variant, float] = {}
-var data: Array[Variant] = []
+var dict: Dictionary[Variant, float]
+var data: Array[Variant]
 
-static func create() -> PriorityQueue:
-	var queue = PriorityQueue.new()
-	return queue
+func _init() -> void:
+	dict = {}
+	data = []
 
 func insert(element: Variant, cost: float) -> void:
 	# Add the element to the bottom level of the heap at the leftmost open space
