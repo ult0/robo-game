@@ -16,15 +16,11 @@ signal exited_hover(unit: Unit)
 
 var tween: Tween
 
-var walkable_tiles: Array[Vector2i] = []
-var attackable_tiles: Array[Vector2i] = []
-var tiles_with_players: Array[Vector2i] = []
-
 @export var moves_per_second: float = 5.0
 var moving: bool = false:
 	set(value):
 		moving = value
-		if moving: animatedSprite.play("walk") 
+		if moving: animatedSprite.play("walk")
 		else: animatedSprite.play("idle")
 
 func _ready() -> void:
@@ -90,12 +86,6 @@ func move(coords) -> void:
 	tween.tween_property(self, "global_position", TileMapUtils.get_tile_center_position_from_coord(coord), 1.0 / moves_per_second).set_trans(Tween.TRANS_SINE)
 	tween.tween_callback(move.bind(coords))
 
-func move_to(coord: Vector2i) -> void:
-	var path := Level.instance.aStar.find_path(tile_coord, coord)
-	if path.size() <= unit_resource.move_speed:
-		unselect()
-		move(path)
-
 func select() -> void:
 	selected.emit(self)
 
@@ -134,31 +124,3 @@ func is_moving() -> bool:
 
 func is_attacking() -> bool:
 	return false
-
-func get_walkable_tiles(coord: Vector2i) -> Array[Vector2i]:
-	return TileMapUtils.get_tiles_in_range(
-		[coord],
-		unit_resource.move_speed,
-		Level.instance.is_walkable
-	)
-
-func get_attackable_tiles(starting_tiles: Array[Vector2i]) -> Array[Vector2i]:
-	return TileMapUtils.get_tiles_in_range(
-		starting_tiles,
-		unit_resource.attack_range,
-		Level.instance.is_attackable,
-		func (coord) -> bool: return Level.instance.tile_contains_player(coord)
-	)
-
-func set_tile_options() -> void:
-	for tile in get_walkable_tiles(tile_coord):
-		if Level.instance.tile_contains_player(tile) and tile != tile_coord:
-			tiles_with_players.append(tile)
-		else:
-			walkable_tiles.append(tile)
-	attackable_tiles = get_attackable_tiles(walkable_tiles)
-
-func clear_tile_options() -> void:
-	walkable_tiles.clear()
-	attackable_tiles.clear()
-	tiles_with_players.clear()

@@ -2111,7 +2111,7 @@ unique_name_in_owner = true
 tile_set = SubResource("TileSet_7udmc")
 script = ExtResource("11_w3o6u")
 
-[node name="TileSelector" parent="Layers/UILayer" instance=ExtResource("12_2e2fo")]
+[node name="TileSelector" parent="." instance=ExtResource("12_2e2fo")]
 
 [node name="UnitManager" type="Node2D" parent="."]
 script = ExtResource("13_gur6y")

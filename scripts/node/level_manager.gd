@@ -43,9 +43,9 @@ func is_walkable(coord: Vector2i) -> bool:
 	var exists := tile_contains_navtile(coord)
 	return exists and !containsObstacle and !containsEnemy
 
-func is_attackable(coord: Vector2i) -> bool:
-	var exists := tile_contains_navtile(coord)
-	return exists
+# func is_attackable(coord: Vector2i) -> bool:
+# 	var exists := tile_contains_navtile(coord)
+# 	return exists
 
 func tile_contains_player(coord: Vector2i) -> bool:
 	return tile_contains_navtile(coord) \

@@ -29,7 +29,7 @@ func on_enemy_selected(unit: Unit) -> void:
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("left-click"):
-		if player_group.selected_unit and player_group.selected_unit.walkable_tiles.has(tile_selector_coord):
+		if player_group.selected_unit and not player_group.selected_unit.moving and player_group.selected_unit.walkable_tiles.has(tile_selector_coord):
 			player_group.selected_unit.move_to(tile_selector_coord)
 	elif event.is_action_pressed("right-click"):
 		if player_group.selected_unit:

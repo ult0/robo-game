@@ -1,6 +1,5 @@
-[gd_scene load_steps=5 format=3 uid="uid://co0s4au8klchy"]
+[gd_scene load_steps=4 format=3 uid="uid://co0s4au8klchy"]
 
-[ext_resource type="Script" uid="uid://dkkjlpeqq2cww" path="res://scripts/node/unit.gd" id="1_k673f"]
 [ext_resource type="SpriteFrames" uid="uid://dh53tpmgec2u1" path="res://unique_resource/archer_animations.tres" id="2_1jvru"]
 [ext_resource type="Script" uid="uid://otw5sqad2xuc" path="res://scripts/node/unit_animated_sprite.gd" id="3_1jvru"]
 
@@ -8,7 +7,6 @@
 size = Vector2(16, 16)
 
 [node name="Unit" type="Node2D" groups=["unit"]]
-script = ExtResource("1_k673f")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = ExtResource("2_1jvru")

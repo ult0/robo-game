@@ -1,6 +1,5 @@
 extends TileMapLayer
 
-@onready var tileSelector: TileSelector = $TileSelector
 var selected_player: Unit
 var selector_coord: Vector2i
 

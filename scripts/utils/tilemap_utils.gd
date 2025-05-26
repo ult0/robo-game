@@ -67,14 +67,12 @@ static func get_tiles_in_range_with_distances(
 		for coord in frontier:
 			if !tiles_in_range.has(coord):
 				tiles_in_range[coord] = i
-				# print("Adding tile to range: ", coord, " at distance: ", i)
 				next_frontier.append_array(get_neighbor_coords(coord, include_filter))
 		frontier = next_frontier
 		next_frontier = []
 	# Apply the post-filter
 	for coord in tiles_in_range.keys():
 		if post_exclude_filter.call(coord):
-			print("Excluding tile from range: ", coord)
 			tiles_in_range.erase(coord)
 	
 	return tiles_in_range
