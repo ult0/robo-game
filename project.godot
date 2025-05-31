@@ -37,6 +37,14 @@ window/stretch/mode="canvas_items"
 
 enabled=PackedStringArray("res://addons/layerNames/plugin.cfg")
 
+[file_customization]
+
+folder_colors={
+"res://assets/": "red",
+"res://scenes/": "teal",
+"res://scripts/": "purple"
+}
+
 [global_group]
 
 unit=""

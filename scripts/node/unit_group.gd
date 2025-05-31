@@ -7,11 +7,7 @@ enum UnitType {
 }
 @export var type: UnitType = UnitType.Player
 var current_units: Array[Unit] = []
-var selected_unit: Unit = null:
-	set(unit):
-		unit_selected.emit(unit)
-		selected_unit = unit
-signal unit_selected(unit: Unit)
+var selected_unit: Unit = null
 var player_script: Script = preload("res://scripts/node/player.gd")
 var enemy_script: Script = preload("res://scripts/node/enemy.gd")
 
@@ -55,10 +51,44 @@ func get_unit_script() -> Script:
 
 func add_unit(unit: Unit) -> void:
 	current_units.push_back(unit)
-	unit.selected.connect(on_unit_selected)
-	unit.unselected.connect(on_unit_unselected)
 	add_child(unit)
 
 func remove_unit(unit: Unit) -> void:
 	current_units.erase(unit)
 	unit.queue_free()
+
+func move_unit_to_coord(coord: Vector2i) -> void:
+	if selected_unit and !selected_unit.moving:
+		selected_unit.move_to(coord)
+
+func select_unit_at_coord(coord: Vector2i) -> Unit:
+	var unit = get_unit_at_coord(coord)
+	if unit and unit != selected_unit and !unit.moving:
+		unit.select()
+		if selected_unit:
+			selected_unit.unselect()
+		selected_unit = unit
+	return unit
+
+func unselect_unit_at_coord(coord: Vector2i) -> Unit:
+	var unit = get_unit_at_coord(coord)
+	if unit and unit == selected_unit:
+		unit.unselect()
+		selected_unit = null
+	return unit
+
+func is_unit_selected() -> bool:
+	return !!selected_unit
+
+func get_unit_at_coord(coord: Vector2i) -> Unit:
+	var unit_index = find_unit_index(coord)
+	if unit_index != -1:
+		return current_units[unit_index]
+	else:
+		return null
+
+func is_unit_at_coord(coord: Vector2i) -> bool:
+	return find_unit_index(coord) != -1
+
+func find_unit_index(coord: Vector2i) -> int:
+	return current_units.find_custom(func (unit: Unit) -> bool: return unit.tile_coord == coord)

@@ -31,13 +31,6 @@ func _process(_delta: float) -> void:
 		# move_tween = create_tween().set_process_mode(Tween.TWEEN_PROCESS_PHYSICS)
 		# move_tween.tween_property(self, "global_position", tile_center_position, 0.05).set_trans(Tween.TRANS_SINE)
 
-func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_pressed("left-click"):
-		if current_node and current_node.has_method("select"):
-			current_node.select()
-	elif event.is_action_pressed("right-click") and current_node and current_node.has_method("unselect"):
-		current_node.unselect()
-
 func on_area_entered(area: Area2D) -> void:
 	current_node = area.owner
 	if area.owner.has_method("enter_hover"):

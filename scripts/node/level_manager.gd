@@ -11,8 +11,8 @@ var tileSelector: TileSelector
 
 var unitManager: UnitManager
 
-var player_units: Array[Unit] = []
-var enemy_units: Array[Unit] = []
+var player_units: Array[Player] = []
+var enemy_units: Array[Enemy] = []
 
 var aStar: AStar
 
@@ -43,24 +43,17 @@ func is_walkable(coord: Vector2i) -> bool:
 	var exists := tile_contains_navtile(coord)
 	return exists and !containsObstacle and !containsEnemy
 
-# func is_attackable(coord: Vector2i) -> bool:
-# 	var exists := tile_contains_navtile(coord)
-# 	return exists
-
 func tile_contains_player(coord: Vector2i) -> bool:
-	return tile_contains_navtile(coord) \
-	and unitManager.player_group.current_units.any(func (unit: Unit) -> bool: return unit.tile_coord == coord)
+	return !!unitManager.get_player_at_coord(coord)
 
 func tile_contains_enemy(coord: Vector2i) -> bool:
-	return tile_contains_navtile(coord) \
-	and unitManager.enemy_group.current_units.any(func (unit: Unit) -> bool: return unit.tile_coord == coord)
+	return !!unitManager.get_enemy_at_coord(coord)
 		
 func tile_contains_unit(coord: Vector2i) -> bool:
-	return tile_contains_player(coord) or tile_contains_enemy(coord)
+	return !!unitManager.get_unit_at_coord(coord)
 
 func tile_contains_obstacle(coord: Vector2i) -> bool:
 	return ObstacleLayer.get_cell_tile_data(coord) != null
 
 func tile_contains_navtile(coord: Vector2i) -> bool:
 	return NavigationLayer.get_cell_tile_data(coord) != null
-

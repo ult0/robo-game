@@ -1,18 +1,18 @@
 extends TileMapLayer
 
-var selected_player: Unit
+var selected_player: Player
 var selector_coord: Vector2i
 
 func _ready() -> void:
 	EventBus.tile_selector_coord_changed.connect(on_tile_selector_entered)
-	EventBus.player_selected.connect(on_unit_selected)
+	EventBus.player_selected.connect(on_player_selected)
 
 func on_tile_selector_entered(coord: Vector2i) -> void:
 	selector_coord = coord
 	queue_redraw()
 
-func on_unit_selected(unit: Unit) -> void:
-	selected_player = unit
+func on_player_selected(player: Player) -> void:
+	selected_player = player
 	queue_redraw()
 
 func _draw() -> void:

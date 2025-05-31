@@ -6,6 +6,14 @@ var attackable_tiles: Array[Vector2i] = []
 var tiles_with_players: Array[Vector2i] = []
 @onready var aStar: AStar = AStar.create(is_walkable)
 
+func select() -> void:
+	set_tile_options()
+	EventBus.player_selected.emit(self)
+
+func unselect() -> void:
+	# clear_tile_options()
+	EventBus.player_unselected.emit(self)
+
 func is_walkable(coord: Vector2i) -> bool:
 	var containsObstacle := Level.instance.tile_contains_obstacle(coord)
 	var containsEnemy := Level.instance.tile_contains_enemy(coord)

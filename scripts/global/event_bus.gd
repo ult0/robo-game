@@ -1,9 +1,8 @@
 extends Node
 
-@warning_ignore_start("unused_signal")
-
 signal tile_selector_coord_changed(coord: Vector2i)
 
-signal player_selected(unit: Unit)
-signal enemy_selected(enemy: Unit)
-
+signal player_selected(player: Player)
+signal player_unselected(player: Player)
+signal enemy_selected(enemy: Enemy)
+signal enemy_unselected(enemy: Enemy)

@@ -9,8 +9,6 @@ var tile_coord: Vector2i:
 	get:
 		return TileMapUtils.get_tile_coord(global_position)
 
-signal selected(unit: Unit)
-signal unselected(unit: Unit)
 signal entered_hover(unit: Unit)
 signal exited_hover(unit: Unit)
 
@@ -86,11 +84,14 @@ func move(coords) -> void:
 	tween.tween_property(self, "global_position", TileMapUtils.get_tile_center_position_from_coord(coord), 1.0 / moves_per_second).set_trans(Tween.TRANS_SINE)
 	tween.tween_callback(move.bind(coords))
 
+func move_to(coord: Vector2i) -> void:
+	pass
+
 func select() -> void:
-	selected.emit(self)
+	pass
 
 func unselect() -> void:
-	unselected.emit(self)
+	pass
 
 func enter_hover() -> void:
 	entered_hover.emit(self)
@@ -115,9 +116,6 @@ func is_alive() -> bool:
 
 func is_dead() -> bool:
 	return unit_resource.health <= 0
-
-func is_selected() -> bool:
-	return true
 
 func is_moving() -> bool:
 	return moving

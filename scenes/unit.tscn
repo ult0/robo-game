@@ -10,7 +10,7 @@ size = Vector2(16, 16)
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = ExtResource("2_1jvru")
-animation = &"die"
+animation = &"grab"
 autoplay = "idle"
 script = ExtResource("3_1jvru")
 
