@@ -10,7 +10,7 @@ metadata={
 
 [deps]
 
-source_file="res://assets/sprites/Cute_Fantasy_Free/Tiles/Water_Tile.png"
+source_file="res://Assets/Art/sprites/Cute_Fantasy_Free/Tiles/Water_Tile.png"
 dest_files=["res://.godot/imported/Water_Tile.png-f6480d73ff547ccbc9c281e320dfacf0.ctex"]
 
 [params]

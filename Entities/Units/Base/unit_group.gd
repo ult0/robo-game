@@ -4,8 +4,8 @@ class_name UnitGroup
 @export var unit_type: Constants.UnitType = Constants.UnitType.PLAYER
 var current_units: Array[Unit] = []
 var selected_unit: Unit = null
-var player_script: Script = preload("res://scripts/node/player.gd")
-var enemy_script: Script = preload("res://scripts/node/enemy.gd")
+var player_script: Script = preload("res://Entities/Units/Player/player.gd")
+var enemy_script: Script = preload("res://Entities/Units/Enemy/enemy.gd")
 
 func _ready() -> void:
 	initialize_units()

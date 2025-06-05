@@ -10,7 +10,7 @@ metadata={
 
 [deps]
 
-source_file="res://assets/sprites/Puny-Characters/Environment/punyworld-dungeon-tileset.png"
+source_file="res://Assets/Art/sprites/Puny-Characters/Environment/punyworld-dungeon-tileset.png"
 dest_files=["res://.godot/imported/punyworld-dungeon-tileset.png-5b4a7bc9b96953df92212d96fdeb858e.ctex"]
 
 [params]

@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="UnitResource" load_steps=3 format=3 uid="uid://cl3duluh4v5rh"]
 
-[ext_resource type="Script" uid="uid://phs2bfwqjgda" path="res://scripts/resources/unit.res.gd" id="1_4m7i4"]
-[ext_resource type="SpriteFrames" uid="uid://bx10cdxnkvwb1" path="res://unique_resource/warrior_animations.tres" id="1_y3lix"]
+[ext_resource type="Script" uid="uid://phs2bfwqjgda" path="res://Data/Resources/unit.res.gd" id="1_4m7i4"]
+[ext_resource type="SpriteFrames" uid="uid://bx10cdxnkvwb1" path="res://Data/Resources/unique_resource/warrior_animations.tres" id="1_y3lix"]
 
 [resource]
 script = ExtResource("1_4m7i4")

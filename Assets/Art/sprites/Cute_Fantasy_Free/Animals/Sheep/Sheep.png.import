@@ -10,7 +10,7 @@ metadata={
 
 [deps]
 
-source_file="res://assets/sprites/Cute_Fantasy_Free/Animals/Sheep/Sheep.png"
+source_file="res://Assets/Art/sprites/Cute_Fantasy_Free/Animals/Sheep/Sheep.png"
 dest_files=["res://.godot/imported/Sheep.png-a5df026b9e247fc549fbbf65bb045566.ctex"]
 
 [params]

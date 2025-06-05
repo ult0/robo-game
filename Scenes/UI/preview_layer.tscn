@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://c1eau4n213e4c"]
 
-[ext_resource type="Texture2D" uid="uid://delhvqyqv0252" path="res://assets/sprites/Puny-Characters/Environment/punyworld-overworld-tileset.png" id="1_0bogj"]
-[ext_resource type="Script" uid="uid://csjyhe0gismrd" path="res://scripts/node/preview_layer.gd" id="2_6a7fa"]
+[ext_resource type="Texture2D" uid="uid://delhvqyqv0252" path="res://Assets/Art/sprites/Puny-Characters/Environment/punyworld-overworld-tileset.png" id="1_0bogj"]
+[ext_resource type="Script" uid="uid://csjyhe0gismrd" path="res://Core/Managers/preview_layer.gd" id="2_6a7fa"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_t2oak"]
 texture = ExtResource("1_0bogj")

@@ -10,7 +10,7 @@ metadata={
 
 [deps]
 
-source_file="res://assets/sprites/Puny-Characters/Warrior-Blue.png"
+source_file="res://Assets/Art/sprites/Puny-Characters/Warrior-Blue.png"
 dest_files=["res://.godot/imported/Warrior-Blue.png-d303a32d6a5e1ad5dcf1c21f4b890a5a.ctex"]
 
 [params]

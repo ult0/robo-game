@@ -10,7 +10,7 @@ metadata={
 
 [deps]
 
-source_file="res://assets/sprites/Puny-Characters/Environment/Dirt.png"
+source_file="res://Assets/Art/sprites/Puny-Characters/Environment/Dirt.png"
 dest_files=["res://.godot/imported/Dirt.png-14d7c0f190b4e99b99e89e39658bc8d1.ctex"]
 
 [params]

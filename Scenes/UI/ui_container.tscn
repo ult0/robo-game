@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://dfsn3pjfakbh1"]
 
-[ext_resource type="Texture2D" uid="uid://k5q8hwnbnveo" path="res://assets/sprites/container.png" id="1_beckw"]
+[ext_resource type="Texture2D" uid="uid://k5q8hwnbnveo" path="res://Assets/Art/sprites/container.png" id="1_beckw"]
 
 [node name="UIContainer" type="NinePatchRect"]
 offset_right = 76.0

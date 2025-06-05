@@ -10,7 +10,7 @@ metadata={
 
 [deps]
 
-source_file="res://assets/sprites/Puny-Characters/Mage-Cyan.png"
+source_file="res://Assets/Art/sprites/Puny-Characters/Mage-Cyan.png"
 dest_files=["res://.godot/imported/Mage-Cyan.png-7adf5abbfd004267a595781f72409eb5.ctex"]
 
 [params]

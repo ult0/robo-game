@@ -10,7 +10,7 @@ metadata={
 
 [deps]
 
-source_file="res://assets/sprites/Cute_Fantasy_Free/Tiles/Cliff_Tile.png"
+source_file="res://Assets/Art/sprites/Cute_Fantasy_Free/Tiles/Cliff_Tile.png"
 dest_files=["res://.godot/imported/Cliff_Tile.png-1bb171f5f06dc8c8230fb5f5ad6687f2.ctex"]
 
 [params]

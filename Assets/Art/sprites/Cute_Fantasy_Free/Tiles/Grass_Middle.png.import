@@ -10,7 +10,7 @@ metadata={
 
 [deps]
 
-source_file="res://assets/sprites/Cute_Fantasy_Free/Tiles/Grass_Middle.png"
+source_file="res://Assets/Art/sprites/Cute_Fantasy_Free/Tiles/Grass_Middle.png"
 dest_files=["res://.godot/imported/Grass_Middle.png-fa3227afae85e8d74cca4b957500e6f6.ctex"]
 
 [params]
