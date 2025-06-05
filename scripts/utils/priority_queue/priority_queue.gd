@@ -47,9 +47,11 @@ func extract() -> Variant:
 	return result
 
 func modify(index: int, new_element: Variant, new_cost: float) -> void:
+	var old_element = self.data[index]
 	var old_cost = self.dict[self.data[index]]
 	self.data[index] = new_element
 	self.dict[self.data[index]] = new_cost
+	self.dict.erase(old_element)
 	# If the new cost is less than the old cost, we need to up-heap
 	if new_cost < old_cost:
 		self._up_heap(index)
