@@ -1,0 +1,88 @@
+[gd_scene load_steps=4 format=3 uid="uid://cjlhn8p51wqt0"]
+
+[ext_resource type="Theme" uid="uid://dghlke16ruujw" path="res://assets/themes/base_theme.tres" id="1_8suvh"]
+[ext_resource type="Texture2D" uid="uid://oxa1pfv4ndfw" path="res://assets/sprites/Puny-Characters/Soldier-Blue.png" id="3_b5n3s"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_x4jx1"]
+atlas = ExtResource("3_b5n3s")
+region = Rect2(0, 0, 32, 32)
+
+[node name="SelectedUnitDisplay" type="MarginContainer"]
+custom_minimum_size = Vector2(32, 32)
+offset_right = 136.0
+offset_bottom = 40.0
+theme = ExtResource("1_8suvh")
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
+
+[node name="UIContainer#HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="UIContainer_HBoxContainer#SelectedPlayerIcon" type="TextureRect" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+texture = SubResource("AtlasTexture_x4jx1")
+stretch_mode = 2
+
+[node name="UIContainer_HBoxContainer#MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
+
+[node name="UIContainer_HBoxContainer_MarginContainer#VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_constants/separation = 2
+
+[node name="UIContainer_HBoxContainer_MarginContainer_VBoxContainer#HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_constants/separation = 0
+
+[node name="UIContainer_HBoxContainer_MarginContainer_VBoxContainer_HBoxContainer#HealthTitle" type="Label" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "HP :"
+
+[node name="UIContainer_HBoxContainer_MarginContainer_VBoxContainer_HBoxContainer#HealthLabel" type="Label" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 8
+text = "100"
+
+[node name="UIContainer_HBoxContainer_MarginContainer_VBoxContainer_HBoxContainer#Slash" type="Label" parent="."]
+layout_mode = 2
+size_flags_horizontal = 8
+text = "/"
+
+[node name="UIContainer_HBoxContainer_MarginContainer_VBoxContainer_HBoxContainer#MaxHealthLabel" type="Label" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 8
+text = "100"
+
+[node name="UIContainer_HBoxContainer_MarginContainer_VBoxContainer#HBoxContainer2" type="HBoxContainer" parent="."]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_constants/separation = 0
+
+[node name="UIContainer_HBoxContainer_MarginContainer_VBoxContainer_HBoxContainer2#Label" type="Label" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "Atk:"
+
+[node name="UIContainer_HBoxContainer_MarginContainer_VBoxContainer_HBoxContainer2#AttackLabel" type="Label" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 3
+text = "20"

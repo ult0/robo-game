@@ -1,0 +1,432 @@
+Godot Engine v4.4.1.stable.official.49a5bc7b6 - https://godotengine.org
+
+[DEBUG] All arguments: ["--script", "/Users/jabonasera/dev/godot-mcp/build/scripts/godot_operations.gd", "resave_resources", "{\"project_path\":\".\"}", "--debug-godot"]
+[DEBUG] Script index: 0
+[DEBUG] Operation index: 2
+[DEBUG] Params index: 3
+[INFO] Operation: resave_resources
+[DEBUG] Params JSON: {"project_path":"."}
+[INFO] Executing operation: resave_resources
+Resaving all resources to update UID references...
+Using project path: res://./
+Searching for scene files in: res://./
+Found 30 scenes
+Processing scene: res://./scenes/game.tscn
+Scene file exists check: true
+WARNING: res://scenes/robo.tscn:3 - ext_resource, invalid UID: uid://dm6xy07410hx8 - using text path instead: res://scripts/node/robo.gd
+   at: load (scene/resources/resource_format_text.cpp:447)
+ERROR: Attempt to open script 'res://scripts/node/robo.gd' resulted in error 'File not found'.
+   at: load_source_code (modules/gdscript/gdscript.cpp:1115)
+ERROR: Failed loading resource: res://scripts/node/robo.gd. Make sure resources have been imported by opening the project in the editor at least once.
+   at: _load (core/io/resource_loader.cpp:344)
+ERROR: res://scenes/robo.tscn:297 - Parse Error: [ext_resource] referenced non-existent resource at: res://scripts/node/robo.gd.
+   at: _printerr (scene/resources/resource_format_text.cpp:39)
+WARNING: res://scenes/game.tscn:12 - ext_resource, invalid UID: uid://drwow466ehk80 - using text path instead: res://scenes/player.tscn
+   at: load (scene/resources/resource_format_text.cpp:447)
+SCRIPT ERROR: Compile Error: Identifier not found: EventBus
+   at: GDScript::reload (res://scripts/node/player.gd:8)
+ERROR: Failed to load script "res://scripts/node/player.gd" with error "Compilation failed".
+   at: load (modules/gdscript/gdscript.cpp:3022)
+Scene loaded successfully, saving...
+Save result: 0 (OK=0)
+Scene saved successfully: res://./scenes/game.tscn
+File exists check after save: true
+Processing scene: res://./scenes/ui/selected_unit_display.tscn
+Scene file exists check: true
+SCRIPT ERROR: Compile Error: Identifier not found: EventBus
+   at: GDScript::reload (res://scripts/node/selected_unit_display.gd:22)
+ERROR: Failed to load script "res://scripts/node/selected_unit_display.gd" with error "Compilation failed".
+   at: load (modules/gdscript/gdscript.cpp:3022)
+Scene loaded successfully, saving...
+Save result: 0 (OK=0)
+Scene saved successfully: res://./scenes/ui/selected_unit_display.tscn
+File exists check after save: true
+Processing scene: res://./scenes/ui/ui_container.tscn
+Scene file exists check: true
+Scene loaded successfully, saving...
+Save result: 0 (OK=0)
+Scene saved successfully: res://./scenes/ui/ui_container.tscn
+File exists check after save: true
+Processing scene: res://./scenes/ui/ui.tscn
+Scene file exists check: true
+Scene loaded successfully, saving...
+Save result: 0 (OK=0)
+Scene saved successfully: res://./scenes/ui/ui.tscn
+File exists check after save: true
+Processing scene: res://./scenes/ui/coord_label.tscn
+Scene file exists check: true
+Scene loaded successfully, saving...
+Save result: 0 (OK=0)
+Scene saved successfully: res://./scenes/ui/coord_label.tscn
+File exists check after save: true
+Processing scene: res://./scenes/rock.tscn
+Scene file exists check: true
+Scene loaded successfully, saving...
+Save result: 0 (OK=0)
+Scene saved successfully: res://./scenes/rock.tscn
+File exists check after save: true
+Processing scene: res://./scenes/player.tscn
+Scene file exists check: true
+Scene loaded successfully, saving...
+Save result: 0 (OK=0)
+Scene saved successfully: res://./scenes/player.tscn
+File exists check after save: true
+Processing scene: res://./scenes/selected_unit_display.tscn
+Scene file exists check: true
+Scene loaded successfully, saving...
+Save result: 0 (OK=0)
+Scene saved successfully: res://./scenes/selected_unit_display.tscn
+File exists check after save: true
+Processing scene: res://./scenes/unit_group.tscn
+Scene file exists check: true
+SCRIPT ERROR: Compile Error: Identifier not found: EventBus
+   at: GDScript::reload (res://scripts/node/unit_group.gd:42)
+ERROR: Failed to load script "res://scripts/node/unit_group.gd" with error "Compilation failed".
+   at: load (modules/gdscript/gdscript.cpp:3022)
+Scene loaded successfully, saving...
+Save result: 0 (OK=0)
+Scene saved successfully: res://./scenes/unit_group.tscn
+File exists check after save: true
+Processing scene: res://./scenes/level.tscn
+Scene file exists check: true
+SCRIPT ERROR: Compile Error: Identifier not found: EventBus
+   at: GDScript::reload (res://scripts/node/layer_manager.gd:17)
+SCRIPT ERROR: Compile Error: Identifier not found: EventBus
+   at: GDScript::reload (res://scripts/node/tile_selector.gd:7)
+SCRIPT ERROR: Compile Error: Identifier not found: EventBus
+   at: GDScript::reload (res://scripts/node/player.gd:8)
+SCRIPT ERROR: Compile Error: Identifier not found: EventBus
+   at: GDScript::reload (res://scripts/node/enemy.gd:9)
+SCRIPT ERROR: Compile Error: Identifier not found: EventBus
+   at: GDScript::reload (res://scripts/node/unit_group.gd:42)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+   at: GDScript::reload (res://scripts/node/unit_manager.gd:0)
+SCRIPT ERROR: Compile Error: Identifier not found: EventBus
+   at: GDScript::reload (res://scripts/node/player.gd:8)
+SCRIPT ERROR: Compile Error: Identifier not found: EventBus
+   at: GDScript::reload (res://scripts/node/enemy.gd:9)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+   at: GDScript::reload (res://scripts/node/level_manager.gd:0)
+ERROR: Failed to load script "res://scripts/node/level_manager.gd" with error "Compilation failed".
+   at: load (modules/gdscript/gdscript.cpp:3022)
+SCRIPT ERROR: Compile Error: Identifier not found: EventBus
+   at: GDScript::reload (res://scripts/node/player.gd:8)
+SCRIPT ERROR: Compile Error: Identifier not found: EventBus
+   at: GDScript::reload (res://scripts/node/enemy.gd:9)
+SCRIPT ERROR: Compile Error: Identifier not found: EventBus
+   at: GDScript::reload (res://scripts/node/unit_group.gd:42)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+   at: GDScript::reload (res://scripts/node/game_state_machine.gd:0)
+ERROR: Failed to load script "res://scripts/node/game_state_machine.gd" with error "Compilation failed".
+   at: load (modules/gdscript/gdscript.cpp:3022)
+SCRIPT ERROR: Compile Error: Identifier not found: EventBus
+   at: GDScript::reload (res://scripts/node/ui_layer.gd:7)
+ERROR: Failed to load script "res://scripts/node/ui_layer.gd" with error "Compilation failed".
+   at: load (modules/gdscript/gdscript.cpp:3022)
+Scene loaded successfully, saving...
+Save result: 0 (OK=0)
+Scene saved successfully: res://./scenes/level.tscn
+File exists check after save: true
+Processing scene: res://./scenes/spawner.tscn
+Scene file exists check: true
+Scene loaded successfully, saving...
+Save result: 0 (OK=0)
+Scene saved successfully: res://./scenes/spawner.tscn
+File exists check after save: true
+Processing scene: res://./scenes/units/player.tscn
+Scene file exists check: true
+Scene loaded successfully, saving...
+Save result: 0 (OK=0)
+Scene saved successfully: res://./scenes/units/player.tscn
+File exists check after save: true
+Processing scene: res://./scenes/units/unit_group.tscn
+Scene file exists check: true
+Scene loaded successfully, saving...
+Save result: 0 (OK=0)
+Scene saved successfully: res://./scenes/units/unit_group.tscn
+File exists check after save: true
+Processing scene: res://./scenes/units/unit.tscn
+Scene file exists check: true
+Scene loaded successfully, saving...
+Save result: 0 (OK=0)
+Scene saved successfully: res://./scenes/units/unit.tscn
+File exists check after save: true
+Processing scene: res://./scenes/units/enemy.tscn
+Scene file exists check: true
+Scene loaded successfully, saving...
+Save result: 0 (OK=0)
+Scene saved successfully: res://./scenes/units/enemy.tscn
+File exists check after save: true
+Processing scene: res://./scenes/units/robo.tscn
+Scene file exists check: true
+WARNING: res://scenes/units/robo.tscn:3 - ext_resource, invalid UID: uid://dm6xy07410hx8 - using text path instead: res://scripts/node/robo.gd
+   at: load (scene/resources/resource_format_text.cpp:447)
+ERROR: Attempt to open script 'res://scripts/node/robo.gd' resulted in error 'File not found'.
+   at: load_source_code (modules/gdscript/gdscript.cpp:1115)
+ERROR: Failed loading resource: res://scripts/node/robo.gd. Make sure resources have been imported by opening the project in the editor at least once.
+   at: _load (core/io/resource_loader.cpp:344)
+ERROR: res://scenes/units/robo.tscn:297 - Parse Error: [ext_resource] referenced non-existent resource at: res://scripts/node/robo.gd.
+   at: _printerr (scene/resources/resource_format_text.cpp:39)
+Scene loaded successfully, saving...
+Save result: 0 (OK=0)
+Scene saved successfully: res://./scenes/units/robo.tscn
+File exists check after save: true
+Processing scene: res://./scenes/unit.tscn
+Scene file exists check: true
+Scene loaded successfully, saving...
+Save result: 0 (OK=0)
+Scene saved successfully: res://./scenes/unit.tscn
+File exists check after save: true
+Processing scene: res://./scenes/enemy.tscn
+Scene file exists check: true
+Scene loaded successfully, saving...
+Save result: 0 (OK=0)
+Scene saved successfully: res://./scenes/enemy.tscn
+File exists check after save: true
+Processing scene: res://./scenes/environment/rock.tscn
+Scene file exists check: true
+Scene loaded successfully, saving...
+Save result: 0 (OK=0)
+Scene saved successfully: res://./scenes/environment/rock.tscn
+File exists check after save: true
+Processing scene: res://./scenes/environment/spawner.tscn
+Scene file exists check: true
+Scene loaded successfully, saving...
+Save result: 0 (OK=0)
+Scene saved successfully: res://./scenes/environment/spawner.tscn
+File exists check after save: true
+Processing scene: res://./scenes/environment/preview_layer.tscn
+Scene file exists check: true
+Scene loaded successfully, saving...
+Save result: 0 (OK=0)
+Scene saved successfully: res://./scenes/environment/preview_layer.tscn
+File exists check after save: true
+Processing scene: res://./scenes/environment/tile_selector.tscn
+Scene file exists check: true
+Scene loaded successfully, saving...
+Save result: 0 (OK=0)
+Scene saved successfully: res://./scenes/environment/tile_selector.tscn
+File exists check after save: true
+Processing scene: res://./scenes/preview_layer.tscn
+Scene file exists check: true
+Scene loaded successfully, saving...
+Save result: 0 (OK=0)
+Scene saved successfully: res://./scenes/preview_layer.tscn
+File exists check after save: true
+Processing scene: res://./scenes/robo.tscn
+Scene file exists check: true
+WARNING: res://scenes/robo.tscn:3 - ext_resource, invalid UID: uid://dm6xy07410hx8 - using text path instead: res://scripts/node/robo.gd
+   at: load (scene/resources/resource_format_text.cpp:447)
+ERROR: Attempt to open script 'res://scripts/node/robo.gd' resulted in error 'File not found'.
+   at: load_source_code (modules/gdscript/gdscript.cpp:1115)
+ERROR: Failed loading resource: res://scripts/node/robo.gd. Make sure resources have been imported by opening the project in the editor at least once.
+   at: _load (core/io/resource_loader.cpp:344)
+ERROR: res://scenes/robo.tscn:297 - Parse Error: [ext_resource] referenced non-existent resource at: res://scripts/node/robo.gd.
+   at: _printerr (scene/resources/resource_format_text.cpp:39)
+Scene loaded successfully, saving...
+Save result: 0 (OK=0)
+Scene saved successfully: res://./scenes/robo.tscn
+File exists check after save: true
+Processing scene: res://./scenes/ui_container.tscn
+Scene file exists check: true
+Scene loaded successfully, saving...
+Save result: 0 (OK=0)
+Scene saved successfully: res://./scenes/ui_container.tscn
+File exists check after save: true
+Processing scene: res://./scenes/tile_selector.tscn
+Scene file exists check: true
+Scene loaded successfully, saving...
+Save result: 0 (OK=0)
+Scene saved successfully: res://./scenes/tile_selector.tscn
+File exists check after save: true
+Processing scene: res://./scenes/levels/game.tscn
+Scene file exists check: true
+WARNING: res://scenes/levels/game.tscn:12 - ext_resource, invalid UID: uid://drwow466ehk80 - using text path instead: res://scenes/player.tscn
+   at: load (scene/resources/resource_format_text.cpp:447)
+Scene loaded successfully, saving...
+Save result: 0 (OK=0)
+Scene saved successfully: res://./scenes/levels/game.tscn
+File exists check after save: true
+Processing scene: res://./scenes/levels/level.tscn
+Scene file exists check: true
+Scene loaded successfully, saving...
+Save result: 0 (OK=0)
+Scene saved successfully: res://./scenes/levels/level.tscn
+File exists check after save: true
+Processing scene: res://./scenes/ui.tscn
+Scene file exists check: true
+Scene loaded successfully, saving...
+Save result: 0 (OK=0)
+Scene saved successfully: res://./scenes/ui.tscn
+File exists check after save: true
+Processing scene: res://./scenes/coord_label.tscn
+Scene file exists check: true
+Scene loaded successfully, saving...
+Save result: 0 (OK=0)
+Scene saved successfully: res://./scenes/coord_label.tscn
+File exists check after save: true
+Searching for script and shader files in: res://./
+Found 52 scripts/shaders
+Checking UID for: res://./core/input/camera.gd
+UID file exists check: true
+UID file already exists for: res://./core/input/camera.gd
+Checking UID for: res://./core/input/input_manager.gd
+UID file exists check: true
+UID file already exists for: res://./core/input/input_manager.gd
+Checking UID for: res://./core/input/tile_selector.gd
+UID file exists check: true
+UID file already exists for: res://./core/input/tile_selector.gd
+Checking UID for: res://./core/game_state/game_state_machine.gd
+UID file exists check: true
+UID file already exists for: res://./core/game_state/game_state_machine.gd
+Checking UID for: res://./core/managers/spawner.gd
+UID file exists check: true
+UID file already exists for: res://./core/managers/spawner.gd
+Checking UID for: res://./core/managers/layer_manager.gd
+UID file exists check: true
+UID file already exists for: res://./core/managers/layer_manager.gd
+Checking UID for: res://./core/managers/unit_manager.gd
+UID file exists check: true
+UID file already exists for: res://./core/managers/unit_manager.gd
+Checking UID for: res://./core/managers/preview_layer.gd
+UID file exists check: true
+UID file already exists for: res://./core/managers/preview_layer.gd
+Checking UID for: res://./core/managers/level_manager.gd
+UID file exists check: true
+UID file already exists for: res://./core/managers/level_manager.gd
+Checking UID for: res://./core/utils/tilemap_utils.gd
+UID file exists check: true
+UID file already exists for: res://./core/utils/tilemap_utils.gd
+Checking UID for: res://./core/utils/priority_queue/priority_queue.gd
+UID file exists check: true
+UID file already exists for: res://./core/utils/priority_queue/priority_queue.gd
+Checking UID for: res://./core/utils/state_machine/state.gd
+UID file exists check: true
+UID file already exists for: res://./core/utils/state_machine/state.gd
+Checking UID for: res://./core/utils/state_machine/state_machine.gd
+UID file exists check: true
+UID file already exists for: res://./core/utils/state_machine/state_machine.gd
+Checking UID for: res://./core/utils/a_star/a_star.gd
+UID file exists check: true
+UID file already exists for: res://./core/utils/a_star/a_star.gd
+Checking UID for: res://./core/utils/a_star/a_star_node.gd
+UID file exists check: true
+UID file already exists for: res://./core/utils/a_star/a_star_node.gd
+Checking UID for: res://./core/utils/constants.gd
+UID file exists check: true
+UID file already exists for: res://./core/utils/constants.gd
+Checking UID for: res://./core/global/event_bus.gd
+UID file exists check: true
+UID file already exists for: res://./core/global/event_bus.gd
+Checking UID for: res://./addons/layerNames/layerNames_plugin.gd
+UID file exists check: true
+UID file already exists for: res://./addons/layerNames/layerNames_plugin.gd
+Checking UID for: res://./addons/layerNames/layerNames.gd
+UID file exists check: true
+UID file already exists for: res://./addons/layerNames/layerNames.gd
+Checking UID for: res://./scripts/resources/unit.res.gd
+UID file exists check: true
+UID file already exists for: res://./scripts/resources/unit.res.gd
+Checking UID for: res://./scripts/utils/tilemap_utils.gd
+UID file exists check: true
+UID file already exists for: res://./scripts/utils/tilemap_utils.gd
+Checking UID for: res://./scripts/utils/priority_queue/priority_queue.gd
+UID file exists check: true
+UID file already exists for: res://./scripts/utils/priority_queue/priority_queue.gd
+Checking UID for: res://./scripts/utils/state_machine/state.gd
+UID file exists check: true
+UID file already exists for: res://./scripts/utils/state_machine/state.gd
+Checking UID for: res://./scripts/utils/state_machine/state_machine.gd
+UID file exists check: true
+UID file already exists for: res://./scripts/utils/state_machine/state_machine.gd
+Checking UID for: res://./scripts/utils/a_star/a_star.gd
+UID file exists check: true
+UID file already exists for: res://./scripts/utils/a_star/a_star.gd
+Checking UID for: res://./scripts/utils/a_star/a_star_node.gd
+UID file exists check: true
+UID file already exists for: res://./scripts/utils/a_star/a_star_node.gd
+Checking UID for: res://./scripts/utils/constants.gd
+UID file exists check: true
+UID file already exists for: res://./scripts/utils/constants.gd
+Checking UID for: res://./scripts/node/unit.gd
+UID file exists check: true
+UID file already exists for: res://./scripts/node/unit.gd
+Checking UID for: res://./scripts/node/spawner.gd
+UID file exists check: true
+UID file already exists for: res://./scripts/node/spawner.gd
+Checking UID for: res://./scripts/node/game_state_machine.gd
+UID file exists check: true
+UID file already exists for: res://./scripts/node/game_state_machine.gd
+Checking UID for: res://./scripts/node/camera.gd
+UID file exists check: true
+UID file already exists for: res://./scripts/node/camera.gd
+Checking UID for: res://./scripts/node/player.gd
+UID file exists check: true
+UID file already exists for: res://./scripts/node/player.gd
+Checking UID for: res://./scripts/node/enemy.gd
+UID file exists check: true
+UID file already exists for: res://./scripts/node/enemy.gd
+Checking UID for: res://./scripts/node/layer_manager.gd
+UID file exists check: true
+UID file already exists for: res://./scripts/node/layer_manager.gd
+Checking UID for: res://./scripts/node/unit_group.gd
+UID file exists check: true
+UID file already exists for: res://./scripts/node/unit_group.gd
+Checking UID for: res://./scripts/node/input_manager.gd
+UID file exists check: true
+UID file already exists for: res://./scripts/node/input_manager.gd
+Checking UID for: res://./scripts/node/selected_unit_display.gd
+UID file exists check: true
+UID file already exists for: res://./scripts/node/selected_unit_display.gd
+Checking UID for: res://./scripts/node/unit_animated_sprite.gd
+UID file exists check: true
+UID file already exists for: res://./scripts/node/unit_animated_sprite.gd
+Checking UID for: res://./scripts/node/tile_selector.gd
+UID file exists check: true
+UID file already exists for: res://./scripts/node/tile_selector.gd
+Checking UID for: res://./scripts/node/ui_layer.gd
+UID file exists check: true
+UID file already exists for: res://./scripts/node/ui_layer.gd
+Checking UID for: res://./scripts/node/unit_manager.gd
+UID file exists check: true
+UID file already exists for: res://./scripts/node/unit_manager.gd
+Checking UID for: res://./scripts/node/preview_layer.gd
+UID file exists check: true
+UID file already exists for: res://./scripts/node/preview_layer.gd
+Checking UID for: res://./scripts/node/level_manager.gd
+UID file exists check: true
+UID file already exists for: res://./scripts/node/level_manager.gd
+Checking UID for: res://./scripts/global/event_bus.gd
+UID file exists check: true
+UID file already exists for: res://./scripts/global/event_bus.gd
+Checking UID for: res://./data/resources/unit.res.gd
+UID file exists check: true
+UID file already exists for: res://./data/resources/unit.res.gd
+Checking UID for: res://./entities/units/enemy/enemy.gd
+UID file exists check: true
+UID file already exists for: res://./entities/units/enemy/enemy.gd
+Checking UID for: res://./entities/units/base/unit.gd
+UID file exists check: true
+UID file already exists for: res://./entities/units/base/unit.gd
+Checking UID for: res://./entities/units/base/unit_group.gd
+UID file exists check: true
+UID file already exists for: res://./entities/units/base/unit_group.gd
+Checking UID for: res://./entities/units/player/player.gd
+UID file exists check: true
+UID file already exists for: res://./entities/units/player/player.gd
+Checking UID for: res://./entities/components/selected_unit_display.gd
+UID file exists check: true
+UID file already exists for: res://./entities/components/selected_unit_display.gd
+Checking UID for: res://./entities/components/unit_animated_sprite.gd
+UID file exists check: true
+UID file already exists for: res://./entities/components/unit_animated_sprite.gd
+Checking UID for: res://./entities/components/ui_layer.gd
+UID file exists check: true
+UID file already exists for: res://./entities/components/ui_layer.gd
+Summary:
+- Scenes processed: 30
+- Scenes successfully saved: 30
+- Scenes with errors: 0
+- Scripts/shaders missing UIDs: 0
+- UIDs successfully generated: 0
+Resave operation complete

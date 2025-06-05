@@ -1,0 +1,13 @@
+[gd_scene load_steps=5 format=3 uid="uid://b7qmh1qouaigm"]
+
+[ext_resource type="PackedScene" uid="uid://csb8fbc3tpui2" path="res://scenes/units/unit.tscn" id="1_g2els"]
+[ext_resource type="Script" uid="uid://bmq78dt71qaxj" path="res://entities/units/player/player.gd" id="2_qhqgy"]
+[ext_resource type="Resource" uid="uid://cl3duluh4v5rh" path="res://data/resources/soldier_unit.tres" id="3_dqkch"]
+[ext_resource type="SpriteFrames" uid="uid://bx10cdxnkvwb1" path="res://data/resources/warrior_animations.tres" id="4_qlg0r"]
+
+[node name="Player" instance=ExtResource("1_g2els")]
+script = ExtResource("2_qhqgy")
+unit_resource = ExtResource("3_dqkch")
+
+[node name="AnimatedSprite2D" parent="." index="0"]
+sprite_frames = ExtResource("4_qlg0r")

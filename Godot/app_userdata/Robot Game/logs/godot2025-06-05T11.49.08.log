@@ -1,0 +1,18 @@
+Godot Engine v4.4.1.stable.official.49a5bc7b6 - https://godotengine.org
+Metal 2.4 - Forward+ - Using Device #0: Apple - Apple M1 (Apple7)
+ERROR: Can't create shader cache folder, no shader caching will happen: user://
+   at: RendererCompositorRD (servers/rendering/renderer_rd/renderer_compositor_rd.cpp:286)
+
+ERROR: Attempt to open script 'res://scripts/node/preview_layer.gd' resulted in error 'File not found'.
+   at: load_source_code (modules/gdscript/gdscript.cpp:1115)
+ERROR: Failed loading resource: res://scripts/node/preview_layer.gd. Make sure resources have been imported by opening the project in the editor at least once.
+   at: _load (core/io/resource_loader.cpp:344)
+ERROR: res://scenes/environment/preview_layer.tscn:19 - Parse Error: [ext_resource] referenced non-existent resource at: res://scripts/node/preview_layer.gd.
+   at: _printerr (scene/resources/resource_format_text.cpp:39)
+ERROR: 'The local variable "dict_size" is declared but never used in the block. If this is intended, prefix it with an underscore: "_dict_size".'
+ERROR: 'The local variable "data_size" is declared but never used in the block. If this is intended, prefix it with an underscore: "_data_size".'
+
+Debugger Break, Reason: 'Parser Error: Preload file "res://scripts/node/player.gd" does not exist.'
+*Frame 0 - res://entities/units/base/unit_group.gd:7 in function ''
+Enter "help" for assistance.
+debug> 

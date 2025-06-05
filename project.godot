@@ -11,14 +11,14 @@ config_version=5
 [application]
 
 config/name="Robot Game"
-run/main_scene="res://scenes/level.tscn"
+run/main_scene="res://scenes/levels/level.tscn"
 config/features=PackedStringArray("4.4", "Forward Plus")
 config/icon="res://icon.svg"
 
 [autoload]
 
 LayerNames="*res://addons/layerNames/layerNames.gd"
-EventBus="*res://scripts/global/event_bus.gd"
+EventBus="*res://core/global/event_bus.gd"
 
 [debug]
 
@@ -41,8 +41,10 @@ enabled=PackedStringArray("res://addons/layerNames/plugin.cfg")
 
 folder_colors={
 "res://assets/": "red",
-"res://scenes/": "teal",
-"res://scripts/": "purple"
+"res://core/": "purple",
+"res://data/": "yellow",
+"res://entities/": "orange",
+"res://scenes/": "teal"
 }
 
 [global_group]

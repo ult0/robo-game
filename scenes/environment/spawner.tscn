@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://bplh5ecfbhgiy"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8xlu4"]
+size = Vector2(14, 14)
+
+[node name="Spawner" type="Area2D"]
+monitoring = false
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_8xlu4")
