@@ -17,3 +17,17 @@ Go to `Project` -> `Project Settings` -> `Plugins` and enable `Layer Names`.
 ## License
 
 Licensed under the [MIT license](LICENSE)
+
+## Running Tests
+
+This project uses the [GUT](https://github.com/bitwes/Gut) testing framework. To run the tests:
+
+1. Install the GUT plugin by copying it into `res://addons/gut` and enable it in `Project Settings -> Plugins`.
+2. Launch Godot and run the GUT test runner scene or execute it via command line:
+
+```bash
+# Example command line
+godot --headless -s res://addons/gut/gut_cmdln.gd -d -gdir=res://tests
+```
+
+The tests in `tests/` will verify core utilities such as the `PriorityQueue`.
