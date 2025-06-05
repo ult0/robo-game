@@ -24,6 +24,12 @@ func extract() -> Variant:
 	if self.is_empty():
 		return null
 
+	if self.data.size() != self.dict.size():
+		var dict_size = dict.size()
+		var data_size = data.size()
+		print("PriorityQueue: Data size does not match dict size. This is a bug.")
+		return null
+
 	# Store the element to return later
 	var result: Variant = self.data[0]
 

@@ -2,24 +2,24 @@ class_name GameStateMachine
 extends Node2D
 
 enum GameState {
-	IDLE,
+	PLAYER_TURN,
 	PLAYER_SELECTED,
 	ENEMY_SELECTED,
 	TARGETING,
 	ENEMY_TURN
 }
-var current_state: GameState = GameState.IDLE
+var current_state: GameState = GameState.PLAYER_TURN
 var selected_player: Player
 var selected_enemy: Enemy
 @onready var unitManager: UnitManager =  %UnitManager
 
 func _ready() -> void:
-	set_state(GameState.IDLE)
+	set_state(GameState.PLAYER_TURN)
 
-func handle_mouse_button_input(event: InputEvent) -> void:
+func handle_mouse_button_input(event: InputEventMouseButton) -> void:
 	var mouse_coord: Vector2i = TileMapUtils.get_tile_coord(get_global_mouse_position())
 	match current_state:
-		GameState.IDLE:
+		GameState.PLAYER_TURN:
 			# CONFIRM
 			if event.is_action_pressed('left-click'):
 				# UNIT
@@ -51,13 +51,21 @@ func handle_mouse_button_input(event: InputEvent) -> void:
 				# ANYWHERE
 				else:
 					# UNSELECT ALL
-					if selected_player:
-						selected_player.unselect()
-					if selected_enemy:
-						selected_enemy.unselect()
-
+					if unitManager.is_player_selected():
+						unitManager.unselect_current_selected_player()
+					if unitManager.is_enemy_selected():
+						unitManager.unselect_current_selected_enemy()
 		GameState.ENEMY_TURN:
 			print("ENEMY_TURN")
+
+func handle_key_input(event: InputEventKey):
+	match current_state:
+		GameState.PLAYER_TURN:
+			# F
+			if event.is_pressed() and event.keycode == KEY_F:
+				# SHOW ALL ENEMY RANGE
+				if unitManager.enemy_group.current_units:
+					pass
 
 func set_state(new_state: GameState):
 	if current_state == new_state:
@@ -69,8 +77,8 @@ func set_state(new_state: GameState):
 
 func _enter_state(state: GameState):
 	match state:
-		GameState.IDLE:
-			print("Entered IDLE")
+		GameState.PLAYER_TURN:
+			print("Entered PLAYER_TURN")
 		GameState.PLAYER_SELECTED:
 			print("Entered PLAYER_SELECTED")
 		GameState.ENEMY_SELECTED:
@@ -80,8 +88,8 @@ func _enter_state(state: GameState):
 
 func _exit_state(state: GameState):
 	match state:
-		GameState.IDLE:
-			print("Exited IDLE")
+		GameState.PLAYER_TURN:
+			print("Exited PLAYER_TURN")
 		GameState.PLAYER_SELECTED:
 			print("Exited PLAYER_SELECTED")
 		GameState.ENEMY_SELECTED:

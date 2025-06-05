@@ -1,11 +1,7 @@
 extends Node2D
 class_name UnitGroup
 
-enum UnitType {
-	Player,
-	Enemy
-}
-@export var type: UnitType = UnitType.Player
+@export var unit_type: Constants.UnitType = Constants.UnitType.PLAYER
 var current_units: Array[Unit] = []
 var selected_unit: Unit = null
 var player_script: Script = preload("res://scripts/node/player.gd")
@@ -36,22 +32,14 @@ func initialize_units() -> void:
 	if spawners.size():
 		for i in range(spawners.size()):
 			print("Spawning unit: ", spawners[i].unit_resource.name)
-			add_unit(spawners[i].spawn_unit(get_unit_script()))
+			add_unit(spawners[i].spawn_unit(unit_type))
 	else:
 		printerr("No unit spawners found in UnitGroup: " + name)
-
-func get_unit_script() -> Script:
-	if type == UnitType.Player:
-		return player_script
-	elif type == UnitType.Enemy:
-		return enemy_script
-	else:
-		printerr("Invalid unit type: " + str(type))
-		return null
 
 func add_unit(unit: Unit) -> void:
 	current_units.push_back(unit)
 	add_child(unit)
+	EventBus.unit_spawned_emit(unit)
 
 func remove_unit(unit: Unit) -> void:
 	current_units.erase(unit)
@@ -63,12 +51,15 @@ func move_unit_to_coord(coord: Vector2i) -> void:
 
 func select_unit_at_coord(coord: Vector2i) -> Unit:
 	var unit = get_unit_at_coord(coord)
+	return select_unit(unit)
+
+func select_unit(unit: Unit) -> Unit:
 	if unit and unit != selected_unit and !unit.moving:
-		unit.select()
 		if selected_unit:
 			selected_unit.unselect()
+		unit.select()
 		selected_unit = unit
-	return unit
+	return unit 
 
 func unselect_unit_at_coord(coord: Vector2i) -> Unit:
 	var unit = get_unit_at_coord(coord)
@@ -76,6 +67,19 @@ func unselect_unit_at_coord(coord: Vector2i) -> Unit:
 		unit.unselect()
 		selected_unit = null
 	return unit
+
+func unselect_current_selected_unit() -> Unit:
+	return unselect_unit(selected_unit)
+
+func unselect_unit(unit: Unit) -> Unit:
+	if unit and unit == selected_unit:
+		unit.unselect()
+		selected_unit = null
+	return unit
+
+func show_all_units_attack_range():
+	for unit in current_units:
+		unit.preview_layer.clear()
 
 func is_unit_selected() -> bool:
 	return !!selected_unit

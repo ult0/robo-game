@@ -25,7 +25,7 @@ LAYER_20 = 524288,
 
 enum PHYSICS_2D { 
 NONE = 0,
-COLLISION = 1,
+LAYER_1 = 1,
 LAYER_2 = 2,
 LAYER_3 = 4,
 LAYER_4 = 8,

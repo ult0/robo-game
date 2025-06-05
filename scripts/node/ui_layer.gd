@@ -4,8 +4,8 @@ var selected_player: Player
 var selector_coord: Vector2i
 
 func _ready() -> void:
-	EventBus.tile_selector_coord_changed.connect(on_tile_selector_entered)
-	EventBus.player_selected.connect(on_player_selected)
+	EventBus.selector_coord_changed_connect(on_tile_selector_entered)
+	EventBus.player_selected_connect(on_player_selected)
 
 func on_tile_selector_entered(coord: Vector2i) -> void:
 	selector_coord = coord
@@ -16,7 +16,7 @@ func on_player_selected(player: Player) -> void:
 	queue_redraw()
 
 func _draw() -> void:
-	if selected_player and !selected_player.moving and selected_player.walkable_tiles.has(selector_coord):
+	if selected_player and !selected_player.moving and selected_player.is_preview_layer_showing():
 		var start := selected_player.tile_coord
 		var end := selector_coord
 		var path := Level.instance.aStar.find_path(start, end).map(func (coord: Vector2i) -> Vector2: return TileMapUtils.get_tile_center_position_from_coord(coord))

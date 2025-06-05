@@ -4,7 +4,7 @@ class_name TileSelector
 var last_tile_entered: Vector2i:
 	set(coord):
 		last_tile_entered = coord
-		EventBus.tile_selector_coord_changed.emit(coord)
+		EventBus.selector_coord_changed_emit(coord)
 
 var current_node: Node = null
 var move_tween: Tween = null

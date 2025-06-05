@@ -1,18 +1,17 @@
-extends Unit
 class_name Enemy
+extends Unit
 
-var walkable_tiles: Array[Vector2i] = []
-var attackable_tiles: Array[Vector2i] = []
-var tiles_with_enemies: Array[Vector2i] = []
 @onready var aStar: AStar = AStar.create(is_walkable)
 
 func select() -> void:
-	set_tile_options()
-	EventBus.enemy_selected.emit(self)
+	super()
+	update_preview_layer()
+	EventBus.enemy_selected_emit(self)
 
 func unselect() -> void:
-	clear_tile_options()
-	EventBus.enemy_unselected.emit(self)
+	super()
+	update_preview_layer()
+	EventBus.enemy_selected_emit(null)
 
 func is_walkable(coord: Vector2i) -> bool:
 	var containsObstacle := Level.instance.tile_contains_obstacle(coord)
@@ -23,7 +22,6 @@ func is_walkable(coord: Vector2i) -> bool:
 func move_to(coord: Vector2i) -> void:
 	var path := aStar.find_path(tile_coord, coord)
 	if path.size() <= unit_resource.move_speed:
-		# unselect()
 		move(path)
 
 func get_walkable_tiles(coord: Vector2i) -> Array[Vector2i]:
@@ -41,17 +39,23 @@ func get_attackable_tiles(starting_tiles: Array[Vector2i]) -> Array[Vector2i]:
 		func (coord) -> bool: return Level.instance.tile_contains_enemy(coord)
 	)
 
-func set_tile_options() -> void:
-	for tile in get_walkable_tiles(tile_coord):
-		if Level.instance.tile_contains_enemy(tile) and tile != tile_coord:
-			tiles_with_enemies.append(tile)
-		else:
-			walkable_tiles.append(tile)
-	attackable_tiles = get_attackable_tiles(walkable_tiles)
+func setup_preview_layer() -> void:
+	super()
+	preview_layer.tile_order = [preview_layer.attack_tile_coord]
 
-func clear_tile_options() -> void:
-	walkable_tiles.clear()
-	attackable_tiles.clear()
-	tiles_with_enemies.clear()
+func set_preview_tiles() -> void:
+	var walkable_tiles: Array[Vector2i] = []
+	var attackable_tiles: Array[Vector2i] = []
+	var tiles_with_enemies: Array[Vector2i] = []
 
-
+	if is_selected:
+		for tile in get_walkable_tiles(tile_coord):
+			if Level.instance.tile_contains_enemy(tile) and tile != tile_coord:
+				tiles_with_enemies.append(tile)
+			else:
+				walkable_tiles.append(tile)
+		attackable_tiles = get_attackable_tiles(walkable_tiles)
+	
+	preview_layer.unit_walkable_tiles = walkable_tiles
+	preview_layer.unit_attackable_tiles = attackable_tiles
+	preview_layer.unit_friendly_tiles = tiles_with_enemies

@@ -1,47 +1,14 @@
-[gd_scene load_steps=8 format=3 uid="uid://caqoipcbr7kuj"]
+[gd_scene load_steps=5 format=3 uid="uid://dy5vf63kayq5l"]
 
-[ext_resource type="Texture2D" uid="uid://cy7jkxnay3qsp" path="res://assets/sprites/Puny-Characters/Orc-Grunt.png" id="1_7p1mj"]
+[ext_resource type="PackedScene" uid="uid://co0s4au8klchy" path="res://scenes/unit.tscn" id="1_5uy6h"]
 [ext_resource type="Script" uid="uid://ctyjs1uqmueke" path="res://scripts/node/enemy.gd" id="1_md0e3"]
-[ext_resource type="Script" uid="uid://phs2bfwqjgda" path="res://scripts/resources/unit.res.gd" id="2_4ra3w"]
+[ext_resource type="Resource" uid="uid://uyywr0ds7k1q" path="res://unique_resource/enemy_unit.tres" id="3_c4w8v"]
+[ext_resource type="SpriteFrames" uid="uid://cabom1rcnfn8o" path="res://unique_resource/orc_animations.tres" id="4_xwavj"]
 
-[sub_resource type="Resource" id="Resource_5uy6h"]
-script = ExtResource("2_4ra3w")
-name = "Unit"
-max_health = 50
-health = 50
-move_speed = 3
-attack = 10
-defense = 5
-attack_range = 1
-metadata/_custom_type_script = "uid://phs2bfwqjgda"
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_md0e3"]
-atlas = ExtResource("1_7p1mj")
-region = Rect2(0, 0, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_4ra3w"]
-atlas = ExtResource("1_7p1mj")
-region = Rect2(32, 0, 32, 32)
-
-[sub_resource type="SpriteFrames" id="SpriteFrames_5uy6h"]
-animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_md0e3")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_4ra3w")
-}],
-"loop": true,
-"name": &"default",
-"speed": 3.0
-}]
-
-[node name="Enemy" type="Node2D" groups=["unit"]]
+[node name="Enemy" instance=ExtResource("1_5uy6h")]
 script = ExtResource("1_md0e3")
-unit_resource = SubResource("Resource_5uy6h")
+unit_resource = ExtResource("3_c4w8v")
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-sprite_frames = SubResource("SpriteFrames_5uy6h")
-autoplay = "default"
-frame_progress = 0.557474
+[node name="AnimatedSprite2D" parent="." index="0"]
+sprite_frames = ExtResource("4_xwavj")
+animation = &"idle"

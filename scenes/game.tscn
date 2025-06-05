@@ -702,12 +702,11 @@ y_sort_enabled = true
 
 [node name="Robo" parent="." instance=ExtResource("1_ymcn3")]
 position = Vector2(-51, 37)
-SPEED = 120.0
+script = null
 
 [node name="Player" parent="." instance=ExtResource("9_422yh")]
 unique_name_in_owner = true
 position = Vector2(8, 8)
-SPEED = 120.0
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
 

@@ -1,18 +1,16 @@
-extends Unit
 class_name Player
-
-var walkable_tiles: Array[Vector2i] = []
-var attackable_tiles: Array[Vector2i] = []
-var tiles_with_players: Array[Vector2i] = []
+extends Unit
 @onready var aStar: AStar = AStar.create(is_walkable)
 
 func select() -> void:
-	set_tile_options()
-	EventBus.player_selected.emit(self)
+	super()
+	update_preview_layer()
+	EventBus.player_selected_emit(self)
 
 func unselect() -> void:
-	# clear_tile_options()
-	EventBus.player_unselected.emit(self)
+	super()
+	update_preview_layer()
+	EventBus.player_selected_emit(null)
 
 func is_walkable(coord: Vector2i) -> bool:
 	var containsObstacle := Level.instance.tile_contains_obstacle(coord)
@@ -23,7 +21,6 @@ func is_walkable(coord: Vector2i) -> bool:
 func move_to(coord: Vector2i) -> void:
 	var path := aStar.find_path(tile_coord, coord)
 	if path.size() <= unit_resource.move_speed:
-		# unselect()
 		move(path)
 
 func get_walkable_tiles(coord: Vector2i) -> Array[Vector2i]:
@@ -41,15 +38,26 @@ func get_attackable_tiles(starting_tiles: Array[Vector2i]) -> Array[Vector2i]:
 		func (coord) -> bool: return Level.instance.tile_contains_player(coord)
 	)
 
-func set_tile_options() -> void:
-	for tile in get_walkable_tiles(tile_coord):
-		if Level.instance.tile_contains_player(tile) and tile != tile_coord:
-			tiles_with_players.append(tile)
-		else:
-			walkable_tiles.append(tile)
-	attackable_tiles = get_attackable_tiles(walkable_tiles)
+func setup_preview_layer() -> void:
+	super()
+	preview_layer.tile_order = [
+		preview_layer.attack_tile_coord,
+		preview_layer.walk_tile_coord,
+		preview_layer.friendly_tile_coord
+	]
 
-func clear_tile_options() -> void:
-	walkable_tiles.clear()
-	attackable_tiles.clear()
-	tiles_with_players.clear()
+func set_preview_tiles() -> void:
+	var walkable_tiles: Array[Vector2i] = []
+	var attackable_tiles: Array[Vector2i] = []
+	var tiles_with_players: Array[Vector2i] = []
+	if is_selected:
+		for tile in get_walkable_tiles(tile_coord):
+			if Level.instance.tile_contains_player(tile) and tile != tile_coord:
+				tiles_with_players.append(tile)
+			else:
+				walkable_tiles.append(tile)
+		attackable_tiles = get_attackable_tiles(walkable_tiles)
+
+	preview_layer.unit_walkable_tiles = walkable_tiles
+	preview_layer.unit_attackable_tiles = attackable_tiles
+	preview_layer.unit_friendly_tiles = tiles_with_players

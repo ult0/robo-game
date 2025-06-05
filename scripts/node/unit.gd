@@ -1,6 +1,9 @@
-extends Node2D
 class_name Unit
+extends Node2D
 
+var preview_layer_scene = preload("res://scenes/preview_layer.tscn")
+var preview_layer: PreviewLayer
+# @onready var preview_layer: PreviewLayer = $TransformlessContainer/PreviewLayer
 @onready var animatedSprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var clickBox: Area2D = $ClickBox
 @export var unit_resource: UnitResource
@@ -8,6 +11,15 @@ class_name Unit
 var tile_coord: Vector2i:
 	get:
 		return TileMapUtils.get_tile_coord(global_position)
+
+@warning_ignore_start("unused_signal")
+signal selected(unit: Unit)
+signal unselected(unit: Unit)
+var is_selected: bool = false
+func select() -> void:
+	is_selected = true
+func unselect() -> void:
+	is_selected = false
 
 signal entered_hover(unit: Unit)
 signal exited_hover(unit: Unit)
@@ -22,12 +34,27 @@ var moving: bool = false:
 		else: animatedSprite.play("idle")
 
 func _ready() -> void:
-	set_animation()
+	setup_animation()
+	setup_preview_layer()
+
+func setup_animation() -> void:
+	animatedSprite.sprite_frames = unit_resource.animation_resource
 	animatedSprite.play("idle")
 
-func set_animation() -> void:
-	animatedSprite.sprite_frames = unit_resource.animation_resource
+func setup_preview_layer() -> void:
+	preview_layer = preview_layer_scene.instantiate()
+	preview_layer.name = "PreviewLayer-" + self.name
+	preview_layer.unit = self
 
+func update_preview_layer() -> void:
+	set_preview_tiles()
+	preview_layer.update()
+
+func set_preview_tiles() -> void: pass
+
+func is_preview_layer_showing() -> bool:
+	return preview_layer.enabled
+	
 func setup_animated_sprite() -> void:
 	var animation_name = "idle"
 	var sprite_frames := SpriteFrames.new()
@@ -73,7 +100,7 @@ func setup_animated_sprite() -> void:
 func move(coords) -> void:
 	if coords.size() == 0:
 		moving = false
-		select()
+		update_preview_layer()
 		return
 	moving = true
 	var coord = coords.pop_back()
@@ -84,13 +111,7 @@ func move(coords) -> void:
 	tween.tween_property(self, "global_position", TileMapUtils.get_tile_center_position_from_coord(coord), 1.0 / moves_per_second).set_trans(Tween.TRANS_SINE)
 	tween.tween_callback(move.bind(coords))
 
-func move_to(coord: Vector2i) -> void:
-	pass
-
-func select() -> void:
-	pass
-
-func unselect() -> void:
+func move_to(_coord: Vector2i) -> void:
 	pass
 
 func enter_hover() -> void:
@@ -110,6 +131,10 @@ func heal(amount: int) -> void:
 	unit_resource.health += amount
 	if unit_resource.health > unit_resource.max_health:
 		unit_resource.health = unit_resource.max_health
+
+func die() -> void:
+	animatedSprite.play("die")
+	preview_layer.queue_free()
 
 func is_alive() -> bool:
 	return unit_resource.health > 0

@@ -1,11 +1,7 @@
 extends Control
 
 @export var containerTexture: Texture2D
-enum Type {
-	Player,
-	Enemy
-}
-@export var type: Type = Type.Player
+@export var unit_type: Constants.UnitType = Constants.UnitType.PLAYER
 
 @onready var selectedPlayerIcon: TextureRect = %SelectedPlayerIcon
 @onready var uiContainer: NinePatchRect = %UIContainer
@@ -22,12 +18,12 @@ var show_unit: bool = false:
 
 func _ready() -> void:
 	uiContainer.texture = containerTexture
-	if type == Type.Player:	
-		EventBus.player_selected.connect(func (player: Player) -> void: on_player_selected(player))
-	elif type == Type.Enemy:
-		EventBus.enemy_selected.connect(func (enemy: Enemy) -> void: on_enemy_selected(enemy))
+	if unit_type == Constants.UnitType.PLAYER:	
+		EventBus.player_selected_connect(on_player_selected)
+	elif unit_type == Constants.UnitType.ENEMY:
+		EventBus.enemy_selected_connect(on_enemy_selected)
 	else:
-		print("Unknown type: ", type)
+		print("Unknown type: ", unit_type)
 	show_unit = false
 
 func on_player_selected(player: Player) -> void:

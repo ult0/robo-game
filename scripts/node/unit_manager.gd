@@ -8,9 +8,9 @@ func _ready() -> void:
 	for child in get_children():
 		if child is UnitGroup:
 			var unit_group: UnitGroup = child
-			if unit_group.type == UnitGroup.UnitType.Player:
+			if unit_group.unit_type == Constants.UnitType.PLAYER:
 				player_group = unit_group
-			elif unit_group.type == UnitGroup.UnitType.Enemy:
+			elif unit_group.unit_type == Constants.UnitType.ENEMY:
 				enemy_group = unit_group
 			else:
 				printerr("UnitManager: Child is not a UnitGroup or has an invalid type: " + child.name)
@@ -52,8 +52,14 @@ func unselect_unit_at_coord(coord: Vector2i) -> Unit:
 func unselect_player_at_coord(coord: Vector2i) -> Player:
 	return player_group.unselect_unit_at_coord(coord)
 
+func unselect_current_selected_player() -> Player:
+	return player_group.unselect_current_selected_unit()
+
 func unselect_enemy_at_coord(coord: Vector2i) -> Enemy:
 	return enemy_group.unselect_unit_at_coord(coord)
+
+func unselect_current_selected_enemy() -> Enemy:
+	return enemy_group.unselect_current_selected_unit()
 
 func get_unit_at_coord(coord: Vector2i) -> Unit:	
 	var player: Player = get_player_at_coord(coord)

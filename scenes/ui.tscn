@@ -15,4 +15,4 @@ offset_left = -136.0
 offset_right = 0.0
 grow_horizontal = 0
 containerTexture = ExtResource("2_x4jx1")
-type = 1
+unit_type = 1
