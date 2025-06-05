@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="UnitResource" load_steps=3 format=3 uid="uid://vdg5qbiyqpke"]
+
+[ext_resource type="Script" uid="uid://phs2bfwqjgda" path="res://Data/Resources/unit.res.gd" id="1_mpr0f"]
+[ext_resource type="SpriteFrames" uid="uid://cg56uls2pavun" path="res://Data/Resources/unique_resource/healer_animations.tres" id="1_ohy2u"]
+
+[resource]
+script = ExtResource("1_mpr0f")
+name = "Healer"
+animation_resource = ExtResource("1_ohy2u")
+max_health = 50
+health = 50
+move_speed = 5
+attack = 20
+defense = 10
+attack_range = 1
+metadata/_custom_type_script = "uid://phs2bfwqjgda"

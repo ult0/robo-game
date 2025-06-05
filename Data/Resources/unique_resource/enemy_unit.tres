@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="UnitResource" load_steps=3 format=3 uid="uid://uyywr0ds7k1q"]
+
+[ext_resource type="SpriteFrames" uid="uid://cabom1rcnfn8o" path="res://Data/Resources/unique_resource/orc_animations.tres" id="1_ivxaw"]
+[ext_resource type="Script" uid="uid://phs2bfwqjgda" path="res://Data/Resources/unit.res.gd" id="1_q2b87"]
+
+[resource]
+script = ExtResource("1_q2b87")
+name = "Enemy"
+animation_resource = ExtResource("1_ivxaw")
+max_health = 50
+health = 50
+move_speed = 3
+attack = 10
+defense = 5
+attack_range = 1
+metadata/_custom_type_script = "uid://phs2bfwqjgda"

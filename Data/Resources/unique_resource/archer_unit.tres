@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="UnitResource" load_steps=3 format=3 uid="uid://b6jrdwe28px1p"]
+
+[ext_resource type="Script" uid="uid://phs2bfwqjgda" path="res://Data/Resources/unit.res.gd" id="1_auyjc"]
+[ext_resource type="SpriteFrames" uid="uid://dh53tpmgec2u1" path="res://Data/Resources/unique_resource/archer_animations.tres" id="1_o04lo"]
+
+[resource]
+script = ExtResource("1_auyjc")
+name = "Archer"
+animation_resource = ExtResource("1_o04lo")
+max_health = 100
+health = 100
+move_speed = 5
+attack = 25
+defense = 10
+attack_range = 2
+metadata/_custom_type_script = "uid://phs2bfwqjgda"

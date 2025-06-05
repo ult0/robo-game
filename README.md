@@ -17,3 +17,41 @@ Go to `Project` -> `Project Settings` -> `Plugins` and enable `Layer Names`.
 ## License
 
 Licensed under the [MIT license](LICENSE)
+
+## Project Structure
+
+```
+res://
+│
+├── Core/
+│   ├── GameState/
+│   ├── Input/
+│   ├── Managers/
+│   ├── Global/
+│   └── Utils/
+│
+├── Scenes/
+│   ├── Levels/
+│   ├── Units/
+│   ├── UI/
+│   └── Environment/
+│
+├── Entities/
+│   ├── Units/
+│   │   ├── Base/
+│   │   ├── Player/
+│   │   └── Enemy/
+│   └── Components/
+│
+├── Data/
+│   ├── Configs/
+│   ├── Enums/
+│   └── Resources/
+│
+├── Tests/
+│
+└── Assets/
+    ├── Art/
+    ├── Audio/
+    └── Fonts/
+```

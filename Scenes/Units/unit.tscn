@@ -1,0 +1,27 @@
+[gd_scene load_steps=5 format=3 uid="uid://co0s4au8klchy"]
+
+[ext_resource type="SpriteFrames" uid="uid://dh53tpmgec2u1" path="res://Data/Resources/unique_resource/archer_animations.tres" id="2_1jvru"]
+[ext_resource type="Script" uid="uid://otw5sqad2xuc" path="res://Entities/Units/Base/unit_animated_sprite.gd" id="3_1jvru"]
+[ext_resource type="PackedScene" uid="uid://c1eau4n213e4c" path="res://Scenes/UI/preview_layer.tscn" id="3_gic7v"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_k673f"]
+size = Vector2(16, 16)
+
+[node name="Unit" type="Node2D" groups=["unit"]]
+z_index = 1
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = ExtResource("2_1jvru")
+animation = &"grab"
+autoplay = "idle"
+script = ExtResource("3_1jvru")
+
+[node name="ClickBox" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ClickBox"]
+shape = SubResource("RectangleShape2D_k673f")
+
+[node name="TransformlessContainer" type="Node" parent="."]
+
+[node name="PreviewLayer" parent="TransformlessContainer" instance=ExtResource("3_gic7v")]
+visible = false

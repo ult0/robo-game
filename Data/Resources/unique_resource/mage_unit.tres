@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="UnitResource" load_steps=3 format=3 uid="uid://c6ltt3mam5h78"]
+
+[ext_resource type="Script" uid="uid://phs2bfwqjgda" path="res://Data/Resources/unit.res.gd" id="1_4d6q2"]
+[ext_resource type="SpriteFrames" uid="uid://chguar07ogu8w" path="res://Data/Resources/unique_resource/mage_animations.tres" id="1_p8nou"]
+
+[resource]
+script = ExtResource("1_4d6q2")
+name = "Mage"
+animation_resource = ExtResource("1_p8nou")
+max_health = 50
+health = 50
+move_speed = 5
+attack = 30
+defense = 5
+attack_range = 3
+metadata/_custom_type_script = "uid://phs2bfwqjgda"
