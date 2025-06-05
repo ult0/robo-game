@@ -2,8 +2,8 @@ extends Area2D
 class_name Spawner
 
 @export var unit_resource: UnitResource
-var player_scene: PackedScene = preload("res://scenes/player.tscn")
-var enemy_scene: PackedScene = preload("res://scenes/enemy.tscn")
+var player_scene: PackedScene = preload("res://Scenes/Units/player.tscn")
+var enemy_scene: PackedScene = preload("res://Scenes/Units/enemy.tscn")
 
 func _ready() -> void:
 	global_position = TileMapUtils.get_tile_center_position(global_position)

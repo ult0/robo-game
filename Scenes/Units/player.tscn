@@ -1,9 +1,9 @@
 [gd_scene load_steps=5 format=3 uid="uid://2rgqo6x3a48k"]
 
-[ext_resource type="PackedScene" uid="uid://co0s4au8klchy" path="res://scenes/unit.tscn" id="1_g2els"]
-[ext_resource type="Script" uid="uid://bmq78dt71qaxj" path="res://scripts/node/player.gd" id="2_qhqgy"]
-[ext_resource type="Resource" uid="uid://cl3duluh4v5rh" path="res://unique_resource/soldier_unit.tres" id="3_dqkch"]
-[ext_resource type="SpriteFrames" uid="uid://bx10cdxnkvwb1" path="res://unique_resource/warrior_animations.tres" id="4_qlg0r"]
+[ext_resource type="PackedScene" uid="uid://co0s4au8klchy" path="res://Scenes/Units/unit.tscn" id="1_g2els"]
+[ext_resource type="Script" uid="uid://bmq78dt71qaxj" path="res://Entities/Units/Player/player.gd" id="2_qhqgy"]
+[ext_resource type="Resource" uid="uid://cl3duluh4v5rh" path="res://Data/Resources/unique_resource/soldier_unit.tres" id="3_dqkch"]
+[ext_resource type="SpriteFrames" uid="uid://bx10cdxnkvwb1" path="res://Data/Resources/unique_resource/warrior_animations.tres" id="4_qlg0r"]
 
 [node name="Player" instance=ExtResource("1_g2els")]
 script = ExtResource("2_qhqgy")

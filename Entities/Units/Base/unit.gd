@@ -1,7 +1,7 @@
 class_name Unit
 extends Node2D
 
-var preview_layer_scene = preload("res://scenes/preview_layer.tscn")
+var preview_layer_scene = preload("res://Scenes/UI/preview_layer.tscn")
 var preview_layer: PreviewLayer
 # @onready var preview_layer: PreviewLayer = $TransformlessContainer/PreviewLayer
 @onready var animatedSprite: AnimatedSprite2D = $AnimatedSprite2D

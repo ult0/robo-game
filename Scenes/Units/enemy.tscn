@@ -1,9 +1,9 @@
 [gd_scene load_steps=5 format=3 uid="uid://dy5vf63kayq5l"]
 
-[ext_resource type="PackedScene" uid="uid://co0s4au8klchy" path="res://scenes/unit.tscn" id="1_5uy6h"]
-[ext_resource type="Script" uid="uid://ctyjs1uqmueke" path="res://scripts/node/enemy.gd" id="1_md0e3"]
-[ext_resource type="Resource" uid="uid://uyywr0ds7k1q" path="res://unique_resource/enemy_unit.tres" id="3_c4w8v"]
-[ext_resource type="SpriteFrames" uid="uid://cabom1rcnfn8o" path="res://unique_resource/orc_animations.tres" id="4_xwavj"]
+[ext_resource type="PackedScene" uid="uid://co0s4au8klchy" path="res://Scenes/Units/unit.tscn" id="1_5uy6h"]
+[ext_resource type="Script" uid="uid://ctyjs1uqmueke" path="res://Entities/Units/Enemy/enemy.gd" id="1_md0e3"]
+[ext_resource type="Resource" uid="uid://uyywr0ds7k1q" path="res://Data/Resources/unique_resource/enemy_unit.tres" id="3_c4w8v"]
+[ext_resource type="SpriteFrames" uid="uid://cabom1rcnfn8o" path="res://Data/Resources/unique_resource/orc_animations.tres" id="4_xwavj"]
 
 [node name="Enemy" instance=ExtResource("1_5uy6h")]
 script = ExtResource("1_md0e3")

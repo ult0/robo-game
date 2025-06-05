@@ -7,7 +7,7 @@ path="res://.godot/imported/PressStart2P.ttf-575365d8537b7ec81e37fab7878bde5c.fo
 
 [deps]
 
-source_file="res://assets/fonts/PressStart2P.ttf"
+source_file="res://Assets/Fonts/fonts/PressStart2P.ttf"
 dest_files=["res://.godot/imported/PressStart2P.ttf-575365d8537b7ec81e37fab7878bde5c.fontdata"]
 
 [params]

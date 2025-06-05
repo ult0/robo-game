@@ -3,7 +3,7 @@ class_name UnitResource
 
 @export var name: String = "Unit"
 @export var animation_resource: SpriteFrames
-# @export var sprite_path: String = "res://assets/sprites/Puny-Characters/Soldier-Blue.png"
+# @export var sprite_path: String = "res://Assets/Art/sprites/Puny-Characters/Soldier-Blue.png"
 @export var max_health: int = 100
 @export var health: int = max_health
 @export var move_speed: int = 5

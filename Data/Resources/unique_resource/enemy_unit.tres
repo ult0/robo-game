@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="UnitResource" load_steps=3 format=3 uid="uid://uyywr0ds7k1q"]
 
-[ext_resource type="SpriteFrames" uid="uid://cabom1rcnfn8o" path="res://unique_resource/orc_animations.tres" id="1_ivxaw"]
-[ext_resource type="Script" uid="uid://phs2bfwqjgda" path="res://scripts/resources/unit.res.gd" id="1_q2b87"]
+[ext_resource type="SpriteFrames" uid="uid://cabom1rcnfn8o" path="res://Data/Resources/unique_resource/orc_animations.tres" id="1_ivxaw"]
+[ext_resource type="Script" uid="uid://phs2bfwqjgda" path="res://Data/Resources/unit.res.gd" id="1_q2b87"]
 
 [resource]
 script = ExtResource("1_q2b87")

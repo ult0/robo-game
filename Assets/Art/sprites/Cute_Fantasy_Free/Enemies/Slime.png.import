@@ -10,7 +10,7 @@ metadata={
 
 [deps]
 
-source_file="res://assets/sprites/Cute_Fantasy_Free/Enemies/Slime.png"
+source_file="res://Assets/Art/sprites/Cute_Fantasy_Free/Enemies/Slime.png"
 dest_files=["res://.godot/imported/Slime.png-af9548777719c41430f044c37837e2ff.ctex"]
 
 [params]

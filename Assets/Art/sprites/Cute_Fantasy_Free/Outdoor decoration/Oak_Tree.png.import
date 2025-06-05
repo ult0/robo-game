@@ -10,7 +10,7 @@ metadata={
 
 [deps]
 
-source_file="res://assets/sprites/Cute_Fantasy_Free/Outdoor decoration/Oak_Tree.png"
+source_file="res://Assets/Art/sprites/Cute_Fantasy_Free/Outdoor decoration/Oak_Tree.png"
 dest_files=["res://.godot/imported/Oak_Tree.png-679b8cc040324fb642af8715810a7f78.ctex"]
 
 [params]

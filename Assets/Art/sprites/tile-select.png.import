@@ -10,7 +10,7 @@ metadata={
 
 [deps]
 
-source_file="res://assets/sprites/tile-select.png"
+source_file="res://Assets/Art/sprites/tile-select.png"
 dest_files=["res://.godot/imported/tile-select.png-7597fefcb0eabaa4d97f4e43a7ea5fdc.ctex"]
 
 [params]
