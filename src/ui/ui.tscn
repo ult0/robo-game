@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3 uid="uid://24ms5ekd0gfc"]
+
+[ext_resource type="PackedScene" uid="uid://6wd6paja8lm5" path="res://src/ui/hud/selected_unit_display/selected_unit_display.tscn" id="1_nt7q6"]
+[ext_resource type="Texture2D" uid="uid://bpsjvxw0ai4wq" path="res://src/assets/sprites/container2.png" id="2_x4jx1"]
+
+[node name="UI" type="CanvasLayer"]
+
+[node name="PlayerDisplay" parent="." instance=ExtResource("1_nt7q6")]
+
+[node name="EnemyDisplay" parent="." instance=ExtResource("1_nt7q6")]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -136.0
+offset_right = 0.0
+grow_horizontal = 0
+containerTexture = ExtResource("2_x4jx1")
+unit_type = 1
