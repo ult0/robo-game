@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="UnitResource" load_steps=3 format=3 uid="uid://cl3duluh4v5rh"]
+
+[ext_resource type="Script" uid="uid://phs2bfwqjgda" path="res://src/data/resources/unit_resource.gd" id="1_4m7i4"]
+[ext_resource type="SpriteFrames" uid="uid://bx10cdxnkvwb1" path="res://src/data/presets/units/player/melee/warrior_animations.tres" id="1_y3lix"]
+
+[resource]
+script = ExtResource("1_4m7i4")
+name = "Soldier"
+animation_resource = ExtResource("1_y3lix")
+max_health = 200
+health = 200
+move_speed = 5
+attack = 20
+defense = 20
+attack_range = 1
+metadata/_custom_type_script = "uid://phs2bfwqjgda"

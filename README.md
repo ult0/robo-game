@@ -1,19 +1,45 @@
-# Godot Layer Name Enums
+# RPG Game
 
-Automatically generate user friendly lookups of project layer names.
+<!-- Add description here -->
 
-![useage](https://github.com/user-attachments/assets/482c9bc3-ae43-4132-b716-04e4a5caa298)
+## Project Structure
 
+```
+src/
+|
+├── core/
+│   ├── game_state/
+│   ├── input/
+│   ├── managers/
+│   ├── global/
+│   └── utils/
+│
+├── scenes/
+│   ├── levels/
+│   ├── units/
+│   ├── ui/
+│   └── environment/
+│
+├── entities/
+│   ├── units/
+│   │   ├── unit.gd
+│   │   ├── player/
+│   │   └── enemy/
+│   └── components/
+│
+├── data/
+│   ├── constants/
+│   └── resources/
+│
+└── assets/
+    ├── art/
+    ├── audio/
+    └── fonts/
 
-## Installation
+tests/
+└── ...
 
-Copy the `addons/layerNames` directory into your `res://addons/` directory, or install via the [Asset Library](https://godotengine.org/asset-library/asset/3372)
-
-Go to `Project` -> `Project Settings` -> `Plugins` and enable `Layer Names`.
-
-![install](https://github.com/user-attachments/assets/382c36c1-4bdc-4599-92ef-ef6246ab9c8b)
-
-
-## License
-
-Licensed under the [MIT license](LICENSE)
+addons/
+├── layerNames/
+└── ...
+```
