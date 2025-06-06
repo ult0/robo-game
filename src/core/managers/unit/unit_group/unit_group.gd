@@ -1,6 +1,7 @@
 extends Node2D
 class_name UnitGroup
 
+var force_show_attack_range: bool = false
 @export var unit_type: Constants.UnitType = Constants.UnitType.PLAYER
 var current_units: Array[Unit] = []
 var selected_unit: Unit = null
@@ -96,3 +97,9 @@ func is_unit_at_coord(coord: Vector2i) -> bool:
 
 func find_unit_index(coord: Vector2i) -> int:
 	return current_units.find_custom(func (unit: Unit) -> bool: return unit.tile_coord == coord)
+
+func set_force_show_attack_range(value: bool) -> void:
+	force_show_attack_range = value
+	for unit in current_units:
+		unit.force_show_attack_range = value
+		unit.update_preview_layer()

@@ -48,7 +48,7 @@ func set_preview_tiles() -> void:
 	var attackable_tiles: Array[Vector2i] = []
 	var tiles_with_enemies: Array[Vector2i] = []
 
-	if is_selected:
+	if is_selected or force_show_attack_range:
 		for tile in get_walkable_tiles(tile_coord):
 			if Level.instance.tile_contains_enemy(tile) and tile != tile_coord:
 				tiles_with_enemies.append(tile)

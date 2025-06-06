@@ -63,9 +63,11 @@ func handle_key_input(event: InputEventKey):
 		GameState.PLAYER_TURN:
 			# F
 			if event.is_pressed() and event.keycode == KEY_F:
-				# SHOW ALL ENEMY RANGE
-				if unitManager.enemy_group.current_units:
-					pass
+				# TOGGLE ALL ENEMY ATTACK RANGES
+				if unitManager.enemy_group.force_show_attack_range:
+					unitManager.enemy_group.set_force_show_attack_range(false)
+				else:
+					unitManager.enemy_group.set_force_show_attack_range(true)
 
 func set_state(new_state: GameState):
 	if current_state == new_state:

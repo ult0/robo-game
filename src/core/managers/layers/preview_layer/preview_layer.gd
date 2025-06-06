@@ -14,7 +14,7 @@ var unit_friendly_tiles: Array[Vector2i] = []
 var unit_attackable_tiles: Array[Vector2i] = []
 
 func update() -> void:
-	if unit.is_selected:
+	if unit.is_selected or unit.force_show_attack_range:
 		clear()
 		draw_all_tiles()
 		enabled = true

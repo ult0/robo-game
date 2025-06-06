@@ -16,6 +16,7 @@ var tile_coord: Vector2i:
 signal selected(unit: Unit)
 signal unselected(unit: Unit)
 var is_selected: bool = false
+var force_show_attack_range: bool = false
 func select() -> void:
 	is_selected = true
 func unselect() -> void:
