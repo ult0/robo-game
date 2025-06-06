@@ -3,11 +3,7 @@ class_name Level
 static var instance: Level
 
 var layerManager: LayerManager
-var tileSelector: TileSelector
 var unitManager: UnitManager
-
-var player_units: Array[Player] = []
-var enemy_units: Array[Enemy] = []
 
 var aStar: AStar
 
@@ -17,12 +13,10 @@ func _init() -> void:
 
 func _ready() -> void:
 	layerManager = find_child("LayerManager")
-	tileSelector = layerManager.uiLayer.find_child("TileSelector")
 	unitManager = find_child("UnitManager")
 
 	aStar = AStar.create(
-		is_walkable,
-		layerManager.debugLayer
+		is_walkable
 	)
 
 func is_walkable(coord: Vector2i) -> bool:

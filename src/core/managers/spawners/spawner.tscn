@@ -1,6 +1,9 @@
-[gd_scene load_steps=3 format=3 uid="uid://ccy4nflkf5127"]
+[gd_scene load_steps=6 format=3 uid="uid://ccy4nflkf5127"]
 
 [ext_resource type="Script" uid="uid://c3nhgn7bimrhp" path="res://src/core/managers/spawners/spawner.gd" id="1_2vbf6"]
+[ext_resource type="Resource" uid="uid://cl3duluh4v5rh" path="res://src/data/presets/units/player/melee/soldier_unit.tres" id="2_gqqh1"]
+[ext_resource type="PackedScene" uid="uid://2rgqo6x3a48k" path="res://src/entities/units/player/player.tscn" id="3_2vmly"]
+[ext_resource type="PackedScene" uid="uid://dy5vf63kayq5l" path="res://src/entities/units/enemy/enemy.tscn" id="4_6xwgn"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_8xlu4"]
 size = Vector2(14, 14)
@@ -9,6 +12,9 @@ size = Vector2(14, 14)
 monitoring = false
 monitorable = false
 script = ExtResource("1_2vbf6")
+unit_resource = ExtResource("2_gqqh1")
+player_scene = ExtResource("3_2vmly")
+enemy_scene = ExtResource("4_6xwgn")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_8xlu4")

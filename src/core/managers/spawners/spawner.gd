@@ -1,18 +1,9 @@
-# @tool
 extends Area2D
 class_name Spawner
 
 @export var unit_resource: UnitResource
-var player_scene: PackedScene = preload("uid://2rgqo6x3a48k")
-var enemy_scene: PackedScene = preload("uid://dy5vf63kayq5l")
-
-func _get_configuration_warnings() -> PackedStringArray:
-	var warnings: PackedStringArray = []
-	if unit_resource == null:
-		warnings.append("Unit resource must be assigned to the spawner")
-	if player_scene == null and enemy_scene == null:
-		warnings.append("At least one unit scene must be assigned to the spawner")
-	return warnings
+@export var player_scene: PackedScene
+@export var enemy_scene: PackedScene
 
 func _ready() -> void:
 	global_position = TileMapUtils.get_tile_center_position(global_position)

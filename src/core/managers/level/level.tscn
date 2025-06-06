@@ -1,4 +1,4 @@
-[gd_scene load_steps=41 format=4 uid="uid://8itfr0as6040"]
+[gd_scene load_steps=34 format=4 uid="uid://8itfr0as6040"]
 
 [ext_resource type="Script" uid="uid://d24v7ccnagesb" path="res://src/core/managers/level/level_manager.gd" id="1_tg4mi"]
 [ext_resource type="Script" uid="uid://d3n05fystaoqr" path="res://src/core/game_state/game_state_machine.gd" id="2_s3rty"]
@@ -11,13 +11,10 @@
 [ext_resource type="Texture2D" uid="uid://b7ussm5xgn5r3" path="res://src/assets/sprites/Puny-Characters/Environment/Dirt.png" id="9_jl41i"]
 [ext_resource type="Texture2D" uid="uid://dyptcyxwkl304" path="res://src/assets/sprites/Puny-Characters/Environment/punyworld-dungeon-tileset.png" id="10_m3j03"]
 [ext_resource type="Texture2D" uid="uid://delhvqyqv0252" path="res://src/assets/sprites/Puny-Characters/Environment/punyworld-overworld-tileset.png" id="11_oni6h"]
-[ext_resource type="Texture2D" uid="uid://be7fg32lfp6hq" path="res://src/assets/sprites/tile-select.png" id="12_rvym5"]
-[ext_resource type="Script" uid="uid://b85gask7dco07" path="res://src/core/managers/layers/ui_layer/ui_layer.gd" id="13_0hylh"]
 [ext_resource type="PackedScene" uid="uid://bpku2rpj1qmjo" path="res://src/ui/hud/selector/tile_selector.tscn" id="14_k6xn2"]
 [ext_resource type="Script" uid="uid://fs7xaii7frki" path="res://src/core/managers/unit/unit_manager.gd" id="15_ae7c6"]
 [ext_resource type="PackedScene" uid="uid://d1ilia4pde6jk" path="res://src/core/managers/unit/unit_group/unit_group.tscn" id="16_or6ma"]
 [ext_resource type="PackedScene" uid="uid://ccy4nflkf5127" path="res://src/core/managers/spawners/spawner.tscn" id="17_fv33o"]
-[ext_resource type="Resource" uid="uid://cl3duluh4v5rh" path="res://src/data/presets/units/player/melee/soldier_unit.tres" id="18_ndfvj"]
 [ext_resource type="Resource" uid="uid://b6jrdwe28px1p" path="res://src/data/presets/units/player/ranged/archer_unit.tres" id="19_7ggv0"]
 [ext_resource type="Resource" uid="uid://c6ltt3mam5h78" path="res://src/data/presets/units/player/mage/mage_unit.tres" id="20_qxri1"]
 [ext_resource type="Resource" uid="uid://vdg5qbiyqpke" path="res://src/data/presets/units/player/support/healer_unit.tres" id="21_4f5du"]
@@ -2045,29 +2042,6 @@ sources/1 = SubResource("TileSetAtlasSource_ni847")
 sources/2 = SubResource("TileSetAtlasSource_jq5f8")
 pattern_0 = SubResource("TileMapPattern_m83hc")
 
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_hpjoi"]
-texture = ExtResource("6_rnej3")
-0:0/next_alternative_id = 8
-0:0/0 = 0
-0:0/2 = 2
-0:0/2/modulate = Color(0, 1, 1, 1)
-0:0/3 = 3
-0:0/3/modulate = Color(0, 0, 1, 1)
-0:0/1 = 1
-0:0/1/modulate = Color(1, 0, 0, 1)
-
-[sub_resource type="TileSet" id="TileSet_yotsu"]
-sources/0 = SubResource("TileSetAtlasSource_hpjoi")
-
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_as1xg"]
-texture = ExtResource("12_rvym5")
-texture_region_size = Vector2i(20, 20)
-use_texture_padding = false
-0:0/0 = 0
-
-[sub_resource type="TileSet" id="TileSet_7udmc"]
-sources/0 = SubResource("TileSetAtlasSource_as1xg")
-
 [node name="Level" type="Node2D"]
 script = ExtResource("1_tg4mi")
 
@@ -2098,38 +2072,11 @@ tile_set = SubResource("TileSet_5d5gd")
 tile_map_data = PackedByteArray("AAD4//z/AgAUABoAAAD4//3/AgATABoAAAD5//z/AgATABoAAAD5//3/AgAUABoAAAD1/wEAAgAHABAAAAD1/wIAAgAHABIAAAD2/wEAAgAFAAoAAAD2/wIAAgAIABUAAAD5/wUAAgAUABsAAAD5/wYAAgASABoAAAD6/wUAAgAUABoAAAD6/wYAAgATABoAAAD8/wEAAgAAAAQAAAD8/wIAAgAAAAYAAAD9/wEAAgACAAQAAAD9/wIAAgACAAYAAAADAAUAAgASABoAAAADAAYAAgATABoAAAAEAAUAAgATABoAAAAEAAYAAgASABoAAAAAAPz/AgAHABMAAAAAAP3/AgAHABUAAAABAPz/AgAJABMAAAABAP3/AgAJABUAAAAHAAEAAgAMACEAAAAHAAIAAgAMACIAAAAIAAEAAgANACEAAAAIAAIAAgANACIAAAAFAP3/AgAHABMAAAAFAP7/AgAHAA8AAAAGAP3/AgAJAA0AAAAGAP7/AgAJABUAAAAJAPn/AgAKABwAAAAJAPr/AgAKAB0AAAAKAPn/AgALABwAAAAKAPr/AgALAB0AAAD8//n/AgAKABwAAAD8//r/AgAKAB0AAAD9//n/AgALABwAAAD9//r/AgALAB0AAADz//r/AgAMABoAAADz//v/AgAMABsAAAD0//r/AgANABoAAAD0//v/AgANABsAAAD5/wMAAgAOABsAAAD5/wQAAgAOABsAAAD2/wAAAgAAAAsAAAD2////AgAAAAoAAAD3//3/AgATABoAAAD2//3/AgAUABoAAAD5/wIAAgAOABoAAAD3/wIAAgAJAA8AAAD6//z/AgATABoAAAD7//z/AgATABoAAAD8//z/AgAUABoAAAD+//n/AgATABoAAAD///n/AgATABoAAAAAAPn/AgATABoAAAABAPn/AgATABoAAAACAPn/AgATABoAAAADAPn/AgATABoAAAAEAPn/AgATABoAAAAFAPn/AgATABoAAAAGAPn/AgATABoAAAAHAPn/AgATABoAAAAIAPn/AgATABoAAAD7/wYAAgATABoAAAD8/wYAAgATABoAAAD9/wYAAgATABoAAAD+/wYAAgAUABoAAAABAAYAAgAOABoAAAACAAYAAgATABoAAAAFAAUAAgATABoAAAAGAAUAAgATABwAAAAHAAUAAgAUABoAAAAHAAQAAgASABoAAAAKAPv/AgASABsAAAAKAPz/AgASABsAAAAKAP3/AgAOABsAAAAKAP7/AgAOABsAAAAKAP//AgAOABsAAAAKAAAAAgAOABsAAAAKAAEAAgARABsAAADy/wYAAgABAA0AAADz/wYAAgACAA8AAADz/wcAAgAAAAwAAAD0/wYAAgADAA0AAADz/wUAAgAAAAoAAADy//v/AgAFABoAAADz//n/AgAFABoAAADz//z/AgAFABoAAAD1//r/AgAFABoAAAALAAYAAgAGABsAAAAMAAYAAgAEABsAAAAMAAUAAgAHAB0AAAAMAPr/AgANABoAAAAMAPv/AgANABwAAAANAPv/AgAUABoAAAAMAPz/AgANAB0AAAALAPr/AgAMABoAAAALAPv/AgAMABwAAAALAPz/AgAMAB0AAAD3/wEAAgAJAA0AAAA=")
 tile_set = SubResource("TileSet_ct7w5")
 
-[node name="DebugLayer" type="TileMapLayer" parent="LayerManager"]
-tile_set = SubResource("TileSet_yotsu")
-
-[node name="UnitPreviews" type="Node2D" parent="LayerManager"]
-
-[node name="UILayer" type="TileMapLayer" parent="LayerManager"]
-tile_set = SubResource("TileSet_7udmc")
-script = ExtResource("13_0hylh")
-
 [node name="TileSelector" parent="." instance=ExtResource("14_k6xn2")]
 
 [node name="UnitManager" type="Node2D" parent="."]
 unique_name_in_owner = true
 script = ExtResource("15_ae7c6")
-
-[node name="PlayerUnits" parent="UnitManager" instance=ExtResource("16_or6ma")]
-
-[node name="Spawner" parent="UnitManager/PlayerUnits" instance=ExtResource("17_fv33o")]
-position = Vector2(-216, -8)
-unit_resource = ExtResource("18_ndfvj")
-
-[node name="Spawner2" parent="UnitManager/PlayerUnits" instance=ExtResource("17_fv33o")]
-position = Vector2(-216, 8)
-unit_resource = ExtResource("19_7ggv0")
-
-[node name="Spawner3" parent="UnitManager/PlayerUnits" instance=ExtResource("17_fv33o")]
-position = Vector2(-216, 24)
-unit_resource = ExtResource("20_qxri1")
-
-[node name="Spawner4" parent="UnitManager/PlayerUnits" instance=ExtResource("17_fv33o")]
-position = Vector2(-216, 40)
-unit_resource = ExtResource("21_4f5du")
 
 [node name="EnemyUnits" parent="UnitManager" instance=ExtResource("16_or6ma")]
 unit_type = 1
@@ -2157,5 +2104,22 @@ unit_resource = ExtResource("22_b8pr1")
 [node name="Spawner6" parent="UnitManager/EnemyUnits" instance=ExtResource("17_fv33o")]
 position = Vector2(8, 103)
 unit_resource = ExtResource("22_b8pr1")
+
+[node name="PlayerUnits" parent="UnitManager" instance=ExtResource("16_or6ma")]
+
+[node name="Spawner" parent="UnitManager/PlayerUnits" instance=ExtResource("17_fv33o")]
+position = Vector2(-216, -8)
+
+[node name="Spawner2" parent="UnitManager/PlayerUnits" instance=ExtResource("17_fv33o")]
+position = Vector2(-216, 8)
+unit_resource = ExtResource("19_7ggv0")
+
+[node name="Spawner3" parent="UnitManager/PlayerUnits" instance=ExtResource("17_fv33o")]
+position = Vector2(-216, 24)
+unit_resource = ExtResource("20_qxri1")
+
+[node name="Spawner4" parent="UnitManager/PlayerUnits" instance=ExtResource("17_fv33o")]
+position = Vector2(-216, 40)
+unit_resource = ExtResource("21_4f5du")
 
 [node name="UI" parent="." instance=ExtResource("23_7mtkk")]

@@ -1,6 +1,5 @@
 class_name AStar extends Object
 
-var debug_layer: TileMapLayer
 var is_walkable: Callable
 
 var _frontier: PriorityQueue = PriorityQueue.new()
@@ -9,29 +8,22 @@ var _current: AStarNode = null
 
 var _path: Array[Vector2i] = []
 
-static func create(_is_walkable: Callable, _debug_layer: TileMapLayer = null) -> AStar:
+static func create(_is_walkable: Callable) -> AStar:
 	var astar = AStar.new();
 	astar.is_walkable = _is_walkable
-	astar.debug_layer = _debug_layer
 	return astar
 
-func set_debug_tile(coord: Vector2i, alternate_tile_id: int, debug_mode = false):
-	if is_instance_valid(debug_layer) and debug_mode:
-		debug_layer.set_cell(coord, 0, Vector2i(0, 0), alternate_tile_id)
-
-func find_path(start: Vector2i, target: Vector2i, debug_mode = false) -> Array[Vector2i]:
+func find_path(start: Vector2i, target: Vector2i) -> Array[Vector2i]:
 	_frontier.insert(AStarNode.create(start), 0)
 
 	while !_frontier.is_empty():
 		_current = _frontier.extract()
 		_closed_list.append(_current.coord)
-		set_debug_tile(_current.coord, 1, debug_mode)
 
 		# If the current node is the target node, return the path recursively from parent to parent
 		if _current.coord == target:
 			var path: Array[Vector2i] = []
 			while _current.parent.parent != null:
-				set_debug_tile(_current.coord, 2, debug_mode)
 				path.append(_current.coord)
 				_current = _current.parent
 			_path = path
@@ -62,7 +54,6 @@ func find_path(start: Vector2i, target: Vector2i, debug_mode = false) -> Array[V
 			elif found_index == -1:
 				_frontier.insert(neighbor, neighbor.f)
 			
-			set_debug_tile(neighbor.coord, 3, debug_mode)
 	reset()
 	return []
 

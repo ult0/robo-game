@@ -1,7 +1,9 @@
 class_name Enemy
 extends Unit
 
-@onready var aStar: AStar = AStar.create(is_walkable)
+func _ready() -> void:
+	super()
+	aStar = AStar.create(is_walkable)
 
 func select() -> void:
 	super()
@@ -41,7 +43,7 @@ func get_attackable_tiles(starting_tiles: Array[Vector2i]) -> Array[Vector2i]:
 
 func setup_preview_layer() -> void:
 	super()
-	preview_layer.tile_order = [preview_layer.attack_tile_coord]
+	preview_component.tile_order = [preview_component.attack_tile_coord]
 
 func set_preview_tiles() -> void:
 	var walkable_tiles: Array[Vector2i] = []
@@ -56,6 +58,6 @@ func set_preview_tiles() -> void:
 				walkable_tiles.append(tile)
 		attackable_tiles = get_attackable_tiles(walkable_tiles)
 	
-	preview_layer.unit_walkable_tiles = walkable_tiles
-	preview_layer.unit_attackable_tiles = attackable_tiles
-	preview_layer.unit_friendly_tiles = tiles_with_enemies
+	preview_component.unit_walkable_tiles = walkable_tiles
+	preview_component.unit_attackable_tiles = attackable_tiles
+	preview_component.unit_friendly_tiles = tiles_with_enemies

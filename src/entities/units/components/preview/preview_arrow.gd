@@ -1,32 +1,24 @@
-extends TileMapLayer
+extends Node2D
 
-var selected_player: Player
 var selector_coord: Vector2i
 
-func _ready() -> void:
-	EventBus.selector_coord_changed_connect(on_tile_selector_entered)
-	EventBus.player_selected_connect(on_player_selected)
-
-func on_tile_selector_entered(coord: Vector2i) -> void:
+func redraw(coord: Vector2i) -> void:
 	selector_coord = coord
 	queue_redraw()
 
-func on_player_selected(player: Player) -> void:
-	selected_player = player
-	queue_redraw()
-
 func _draw() -> void:
-	if selected_player and !selected_player.moving and selected_player.is_preview_layer_showing():
-		var start := selected_player.tile_coord
+	var unit: Unit = owner.unit
+	if unit and !unit.moving and unit.is_selected:
+		var start = unit.tile_coord
 		var end := selector_coord
-		var path := Level.instance.aStar.find_path(start, end).map(func (coord: Vector2i) -> Vector2: return TileMapUtils.get_tile_center_position_from_coord(coord))
+		var path := unit.aStar.find_path(start, end).map(func (coord: Vector2i) -> Vector2: return TileMapUtils.get_tile_center_position_from_coord(coord))
 		
-		if (path.is_empty() or path.size() > selected_player.unit_resource.move_speed):
+		if (path.is_empty() or path.size() > unit.unit_resource.move_speed):
 			return
 
 		# Draw the path
 		var width = 4
-		var color = Color.CADET_BLUE
+		var color = Color.WHITE
 		# Add the start points to the path to draw the first line
 		path.append(TileMapUtils.get_tile_center_position_from_coord(start))
 
@@ -53,4 +45,3 @@ func _draw() -> void:
 			Vector2(last_point + arrow_direction * 4),
 		]
 		draw_colored_polygon(triangle_vectors, color)
-	

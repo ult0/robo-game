@@ -1,0 +1,24 @@
+[gd_scene load_steps=6 format=3 uid="uid://bkdggniofa67c"]
+
+[ext_resource type="Script" uid="uid://mvdv5gwiovjj" path="res://src/entities/units/components/preview/preview_component.gd" id="1_5faww"]
+[ext_resource type="Texture2D" uid="uid://delhvqyqv0252" path="res://src/assets/sprites/Puny-Characters/Environment/punyworld-overworld-tileset.png" id="2_e38pc"]
+[ext_resource type="Script" uid="uid://cial7xh7jewep" path="res://src/entities/units/components/preview/preview_arrow.gd" id="3_5k8xf"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_t2oak"]
+texture = ExtResource("2_e38pc")
+21:4/0 = 0
+22:4/0 = 0
+22:5/0 = 0
+21:5/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_mi3k7"]
+sources/0 = SubResource("TileSetAtlasSource_t2oak")
+
+[node name="PreviewComponent" type="Node"]
+script = ExtResource("1_5faww")
+
+[node name="PreviewLayer" type="TileMapLayer" parent="."]
+tile_set = SubResource("TileSet_mi3k7")
+
+[node name="PreviewArrow" type="Node2D" parent="."]
+script = ExtResource("3_5k8xf")
