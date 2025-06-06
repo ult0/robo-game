@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://ccy4nflkf5127"]
 
-[ext_resource type="Script" uid="uid://c3nhgn7bimrhp" path="res://src/entities/units/spawner.gd" id="1_2vbf6"]
+[ext_resource type="Script" uid="uid://c3nhgn7bimrhp" path="res://src/core/managers/spawners/spawner.gd" id="1_2vbf6"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_8xlu4"]
 size = Vector2(14, 14)
