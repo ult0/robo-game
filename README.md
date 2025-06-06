@@ -9,32 +9,47 @@ src/
 |
 ├── core/
 │   ├── game_state/
-│   ├── input/
-│   ├── managers/
 │   ├── global/
+│   ├── managers/
+│   │   ├── camera/
+│   │   ├── input/
+│   │   ├── layers/
+│   │   ├── level/
+│   │   ├── spawners/
+│   │   └── unit/
 │   └── utils/
-│
-├── scenes/
-│   ├── levels/
-│   ├── units/
-│   ├── ui/
-│   └── environment/
+│       ├── a_star/
+│       ├── priority_queue/
+│       └── state_machine/
 │
 ├── entities/
-│   ├── units/
-│   │   ├── unit.gd
-│   │   ├── player/
-│   │   └── enemy/
-│   └── components/
+│   └── units/
+│       ├── base/
+│       ├── components/
+│       ├── enemy/
+│       └── player/
 │
 ├── data/
 │   ├── constants/
+│   ├── presets/
+│   │   └── units/
 │   └── resources/
 │
+├── ui/
+│   ├── components/
+│   ├── hud/
+│   │   ├── selected_unit_display/
+│   │   └── selector/
+│   └── menu/
+│
+├── world/
+│   └── levels/
+│
 └── assets/
-    ├── art/
     ├── audio/
-    └── fonts/
+    ├── fonts/
+    ├── sprites/
+    └── themes/
 
 tests/
 └── ...
