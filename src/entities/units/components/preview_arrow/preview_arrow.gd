@@ -4,12 +4,22 @@ class_name PreviewArrow
 var unit: Unit
 var selector_coord: Vector2i
 
-func draw(coord: Vector2i) -> void:
-	selector_coord = coord
+@export var color: Color = Color.WHITE
+@export var width: float = 4.0
+
+func _ready() -> void:
+	EventBus.selector_coord_changed_connect(
+		func (coord: Vector2i) -> void:
+			selector_coord = coord
+			draw(unit)
+	)
+
+func draw(_unit: Unit) -> void:
+	unit = _unit
 	queue_redraw()
 
 func _draw() -> void:
-	if unit and !unit.is_moving and unit.is_selected and unit is Player:
+	if unit and !unit.is_moving and unit.is_selected:
 		var start = unit.tile_coord
 		var end := selector_coord
 		var path := unit.aStar.find_path(start, end).map(func (coord: Vector2i) -> Vector2: return TileMapUtils.get_tile_center_position_from_coord(coord))
@@ -18,8 +28,6 @@ func _draw() -> void:
 			return
 
 		# Draw the path
-		var width = 4
-		var color = Color.WHITE
 		# Add the start points to the path to draw the first line
 		path.append(TileMapUtils.get_tile_center_position_from_coord(start))
 

@@ -1,16 +1,15 @@
-[gd_scene load_steps=6 format=3 uid="uid://dy5vf63kayq5l"]
+[gd_scene load_steps=5 format=3 uid="uid://dy5vf63kayq5l"]
 
 [ext_resource type="PackedScene" uid="uid://co0s4au8klchy" path="res://src/entities/units/base/unit.tscn" id="1_5uy6h"]
 [ext_resource type="Script" uid="uid://ctyjs1uqmueke" path="res://src/entities/units/enemy/enemy.gd" id="1_md0e3"]
 [ext_resource type="Resource" uid="uid://uyywr0ds7k1q" path="res://src/data/presets/units/enemy/orc/enemy_unit.tres" id="3_c4w8v"]
-[ext_resource type="PackedScene" uid="uid://bkdggniofa67c" path="res://src/entities/units/components/preview/preview_component.tscn" id="4_7cruw"]
 [ext_resource type="SpriteFrames" uid="uid://cabom1rcnfn8o" path="res://src/data/presets/units/enemy/orc/orc_animations.tres" id="4_xwavj"]
 
 [node name="Enemy" instance=ExtResource("1_5uy6h")]
 script = ExtResource("1_md0e3")
 unit_resource = ExtResource("3_c4w8v")
 
-[node name="PreviewComponent" parent="." index="0" instance=ExtResource("4_7cruw")]
+[node name="PreviewTilesComponent" parent="." index="0"]
 tile_order = Array[int]([1])
 
 [node name="AnimatedSprite2D" parent="." index="1"]

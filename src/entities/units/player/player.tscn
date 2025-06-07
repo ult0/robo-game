@@ -3,14 +3,15 @@
 [ext_resource type="PackedScene" uid="uid://co0s4au8klchy" path="res://src/entities/units/base/unit.tscn" id="1_g2els"]
 [ext_resource type="Script" uid="uid://bmq78dt71qaxj" path="res://src/entities/units/player/player.gd" id="2_qhqgy"]
 [ext_resource type="Resource" uid="uid://cl3duluh4v5rh" path="res://src/data/presets/units/player/melee/soldier_unit.tres" id="3_dqkch"]
-[ext_resource type="PackedScene" uid="uid://bkdggniofa67c" path="res://src/entities/units/components/preview/preview_component.tscn" id="4_ggyb8"]
+[ext_resource type="PackedScene" uid="uid://dahi8q4meed7e" path="res://src/entities/units/components/preview_arrow/preview_arrow_component.tscn" id="4_ggyb8"]
 [ext_resource type="SpriteFrames" uid="uid://bx10cdxnkvwb1" path="res://src/data/presets/units/player/melee/warrior_animations.tres" id="4_qlg0r"]
 
 [node name="Player" instance=ExtResource("1_g2els")]
 script = ExtResource("2_qhqgy")
 unit_resource = ExtResource("3_dqkch")
+moves_per_second = 3.0
 
-[node name="PreviewComponent" parent="." index="0" instance=ExtResource("4_ggyb8")]
+[node name="PreviewArrowComponent" parent="." index="1" instance=ExtResource("4_ggyb8")]
 
-[node name="AnimatedSprite2D" parent="." index="1"]
+[node name="AnimatedSprite2D" parent="." index="2"]
 sprite_frames = ExtResource("4_qlg0r")

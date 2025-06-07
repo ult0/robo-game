@@ -5,7 +5,7 @@ var force_show_attack_range: bool = false:
 	set(value):
 		force_show_attack_range = value
 		update_action_tiles()
-		var preview: PreviewComponent = unit_components.get("PreviewComponent")
+		var preview: PreviewTilesComponent = unit_components.get("PreviewTilesComponent")
 		if preview: preview.update()
 
 func select() -> void:

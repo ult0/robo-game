@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://dahi8q4meed7e"]
+
+[ext_resource type="Script" uid="uid://cial7xh7jewep" path="res://src/entities/units/components/preview_arrow/preview_arrow_component.gd" id="1_ut0by"]
+[ext_resource type="Script" uid="uid://dqdfjw1ivw3ai" path="res://src/entities/units/components/preview_arrow/preview_arrow.gd" id="2_2xcnu"]
+
+[node name="PreviewArrowComponent" type="Node2D" node_paths=PackedStringArray("preview_arrow")]
+script = ExtResource("1_ut0by")
+preview_arrow = NodePath("RemoveTransform/PreviewArrow")
+
+[node name="RemoveTransform" type="Node" parent="."]
+
+[node name="PreviewArrow" type="Node2D" parent="RemoveTransform"]
+script = ExtResource("2_2xcnu")
