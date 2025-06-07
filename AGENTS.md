@@ -1,8 +1,17 @@
 # AGENTS.md
 
-## Project Structure
+## README
 
-- Follow Project Structure found in root README.md
+- The Project Structure can be found in root README.md
+- Use this to help navigate the project more quickly
+- If any errors are found in the project structure while working, feel free to make updates to the README
+- Add sections to the README with changes if they are large enough to warrent an update
+
+## TODOs
+
+- Check the TODO.md for tasks that AI can help with if told to work on TODO tasks, otherwise work on the given task from the prompt
+- If tasks are in the other group it is most likely because it involves using the editor to move, modify, or create Godot scenes or nodes and does not only involve code changes in scripts
+- Ask for approval before making any changes that could break without using the editor properly (Applies for local agents like Cline)
 
 ## Coding Conventions
 - Use `snake_case` for variables, functions, and folder names

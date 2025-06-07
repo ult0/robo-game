@@ -1,6 +1,6 @@
 # RPG Game
 
-<!-- Add description here -->
+A Godot-based tactical RPG framework featuring unit spawning, selection, movement, and preview layers. The project is designed with a modular architecture for easy extension and customization of units, levels, and gameplay systems.
 
 ## Project Structure
 
