@@ -85,13 +85,17 @@ func move(coords) -> void:
 	if tween:
 		tween.kill()
 	tween = create_tween().set_process_mode(Tween.TWEEN_PROCESS_PHYSICS)
-	tween.tween_property(self, "global_position", TileMapUtils.get_tile_center_position_from_coord(coord), 1.0 / moves_per_second).set_trans(Tween.TRANS_SINE)
+	tween.tween_property(animatedSprite, "global_position", TileMapUtils.get_tile_center_position_from_coord(coord), 1.0 / moves_per_second).set_trans(Tween.TRANS_SINE)
 	tween.tween_callback(move.bind(coords))
 
 func move_to(coord: Vector2i) -> void:
 	var path := aStar.find_path(tile_coord, coord)
 	if path.size() <= unit_resource.move_speed:
 		is_moving = true
+		# Visually move the sprite but instantly move the unit to avoid two units going to same tile
+		var temp = global_position
+		global_position = TileMapUtils.get_tile_center_position_from_coord(coord)
+		animatedSprite.global_position = temp
 		move(path)
 
 func is_walkable(coord: Vector2i) -> bool:
