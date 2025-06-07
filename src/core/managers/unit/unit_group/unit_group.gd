@@ -11,7 +11,7 @@ func _ready() -> void:
 
 func on_unit_selected(unit: Unit) -> void:
 	if selected_unit:
-		if selected_unit.moving:
+		if selected_unit.is_moving:
 			return
 		elif selected_unit:
 			selected_unit.unselect()
@@ -45,7 +45,7 @@ func remove_unit(unit: Unit) -> void:
 	unit.queue_free()
 
 func move_unit_to_coord(coord: Vector2i) -> void:
-	if selected_unit and !selected_unit.moving:
+	if selected_unit and !selected_unit.is_moving:
 		selected_unit.move_to(coord)
 
 func select_unit_at_coord(coord: Vector2i) -> Unit:
@@ -53,7 +53,7 @@ func select_unit_at_coord(coord: Vector2i) -> Unit:
 	return select_unit(unit)
 
 func select_unit(unit: Unit) -> Unit:
-	if unit and unit != selected_unit and !unit.moving:
+	if unit and unit != selected_unit and !unit.is_moving:
 		if selected_unit:
 			selected_unit.unselect()
 		unit.select()
@@ -99,5 +99,5 @@ func find_unit_index(coord: Vector2i) -> int:
 func set_force_show_attack_range(value: bool) -> void:
 	force_show_attack_range = value
 	for unit in current_units:
-		unit.force_show_attack_range = value
-		unit.update_preview_layer()
+		if "force_show_attack_range" in unit:
+			unit.force_show_attack_range = value

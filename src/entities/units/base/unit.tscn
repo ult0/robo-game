@@ -1,22 +1,11 @@
-[gd_scene load_steps=4 format=3 uid="uid://co0s4au8klchy"]
+[gd_scene load_steps=2 format=3 uid="uid://co0s4au8klchy"]
 
 [ext_resource type="SpriteFrames" uid="uid://dh53tpmgec2u1" path="res://src/data/presets/units/player/ranged/archer_animations.tres" id="2_1jvru"]
-[ext_resource type="PackedScene" uid="uid://bkdggniofa67c" path="res://src/entities/units/components/preview/preview_component.tscn" id="2_o0yty"]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_k673f"]
-size = Vector2(16, 16)
 
 [node name="Unit" type="Node2D" groups=["unit"]]
-
-[node name="PreviewComponent" parent="." instance=ExtResource("2_o0yty")]
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 z_index = 1
 sprite_frames = ExtResource("2_1jvru")
 animation = &"grab"
 autoplay = "idle"
-
-[node name="ClickBox" type="Area2D" parent="."]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="ClickBox"]
-shape = SubResource("RectangleShape2D_k673f")

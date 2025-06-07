@@ -1,14 +1,15 @@
 extends Node2D
+class_name PreviewArrow
 
+var unit: Unit
 var selector_coord: Vector2i
 
-func redraw(coord: Vector2i) -> void:
+func draw(coord: Vector2i) -> void:
 	selector_coord = coord
 	queue_redraw()
 
 func _draw() -> void:
-	var unit: Unit = owner.unit
-	if unit and !unit.moving and unit.is_selected:
+	if unit and !unit.is_moving and unit.is_selected and unit is Player:
 		var start = unit.tile_coord
 		var end := selector_coord
 		var path := unit.aStar.find_path(start, end).map(func (coord: Vector2i) -> Vector2: return TileMapUtils.get_tile_center_position_from_coord(coord))

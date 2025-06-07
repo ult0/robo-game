@@ -16,6 +16,7 @@ sources/0 = SubResource("TileSetAtlasSource_t2oak")
 
 [node name="PreviewComponent" type="Node"]
 script = ExtResource("1_5faww")
+tile_order = Array[int]([1, 0, 2])
 
 [node name="PreviewLayer" type="TileMapLayer" parent="."]
 tile_set = SubResource("TileSet_mi3k7")
