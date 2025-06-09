@@ -9,44 +9,43 @@ extends Control
 @onready var maxHealthLabel: Label = %MaxHealthLabel
 @onready var attackLabel: Label = %AttackLabel
 
-var selected_player: Player = null
-var selected_enemy: Enemy = null
-var show_unit: bool = false:
-	set(show):
-		show_unit = show
-		visible = show_unit
+var selected_unit: Unit
 
 func _ready() -> void:
 	uiContainer.texture = containerTexture
 	if unit_type == Constants.UnitType.PLAYER:	
-		EventBus.player_selected_connect(on_player_selected)
+		EventBus.player_selected_connect(on_unit_selected)
 	elif unit_type == Constants.UnitType.ENEMY:
-		EventBus.enemy_selected_connect(on_enemy_selected)
+		EventBus.enemy_selected_connect(on_unit_selected)
 	else:
 		print("Unknown type: ", unit_type)
-	show_unit = false
+	visible = false
 
-func on_player_selected(player: Player) -> void:
-	if player == null:
-		show_unit = false
-		return
-	else:
-		selected_player = player
-		show_unit = true
-		selectedPlayerIcon.texture = player.animatedSprite.sprite_frames.get_frame_texture("idle", 0)
-		healthLabel.text = str(player.unit_resource.health)
-		maxHealthLabel.text = str(player.unit_resource.max_health)
-		attackLabel.text = str(player.unit_resource.attack)
+func update() -> void:
+	selectedPlayerIcon.texture = selected_unit.animatedSprite.sprite_frames.get_frame_texture("idle", 0)
+	healthLabel.text = str(selected_unit.unit_resource.health)
+	maxHealthLabel.text = str(selected_unit.unit_resource.max_health)
+	attackLabel.text = str(selected_unit.unit_resource.attack)
 
-func on_enemy_selected(enemy: Enemy) -> void:
-	if enemy == null:
-		show_unit = false
-		return
+func connect_signals() -> void:
+	for signal_method: Signal in [selected_unit.damaged, selected_unit.healed]:
+		signal_method.connect(on_unit_info_changed)
+
+func disconnect_signals() -> void:
+	for signal_method: Signal in [selected_unit.damaged, selected_unit.healed]:
+		signal_method.disconnect(on_unit_info_changed)
+
+func on_unit_info_changed(_arg1 = null, _arg2 = null) -> void:
+	update()
+
+func on_unit_selected(unit: Unit) -> void:
+	if unit:
+		selected_unit = unit
+		connect_signals()
+		update()
+		visible = true
 	else:
-		selected_enemy = enemy
-		show_unit = true
-		print("Showing Unit: ", enemy.unit_resource.name)
-		selectedPlayerIcon.texture = enemy.animatedSprite.sprite_frames.get_frame_texture("idle", 0)
-		healthLabel.text = str(enemy.unit_resource.health)
-		maxHealthLabel.text = str(enemy.unit_resource.max_health)
-		attackLabel.text = str(enemy.unit_resource.attack)
+		disconnect_signals()
+		selected_unit = null
+		visible = false
+		

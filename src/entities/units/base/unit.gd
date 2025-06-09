@@ -10,7 +10,6 @@ var tile_coord: Vector2i:
 
 var unit_components: Dictionary[String, UnitComponent] = {}
 
-var tween: Tween
 var aStar: AStar
 
 var walkable_tiles: Array[Vector2i] = []
@@ -18,7 +17,7 @@ var attackable_tiles: Array[Vector2i] = []
 var friendly_tiles: Array[Vector2i] = []
 
 func _ready() -> void:
-	aStar = AStar.create(is_walkable)
+	aStar = AStar.create()
 	setup_animation()
 
 	for child in get_children():
@@ -76,27 +75,31 @@ var is_moving: bool = false:
 			animatedSprite.play("idle")
 		moving.emit(is_moving)
 
+var move_tween: Tween
 func move(coords) -> void:
-	if coords.size() == 0:
-		is_moving = false
-		return
-	var coord = coords.pop_back()
-
-	if tween:
-		tween.kill()
-	tween = create_tween().set_process_mode(Tween.TWEEN_PROCESS_PHYSICS)
-	tween.tween_property(animatedSprite, "global_position", TileMapUtils.get_tile_center_position_from_coord(coord), 1.0 / moves_per_second).set_trans(Tween.TRANS_SINE)
-	tween.tween_callback(move.bind(coords))
+	if move_tween:
+		move_tween.kill()
+	move_tween = create_tween().set_process_mode(Tween.TWEEN_PROCESS_PHYSICS)
+	for i in range(coords.size() -1, -1, -1):
+		move_tween.tween_property(
+			animatedSprite, 
+			"global_position", 
+			TileMapUtils.get_tile_center_position_from_coord(coords[i]), 
+			1.0 / moves_per_second).set_trans(Tween.TRANS_SINE)
 
 func move_to(coord: Vector2i) -> void:
 	var path := aStar.find_path(tile_coord, coord)
-	if path.size() <= unit_resource.move_speed:
+	if path.size() <= unit_resource.move_speed and is_walkable(coord):
 		is_moving = true
 		# Visually move the sprite but instantly move the unit to avoid two units going to same tile
 		var temp = global_position
 		global_position = TileMapUtils.get_tile_center_position_from_coord(coord)
 		animatedSprite.global_position = temp
+
 		move(path)
+		await move_tween.finished
+		print("Finished moving to: ", coord)
+		is_moving = false
 
 func is_walkable(coord: Vector2i) -> bool:
 	var containsObstacle := Level.instance.tile_contains_obstacle(coord)
@@ -121,6 +124,25 @@ var is_attacking: bool = false:
 			animatedSprite.play("idle")
 		attacking.emit(is_attacking)
 
+func attack(target: Unit) -> void:
+	var path_to_target := aStar.find_path(tile_coord, target.tile_coord)
+	if is_attackable(target.tile_coord):
+		if not is_in_attack_range(target.tile_coord):
+			await move_to(path_to_target[unit_resource.attack_range])
+		is_attacking = true
+		target.damage(unit_resource.attack)
+		await animatedSprite.animation_finished
+		is_attacking = false
+	else:
+		print("Target is not attackable, ", target.name)
+
+func is_in_attack_range(target_coord: Vector2i) -> bool:
+	var path := aStar.find_path(tile_coord, target_coord)
+	return path.size() - 1 <= unit_resource.attack_range
+
+func is_attackable(coord: Vector2i) -> bool:
+	return attackable_tiles.has(coord)
+
 func get_attackable_tiles(starting_tiles: Array[Vector2i]) -> Array[Vector2i]:
 	return TileMapUtils.get_tiles_in_range(
 		starting_tiles,
@@ -136,20 +158,23 @@ var is_damaged: bool = false:
 		return unit_resource.health < unit_resource.max_health
 	set(value):
 		is_damaged = true
-		animatedSprite.play("take_damage")
+		animatedSprite.play("damage")
 func damage(attempted_amount: int) -> void:
 	var amount: int = attempted_amount
 	if unit_resource.health - attempted_amount < 0:
 		amount = unit_resource.health
 
 	unit_resource.health -= amount
+	is_damaged = true
+	damaged.emit(amount)
 
 	if unit_resource.health > 0:
-		is_damaged = true
-		damaged.emit(amount)
+		await animatedSprite.animation_finished
+		animatedSprite.play("idle")
 	else:
-		unit_resource.health = 0
-		die()
+		await animatedSprite.animation_finished
+		await die()
+		
 
 # HEAL
 signal healed(amount: int)
@@ -172,3 +197,4 @@ var dead: bool = false:
 			animatedSprite.play("die")
 func die() -> void:
 	dead = true
+	await animatedSprite.animation_finished

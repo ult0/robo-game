@@ -8,7 +8,7 @@ var _current: AStarNode = null
 
 var _path: Array[Vector2i] = []
 
-static func create(_is_walkable: Callable) -> AStar:
+static func create(_is_walkable: Callable = Level.instance.is_walkable) -> AStar:
 	var astar = AStar.new();
 	astar.is_walkable = _is_walkable
 	return astar

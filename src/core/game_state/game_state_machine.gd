@@ -3,15 +3,13 @@ extends Node2D
 
 enum GameState {
 	PLAYER_TURN,
-	PLAYER_SELECTED,
-	ENEMY_SELECTED,
 	TARGETING,
 	ENEMY_TURN
 }
 var current_state: GameState = GameState.PLAYER_TURN
 var selected_player: Player
 var selected_enemy: Enemy
-@onready var unitManager: UnitManager =  %UnitManager
+@onready var unitManager: UnitManager = %UnitManager
 
 func _ready() -> void:
 	set_state(GameState.PLAYER_TURN)
@@ -28,9 +26,45 @@ func handle_mouse_button_input(event: InputEventMouseButton) -> void:
 					# SELECT PLAYER
 					if selected_unit is Player:
 						selected_player = selected_unit
+						set_state(GameState.TARGETING)
 					# SELECT ENEMY
 					elif selected_unit is Enemy:
 						selected_enemy = selected_unit
+			
+			# CANCEL
+			elif event.is_action_pressed('right-click'):
+				# UNIT
+				if unitManager.is_unit_at_coord(mouse_coord):
+					var unselected_unit = unitManager.unselect_unit_at_coord(mouse_coord)
+					# UNSELECT PLAYER
+					if unselected_unit is Player:
+						selected_player = null
+					# UNSELECT ENEMY
+					elif unselected_unit is Enemy:
+						selected_enemy = null
+				# ANYWHERE
+				else:
+					# UNSELECT ALL
+					if unitManager.is_player_selected():
+						unitManager.unselect_current_selected_player()
+					if unitManager.is_enemy_selected():
+						unitManager.unselect_current_selected_enemy()
+		GameState.TARGETING:
+			# CONFIRM
+			if event.is_action_pressed('left-click'):
+				# SWITCH PLAYER
+				if unitManager.is_player_at_coord(mouse_coord):
+					selected_player = unitManager.select_player_at_coord(mouse_coord)
+					set_state(GameState.TARGETING)
+				# ENEMY
+				elif unitManager.is_enemy_at_coord(mouse_coord):
+					var clicked_enemy = unitManager.get_enemy_at_coord(mouse_coord)
+					# SELECT ENEMY
+					if not selected_enemy or (selected_enemy != clicked_enemy):
+						selected_enemy = unitManager.select_enemy_at_coord(mouse_coord)
+					# ATTACK ENEMY
+					elif selected_player and (selected_enemy == clicked_enemy):
+						unitManager.player_attack_enemy(selected_player, selected_enemy)
 				# TILE
 				elif Level.instance.tile_contains_navtile(mouse_coord):
 					# MOVE UNIT
@@ -55,8 +89,9 @@ func handle_mouse_button_input(event: InputEventMouseButton) -> void:
 						unitManager.unselect_current_selected_player()
 					if unitManager.is_enemy_selected():
 						unitManager.unselect_current_selected_enemy()
+				set_state(GameState.PLAYER_TURN)
 		GameState.ENEMY_TURN:
-			print("ENEMY_TURN")
+			pass
 
 func handle_key_input(event: InputEventKey):
 	match current_state:
@@ -70,31 +105,28 @@ func handle_key_input(event: InputEventKey):
 					unitManager.enemy_group.set_force_show_attack_range(true)
 
 func set_state(new_state: GameState):
-	if current_state == new_state:
-		return
-	else:
-		_exit_state(current_state)
-		current_state = new_state
-		_enter_state(new_state)
+	_exit_state(current_state)
+	current_state = new_state
+	_enter_state(new_state)
 
 func _enter_state(state: GameState):
 	match state:
 		GameState.PLAYER_TURN:
 			print("Entered PLAYER_TURN")
-		GameState.PLAYER_SELECTED:
-			print("Entered PLAYER_SELECTED")
-		GameState.ENEMY_SELECTED:
-			print("Entered ENEMY_SELECTED")
+		GameState.TARGETING:
+			print("Entered TARGETING")
 		GameState.ENEMY_TURN:
 			print("Entered ENEMY_TURN")
+		_:
+			print("Entered unknown state: ", state)
 
 func _exit_state(state: GameState):
 	match state:
 		GameState.PLAYER_TURN:
 			print("Exited PLAYER_TURN")
-		GameState.PLAYER_SELECTED:
-			print("Exited PLAYER_SELECTED")
-		GameState.ENEMY_SELECTED:
-			print("Exited ENEMY_SELECTED")
+		GameState.TARGETING:
+			print("Exited TARGETING")
 		GameState.ENEMY_TURN:
 			print("Exited ENEMY_TURN")
+		_:
+			print("Exited unknown state: ", state)

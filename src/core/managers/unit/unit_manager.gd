@@ -17,6 +17,11 @@ func _ready() -> void:
 	print("Player units: ", player_group.current_units)
 	print("Enemy units: ", enemy_group.current_units)
 
+func player_attack_enemy(player: Player, enemy: Enemy) -> void:
+	if player == player_group.selected_unit and enemy == enemy_group.selected_unit:
+		await player.attack(enemy)
+		print("Player: ", player.name, " attacks Enemy: ", enemy.name)
+
 func move_player_to_coord(coord: Vector2i) -> void:
 	player_group.move_unit_to_coord(coord)
 

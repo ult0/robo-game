@@ -4,7 +4,7 @@ class_name UnitGroup
 var force_show_attack_range: bool = false
 @export var unit_type: Constants.UnitType = Constants.UnitType.PLAYER
 var current_units: Array[Unit] = []
-var selected_unit: Unit = null
+var selected_unit: Unit
 
 func _ready() -> void:
 	initialize_units()

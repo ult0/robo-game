@@ -14,7 +14,7 @@ func spawn_unit(unit_type: int) -> Unit:
 		unit = player_scene.instantiate()
 	elif unit_type == Constants.UnitType.ENEMY:
 		unit = enemy_scene.instantiate()
-	unit.unit_resource = unit_resource
+	unit.unit_resource = unit_resource.duplicate()
 	unit.global_position = global_position
 	unit.name = unit_resource.name + str(unit.get_instance_id())
 	return unit

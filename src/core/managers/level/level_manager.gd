@@ -21,9 +21,8 @@ func _ready() -> void:
 
 func is_walkable(coord: Vector2i) -> bool:
 	var containsObstacle := tile_contains_obstacle(coord)
-	var containsEnemy := tile_contains_enemy(coord)
 	var exists := tile_contains_navtile(coord)
-	return exists and !containsObstacle and !containsEnemy
+	return exists and !containsObstacle
 
 func tile_contains_player(coord: Vector2i) -> bool:
 	return !!unitManager.get_player_at_coord(coord)
