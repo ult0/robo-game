@@ -3,6 +3,7 @@ extends Node2D
 
 enum GameState {
 	PLAYER_TURN,
+	PLAYER_ACTION,
 	TARGETING,
 	ENEMY_TURN
 }
@@ -49,6 +50,7 @@ func handle_mouse_button_input(event: InputEventMouseButton) -> void:
 						unitManager.unselect_current_selected_player()
 					if unitManager.is_enemy_selected():
 						unitManager.unselect_current_selected_enemy()
+
 		GameState.TARGETING:
 			# CONFIRM
 			if event.is_action_pressed('left-click'):
@@ -60,16 +62,22 @@ func handle_mouse_button_input(event: InputEventMouseButton) -> void:
 				elif unitManager.is_enemy_at_coord(mouse_coord):
 					var clicked_enemy = unitManager.get_enemy_at_coord(mouse_coord)
 					# SELECT ENEMY
-					if not selected_enemy or (selected_enemy != clicked_enemy):
+					if not selected_enemy or selected_enemy != clicked_enemy:
 						selected_enemy = unitManager.select_enemy_at_coord(mouse_coord)
 					# ATTACK ENEMY
-					elif selected_player and (selected_enemy == clicked_enemy):
-						unitManager.player_attack_enemy(selected_player, selected_enemy)
+					elif selected_player \
+					and selected_enemy == clicked_enemy \
+					and selected_player.is_attackable(clicked_enemy.tile_coord):
+						set_state(GameState.PLAYER_ACTION)
+						await unitManager.resolve_combat(selected_player, selected_enemy)
+						set_state(GameState.TARGETING)
 				# TILE
 				elif Level.instance.tile_contains_navtile(mouse_coord):
 					# MOVE UNIT
 					if unitManager.is_player_selected():
-						unitManager.move_player_to_coord(mouse_coord)
+						set_state(GameState.PLAYER_ACTION)
+						await unitManager.move_player_to_coord(mouse_coord)
+						set_state(GameState.TARGETING)
 			
 			# CANCEL
 			elif event.is_action_pressed('right-click'):
@@ -90,12 +98,22 @@ func handle_mouse_button_input(event: InputEventMouseButton) -> void:
 					if unitManager.is_enemy_selected():
 						unitManager.unselect_current_selected_enemy()
 				set_state(GameState.PLAYER_TURN)
+
+		GameState.PLAYER_ACTION:
+			# CONFIRM
+			if event.is_action_pressed('left-click'):
+				pass
+			# CANCEL
+			elif event.is_action_pressed('right-click'):
+				# TODO: Maybe add undo here?
+				pass
+
 		GameState.ENEMY_TURN:
 			pass
 
 func handle_key_input(event: InputEventKey):
 	match current_state:
-		GameState.PLAYER_TURN:
+		GameState.PLAYER_TURN, GameState.TARGETING:
 			# F
 			if event.is_pressed() and event.keycode == KEY_F:
 				# TOGGLE ALL ENEMY ATTACK RANGES
@@ -115,6 +133,8 @@ func _enter_state(state: GameState):
 			print("Entered PLAYER_TURN")
 		GameState.TARGETING:
 			print("Entered TARGETING")
+		GameState.PLAYER_ACTION:
+			print("Entered PLAYER_ACTION")
 		GameState.ENEMY_TURN:
 			print("Entered ENEMY_TURN")
 		_:
@@ -126,6 +146,8 @@ func _exit_state(state: GameState):
 			print("Exited PLAYER_TURN")
 		GameState.TARGETING:
 			print("Exited TARGETING")
+		GameState.PLAYER_ACTION:
+			print("Exited PLAYER_ACTION")
 		GameState.ENEMY_TURN:
 			print("Exited ENEMY_TURN")
 		_:

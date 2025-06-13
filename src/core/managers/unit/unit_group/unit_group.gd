@@ -38,6 +38,7 @@ func initialize_units() -> void:
 func add_unit(unit: Unit) -> void:
 	current_units.push_back(unit)
 	add_child(unit)
+	unit.died.connect(remove_unit)
 	EventBus.unit_spawned_emit(unit)
 
 func remove_unit(unit: Unit) -> void:
@@ -46,7 +47,7 @@ func remove_unit(unit: Unit) -> void:
 
 func move_unit_to_coord(coord: Vector2i) -> void:
 	if selected_unit and !selected_unit.is_moving:
-		selected_unit.move_to(coord)
+		await selected_unit.move_to(coord)
 
 func select_unit_at_coord(coord: Vector2i) -> Unit:
 	var unit = get_unit_at_coord(coord)

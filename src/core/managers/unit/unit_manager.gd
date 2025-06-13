@@ -17,13 +17,27 @@ func _ready() -> void:
 	print("Player units: ", player_group.current_units)
 	print("Enemy units: ", enemy_group.current_units)
 
-func player_attack_enemy(player: Player, enemy: Enemy) -> void:
-	if player == player_group.selected_unit and enemy == enemy_group.selected_unit:
-		await player.attack(enemy)
-		print("Player: ", player.name, " attacks Enemy: ", enemy.name)
+func resolve_combat(attacker: Unit, target: Unit) -> void:
+	attacker.set_target_unit(target)
+	if not attacker.is_in_attack_range(target.tile_coord):
+		await attacker.move_to(attacker.get_max_attack_range_coord())
+
+	var damage = calculate_damage(attacker, target)
+
+	print("Attacker: ", attacker.name, " attacks Target: ", target.name, " and deals ", damage, " damage")
+
+	await attacker.attack(target)
+
+	await target.damage(damage)
+
+	if target.dead:
+		print(target.name, " died!")
+
+func calculate_damage(attacker: Unit, target: Unit) -> int:
+	return maxi(0, attacker.unit_resource.attack - target.unit_resource.defense)
 
 func move_player_to_coord(coord: Vector2i) -> void:
-	player_group.move_unit_to_coord(coord)
+	await player_group.move_unit_to_coord(coord)
 
 func move_enemy_to_coord(coord: Vector2i) -> void:
 	enemy_group.move_unit_to_coord(coord)

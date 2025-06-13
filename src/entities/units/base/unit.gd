@@ -17,6 +17,8 @@ var attackable_tiles: Array[Vector2i] = []
 var friendly_tiles: Array[Vector2i] = []
 
 func _ready() -> void:
+	# TODO: Change AStar to take in additional arguments for walkable overrides
+	# Potentially will make more sense after introducing unit state machine
 	aStar = AStar.create()
 	setup_animation()
 
@@ -28,6 +30,22 @@ func _ready() -> void:
 func setup_animation() -> void:
 	animatedSprite.sprite_frames = unit_resource.animation_resource
 	animatedSprite.play("idle")
+
+# NAVIGATION
+var selector_path: Array[Vector2i] = []:
+	set(value):
+		selector_path = value
+		EventBus.selected_player_selector_path_emit(selector_path)
+var selector_coord: Vector2i
+
+func on_selector_coord_changed(coord: Vector2i) -> void:
+	if is_selected:
+		selector_coord = coord
+		selector_path = get_tile_path(selector_coord)
+		EventBus.selected_player_selector_path_emit(selector_path)
+
+func get_tile_path(coord: Vector2i) -> Array[Vector2i]:
+	return aStar.find_path(tile_coord, coord)
 
 func tile_contains_opposing_unit(_coord: Vector2i) -> bool:
 	printerr("tile_contains_opposing_unit not implemented in Unit base class")
@@ -49,12 +67,36 @@ func update_action_tiles() -> void:
 			walkable_tiles.append(tile)
 	attackable_tiles = get_attackable_tiles(walkable_tiles)
 
+func is_walkable(coord: Vector2i) -> bool:
+	var containsObstacle := Level.instance.tile_contains_obstacle(coord)
+	var exists := Level.instance.tile_contains_navtile(coord)
+	return exists and !containsObstacle and !tile_contains_opposing_unit(coord)
+
+func get_walkable_tiles(coord: Vector2i) -> Array[Vector2i]:
+	return TileMapUtils.get_tiles_in_range(
+		[coord],
+		unit_resource.move_speed,
+		is_walkable
+	)
+
+func get_attackable_tiles(starting_tiles: Array[Vector2i]) -> Array[Vector2i]:
+	return TileMapUtils.get_tiles_in_range(
+		starting_tiles,
+		unit_resource.attack_range,
+		Level.instance.tile_contains_navtile,
+		tile_contains_friendly_unit
+	)
+
 # SELECT
 signal selected(selected: bool)
 var is_selected: bool = false:
 	set(value):
 		is_selected = value
 		update_action_tiles()
+		if is_selected:
+			EventBus.selector_coord_changed_connect(on_selector_coord_changed)
+		else:
+			EventBus._selector_coord_changed.disconnect(on_selector_coord_changed)
 		selected.emit(is_selected)
 func select() -> void:
 	is_selected = true
@@ -88,8 +130,19 @@ func move(coords) -> void:
 			1.0 / moves_per_second).set_trans(Tween.TRANS_SINE)
 
 func move_to(coord: Vector2i) -> void:
-	var path := aStar.find_path(tile_coord, coord)
-	if path.size() <= unit_resource.move_speed and is_walkable(coord):
+	if is_moving or not coord:
+		return
+
+	var path: Array[Vector2i] = []
+	if coord == selector_coord:
+		print("Moving with selector path: ", selector_path)
+		path = selector_path
+	elif target_unit and coord == get_max_attack_range_coord():
+		var max_attack_range_path: Array[Vector2i] = get_max_attack_range_path()
+		print("Moving with max target range path: ", max_attack_range_path)
+		path = max_attack_range_path
+	
+	if path.size() > 0 and path.size() <= unit_resource.move_speed and walkable_tiles.has(coord):
 		is_moving = true
 		# Visually move the sprite but instantly move the unit to avoid two units going to same tile
 		var temp = global_position
@@ -101,81 +154,71 @@ func move_to(coord: Vector2i) -> void:
 		print("Finished moving to: ", coord)
 		is_moving = false
 
-func is_walkable(coord: Vector2i) -> bool:
-	var containsObstacle := Level.instance.tile_contains_obstacle(coord)
-	var exists := Level.instance.tile_contains_navtile(coord)
-	return exists and !containsObstacle and !tile_contains_opposing_unit(coord)
-
-func get_walkable_tiles(coord: Vector2i) -> Array[Vector2i]:
-	return TileMapUtils.get_tiles_in_range(
-		[coord],
-		unit_resource.move_speed,
-		is_walkable
-	)
-
 # ATTACK
-signal attacking(moving: bool)
+var target_path: Array[Vector2i] = []
+var target_unit: Unit
+
+signal attacking(attacking: bool)
 var is_attacking: bool = false:
-	set(value):
-		is_attacking = value
-		if is_attacking:
-			animatedSprite.play("attack")
-		else:
-			animatedSprite.play("idle")
-		attacking.emit(is_attacking)
+	get:
+		return animatedSprite.animation == 'attack'
 
 func attack(target: Unit) -> void:
-	var path_to_target := aStar.find_path(tile_coord, target.tile_coord)
-	if is_attackable(target.tile_coord):
-		if not is_in_attack_range(target.tile_coord):
-			await move_to(path_to_target[unit_resource.attack_range])
-		is_attacking = true
-		target.damage(unit_resource.attack)
-		await animatedSprite.animation_finished
-		is_attacking = false
-	else:
-		print("Target is not attackable, ", target.name)
+	set_target_unit(target)
 
-func is_in_attack_range(target_coord: Vector2i) -> bool:
-	var path := aStar.find_path(tile_coord, target_coord)
-	return path.size() - 1 <= unit_resource.attack_range
+	animatedSprite.play("attack")
+	attacking.emit(true)
+	await animatedSprite.animation_finished
+	animatedSprite.play("idle")
+	attacking.emit(false)
+
+func get_max_attack_range_path() -> Array[Vector2i]:
+	if target_path.size() > 0:
+		return target_path.slice(unit_resource.attack_range, target_path.size())
+	return []
+
+func get_max_attack_range_coord():
+	if target_path.size() > 0:
+		return target_path[unit_resource.attack_range]
+	return null
+
+func is_in_attack_range(coord: Vector2i) -> bool:
+	var attack_range: Array[Vector2i] = get_attackable_tiles([tile_coord])
+	return attack_range.has(coord)
 
 func is_attackable(coord: Vector2i) -> bool:
 	return attackable_tiles.has(coord)
 
-func get_attackable_tiles(starting_tiles: Array[Vector2i]) -> Array[Vector2i]:
-	return TileMapUtils.get_tiles_in_range(
-		starting_tiles,
-		unit_resource.attack_range,
-		Level.instance.tile_contains_navtile,
-		tile_contains_friendly_unit
-	)
+func set_target_unit(target: Unit) -> void:
+	if target:
+		target_unit = target
+		if target_unit.tile_coord == selector_coord:
+			target_path = selector_path.duplicate()
+		else:
+			target_path = get_tile_path(target_unit.tile_coord)
+	
 
 # DAMAGE
 signal damaged(amount: int)
 var is_damaged: bool = false:
 	get:
 		return unit_resource.health < unit_resource.max_health
-	set(value):
-		is_damaged = true
-		animatedSprite.play("damage")
+
 func damage(attempted_amount: int) -> void:
 	var amount: int = attempted_amount
 	if unit_resource.health - attempted_amount < 0:
 		amount = unit_resource.health
 
 	unit_resource.health -= amount
-	is_damaged = true
+	animatedSprite.play("damage")
 	damaged.emit(amount)
+	await animatedSprite.animation_finished
 
 	if unit_resource.health > 0:
-		await animatedSprite.animation_finished
 		animatedSprite.play("idle")
 	else:
-		await animatedSprite.animation_finished
 		await die()
 		
-
 # HEAL
 signal healed(amount: int)
 func heal(attempted_amount: int) -> void:
@@ -186,6 +229,7 @@ func heal(attempted_amount: int) -> void:
 	healed.emit(amount)
 
 # DEATH
+var death_tween: Tween
 signal died(unit: Unit)
 var dead: bool = false:
 	get:
@@ -193,8 +237,12 @@ var dead: bool = false:
 	set(value):
 		dead = value
 		if dead:
+			unselect()
 			died.emit(self)
-			animatedSprite.play("die")
 func die() -> void:
-	dead = true
+	animatedSprite.play("die")
 	await animatedSprite.animation_finished
+	death_tween = create_tween().set_process_mode(Tween.TWEEN_PROCESS_PHYSICS)
+	death_tween.tween_property(animatedSprite, "modulate", Color(1, 1, 1, 0), 0.5)
+	await death_tween.finished
+	dead = true
