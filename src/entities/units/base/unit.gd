@@ -12,9 +12,16 @@ var unit_components: Dictionary[String, UnitComponent] = {}
 
 var aStar: AStar
 
-var walkable_tiles: Array[Vector2i] = []
-var attackable_tiles: Array[Vector2i] = []
-var friendly_tiles: Array[Vector2i] = []
+var walkable_tiles: Array[Vector2i]: 
+	get: return walkable_tile_dict.keys()
+var attackable_tiles: Array[Vector2i]:
+	get: return attackable_tile_dict.keys()
+var friendly_tiles: Array[Vector2i] = []:
+	get: return friendly_tile_dict.keys()
+
+var walkable_tile_dict: Dictionary[Vector2i, int] = {}
+var attackable_tile_dict: Dictionary[Vector2i, int] = {}
+var friendly_tile_dict: Dictionary[Vector2i, int] = {}
 
 func _ready() -> void:
 	# TODO: Change AStar to take in additional arguments for walkable overrides
@@ -31,7 +38,7 @@ func setup_animation() -> void:
 	animatedSprite.sprite_frames = unit_resource.animation_resource
 	animatedSprite.play("idle")
 
-# NAVIGATION
+#region NAVIGATION
 var selector_path: Array[Vector2i] = []:
 	set(value):
 		selector_path = value
@@ -56,38 +63,40 @@ func tile_contains_friendly_unit(_coord: Vector2i) -> bool:
 	return false
 
 func update_action_tiles() -> void:
-	walkable_tiles.clear()
-	attackable_tiles.clear()
-	friendly_tiles.clear()
+	walkable_tile_dict.clear()
+	attackable_tile_dict.clear()
+	friendly_tile_dict.clear()
 
-	for tile in get_walkable_tiles(tile_coord):
+	var walkable_and_friendly_tile_dict = get_walkable_tiles(tile_coord)
+	for tile in walkable_and_friendly_tile_dict:
 		if tile_contains_friendly_unit(tile) and tile != tile_coord:
-			friendly_tiles.append(tile)
+			friendly_tile_dict.set(tile, walkable_and_friendly_tile_dict[tile])
 		else:
-			walkable_tiles.append(tile)
-	attackable_tiles = get_attackable_tiles(walkable_tiles)
+			walkable_tile_dict.set(tile, walkable_and_friendly_tile_dict[tile])
+	attackable_tile_dict = get_attackable_tiles(walkable_tiles)
 
 func is_walkable(coord: Vector2i) -> bool:
 	var containsObstacle := Level.instance.tile_contains_obstacle(coord)
 	var exists := Level.instance.tile_contains_navtile(coord)
 	return exists and !containsObstacle and !tile_contains_opposing_unit(coord)
 
-func get_walkable_tiles(coord: Vector2i) -> Array[Vector2i]:
-	return TileMapUtils.get_tiles_in_range(
+func get_walkable_tiles(coord: Vector2i) -> Dictionary[Vector2i, int]:
+	return TileMapUtils.get_tiles_in_range_with_distances(
 		[coord],
 		unit_resource.move_speed,
 		is_walkable
 	)
 
-func get_attackable_tiles(starting_tiles: Array[Vector2i]) -> Array[Vector2i]:
-	return TileMapUtils.get_tiles_in_range(
+func get_attackable_tiles(starting_tiles: Array[Vector2i]) -> Dictionary[Vector2i, int]:
+	return TileMapUtils.get_tiles_in_range_with_distances(
 		starting_tiles,
 		unit_resource.attack_range,
 		Level.instance.tile_contains_navtile,
 		tile_contains_friendly_unit
 	)
+#endregion
 
-# SELECT
+#region SELECT
 signal selected(selected: bool)
 var is_selected: bool = false:
 	set(value):
@@ -104,8 +113,9 @@ func select() -> void:
 func unselect() -> void:
 	z_index -= 1
 	is_selected = false
+#endregion
 
-# MOVE
+#region MOVE
 @export var moves_per_second: float = 5.0
 
 signal moving(moving: bool)
@@ -148,8 +158,9 @@ func move_to(coord: Vector2i) -> void:
 		await move_tween.finished
 		print("Finished moving to: ", coord)
 		is_moving = false
+#endregion
 
-# ATTACK
+#region ATTACK
 signal attacking(attacking: bool)
 var is_attacking: bool = false:
 	get:
@@ -178,14 +189,14 @@ func get_max_attack_range_coord(target: Vector2i):
 	return max_attack_range_coord
 
 func can_attack(target: Vector2i, from: Vector2i = tile_coord) -> bool:
-	var attack_range: Array[Vector2i] = get_attackable_tiles([from])
+	var attack_range: Dictionary[Vector2i, int] = get_attackable_tiles([from])
 	return attack_range.has(target)
 
 func is_attackable(coord: Vector2i) -> bool:
 	return attackable_tiles.has(coord)
-	
+#endregion
 
-# DAMAGE
+#region DAMAGE
 signal damaged(amount: int)
 var is_damaged: bool = false:
 	get:
@@ -205,8 +216,9 @@ func damage(attempted_amount: int) -> void:
 		animatedSprite.play("idle")
 	else:
 		await die()
-		
-# HEAL
+#endregion
+
+#region HEAL
 signal healed(amount: int)
 func heal(attempted_amount: int) -> void:
 	var amount: int = attempted_amount
@@ -214,8 +226,9 @@ func heal(attempted_amount: int) -> void:
 		amount = unit_resource.max_health - unit_resource.health
 	unit_resource.health += amount
 	healed.emit(amount)
+#endregion
 
-# DEATH
+#region DEATH
 var death_tween: Tween
 signal died(unit: Unit)
 var dead: bool = false:
@@ -233,3 +246,4 @@ func die() -> void:
 	death_tween.tween_property(animatedSprite, "modulate", Color(1, 1, 1, 0), 0.5)
 	await death_tween.finished
 	dead = true
+#endregion
