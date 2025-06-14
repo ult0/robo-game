@@ -97,7 +97,7 @@ func handle_mouse_button_input(event: InputEventMouseButton) -> void:
 						unitManager.unselect_current_selected_player()
 					if unitManager.is_enemy_selected():
 						unitManager.unselect_current_selected_enemy()
-				set_state(GameState.PLAYER_TURN)
+					set_state(GameState.PLAYER_TURN)
 
 		GameState.PLAYER_ACTION:
 			# CONFIRM

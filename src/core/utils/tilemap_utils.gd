@@ -10,6 +10,7 @@ const tile_size_half_vector2: Vector2 = Vector2(tile_size_half, tile_size_half)
 
 const movement_directions: Array[Vector2i] = [Vector2i.UP, Vector2i.RIGHT, Vector2i.DOWN, Vector2i.LEFT]
 
+#region Coordinate Conversion
 ## Takes a global coordinate and returns the tile coordinate as a Vector2i
 static func get_tile_coord(global_coord: Vector2) -> Vector2i:
 	return Vector2i(
@@ -32,7 +33,9 @@ static func get_tile_center_position(global_coord: Vector2) -> Vector2:
 ## Takes a tile coordinate and returns the center point of the tile as a global coordinate
 static func get_tile_center_position_from_coord(coord: Vector2i) -> Vector2:
 	return get_global_position_from_tile(coord) + tile_size_half_vector2
+#endregion
 
+#region Tile Searching Algorithms
 ## Takes a tile coordinate and returns the neighboring coordinates based on movement_directions
 ## The filter callable expects a Vector2i representing the tile coordinate and returns a boolean - true to include, false to exclude
 ## By default, it includes all neighbors
@@ -90,3 +93,4 @@ static func get_tiles_in_range(
 		filter,
 		post_exclude_filter
 	).keys() as Array[Vector2i]
+#endregion

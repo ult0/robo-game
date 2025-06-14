@@ -99,8 +99,10 @@ var is_selected: bool = false:
 			EventBus._selector_coord_changed.disconnect(on_selector_coord_changed)
 		selected.emit(is_selected)
 func select() -> void:
+	z_index += 1
 	is_selected = true
 func unselect() -> void:
+	z_index -= 1
 	is_selected = false
 
 # MOVE
@@ -133,14 +135,7 @@ func move_to(coord: Vector2i) -> void:
 	if is_moving or not coord:
 		return
 
-	var path: Array[Vector2i] = []
-	if coord == selector_coord:
-		print("Moving with selector path: ", selector_path)
-		path = selector_path
-	elif target_unit and coord == get_max_attack_range_coord():
-		var max_attack_range_path: Array[Vector2i] = get_max_attack_range_path()
-		print("Moving with max target range path: ", max_attack_range_path)
-		path = max_attack_range_path
+	var path: Array[Vector2i] = aStar.find_path(tile_coord, coord)
 	
 	if path.size() > 0 and path.size() <= unit_resource.move_speed and walkable_tiles.has(coord):
 		is_moving = true
@@ -155,47 +150,39 @@ func move_to(coord: Vector2i) -> void:
 		is_moving = false
 
 # ATTACK
-var target_path: Array[Vector2i] = []
-var target_unit: Unit
-
 signal attacking(attacking: bool)
 var is_attacking: bool = false:
 	get:
 		return animatedSprite.animation == 'attack'
 
-func attack(target: Unit) -> void:
-	set_target_unit(target)
-
+func attack() -> void:
 	animatedSprite.play("attack")
 	attacking.emit(true)
 	await animatedSprite.animation_finished
 	animatedSprite.play("idle")
 	attacking.emit(false)
 
-func get_max_attack_range_path() -> Array[Vector2i]:
-	if target_path.size() > 0:
-		return target_path.slice(unit_resource.attack_range, target_path.size())
-	return []
+func get_max_attack_range_coord(target: Vector2i):
+	var walkable_tiles_with_move_cost: Dictionary[Vector2i, int] = TileMapUtils.get_tiles_in_range_with_distances(
+		[tile_coord],
+		unit_resource.move_speed,
+		is_walkable,
+		Level.instance.tile_contains_player
+	)
+	var max_attack_range_coord: Vector2i = Vector2i.MAX
+	var distance: int = max_attack_range_coord.x
+	for coord in walkable_tiles_with_move_cost:
+		if can_attack(target, coord) and walkable_tiles_with_move_cost[coord] < distance:
+			distance = walkable_tiles_with_move_cost[coord]
+			max_attack_range_coord = coord
+	return max_attack_range_coord
 
-func get_max_attack_range_coord():
-	if target_path.size() > 0:
-		return target_path[unit_resource.attack_range]
-	return null
-
-func is_in_attack_range(coord: Vector2i) -> bool:
-	var attack_range: Array[Vector2i] = get_attackable_tiles([tile_coord])
-	return attack_range.has(coord)
+func can_attack(target: Vector2i, from: Vector2i = tile_coord) -> bool:
+	var attack_range: Array[Vector2i] = get_attackable_tiles([from])
+	return attack_range.has(target)
 
 func is_attackable(coord: Vector2i) -> bool:
 	return attackable_tiles.has(coord)
-
-func set_target_unit(target: Unit) -> void:
-	if target:
-		target_unit = target
-		if target_unit.tile_coord == selector_coord:
-			target_path = selector_path.duplicate()
-		else:
-			target_path = get_tile_path(target_unit.tile_coord)
 	
 
 # DAMAGE

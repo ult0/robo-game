@@ -18,15 +18,14 @@ func _ready() -> void:
 	print("Enemy units: ", enemy_group.current_units)
 
 func resolve_combat(attacker: Unit, target: Unit) -> void:
-	attacker.set_target_unit(target)
-	if not attacker.is_in_attack_range(target.tile_coord):
-		await attacker.move_to(attacker.get_max_attack_range_coord())
+	if not attacker.can_attack(target.tile_coord):
+		await attacker.move_to(attacker.get_max_attack_range_coord(target.tile_coord))
 
 	var damage = calculate_damage(attacker, target)
 
 	print("Attacker: ", attacker.name, " attacks Target: ", target.name, " and deals ", damage, " damage")
 
-	await attacker.attack(target)
+	await attacker.attack()
 
 	await target.damage(damage)
 
