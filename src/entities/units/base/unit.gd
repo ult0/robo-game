@@ -39,17 +39,6 @@ func setup_animation() -> void:
 	animatedSprite.play("idle")
 
 #region NAVIGATION
-var selector_path: Array[Vector2i] = []:
-	set(value):
-		selector_path = value
-		EventBus.selected_player_selector_path_emit(selector_path)
-var selector_coord: Vector2i
-
-func on_selector_coord_changed(coord: Vector2i) -> void:
-	if is_selected:
-		selector_coord = coord
-		selector_path = get_tile_path(selector_coord)
-		EventBus.selected_player_selector_path_emit(selector_path)
 
 func get_tile_path(coord: Vector2i) -> Array[Vector2i]:
 	return aStar.find_path(tile_coord, coord)
@@ -102,10 +91,6 @@ var is_selected: bool = false:
 	set(value):
 		is_selected = value
 		update_action_tiles()
-		if is_selected:
-			EventBus.selector_coord_changed_connect(on_selector_coord_changed)
-		else:
-			EventBus._selector_coord_changed.disconnect(on_selector_coord_changed)
 		selected.emit(is_selected)
 func select() -> void:
 	z_index += 1
