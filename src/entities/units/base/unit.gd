@@ -168,17 +168,17 @@ func get_max_attack_range_coord(target: Vector2i):
 	var max_attack_range_coord: Vector2i = Vector2i.MAX
 	var distance: int = max_attack_range_coord.x
 	for coord in walkable_tiles_with_move_cost:
-		if can_attack(target, coord) and walkable_tiles_with_move_cost[coord] < distance:
+		if can_attack_from(target, coord) and walkable_tiles_with_move_cost[coord] < distance:
 			distance = walkable_tiles_with_move_cost[coord]
 			max_attack_range_coord = coord
 	return max_attack_range_coord
 
-func can_attack(target: Vector2i, from: Vector2i = tile_coord) -> bool:
-	var attack_range: Dictionary[Vector2i, int] = get_attackable_tiles([from])
+func can_attack_from(target: Vector2i, starting_tile: Vector2i = tile_coord) -> bool:
+	var attack_range: Dictionary[Vector2i, int] = get_attackable_tiles([starting_tile])
 	return attack_range.has(target)
 
-func is_attackable(coord: Vector2i) -> bool:
-	return attackable_tiles.has(coord)
+func can_attack_after_moving(target: Vector2i) -> bool:
+	return attackable_tiles.has(target)
 #endregion
 
 #region DAMAGE

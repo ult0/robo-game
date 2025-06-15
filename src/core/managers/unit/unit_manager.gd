@@ -18,7 +18,7 @@ func _ready() -> void:
 	print("Enemy units: ", enemy_group.current_units)
 
 func resolve_combat(attacker: Unit, target: Unit) -> void:
-	if not attacker.can_attack(target.tile_coord):
+	if not attacker.can_attack_from(target.tile_coord):
 		await attacker.move_to(attacker.get_max_attack_range_coord(target.tile_coord))
 
 	var damage = calculate_damage(attacker, target)
