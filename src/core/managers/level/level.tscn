@@ -2053,11 +2053,10 @@ script = ExtResource("2_s3rty")
 unique_name_in_owner = true
 script = ExtResource("3_jrb88")
 
-[node name="Camera" type="Camera2D" parent="."]
+[node name="Camera" type="Camera2D" parent="." node_paths=PackedStringArray("bounding_layer")]
 unique_name_in_owner = true
-position_smoothing_enabled = true
-position_smoothing_speed = 10.0
 script = ExtResource("4_b5a4u")
+bounding_layer = NodePath("../LayerManager/NavigationLayer")
 camera_speed = 250.0
 
 [node name="LayerManager" type="Node2D" parent="."]
