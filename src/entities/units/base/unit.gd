@@ -72,7 +72,7 @@ func is_walkable(coord: Vector2i) -> bool:
 func get_walkable_tiles(coord: Vector2i) -> Dictionary[Vector2i, int]:
 	return TileMapUtils.get_tiles_in_range_with_distances(
 		[coord],
-		unit_resource.move_speed,
+		unit_resource.movement,
 		is_walkable
 	)
 
@@ -101,8 +101,6 @@ func unselect() -> void:
 #endregion
 
 #region MOVE
-@export var moves_per_second: float = 5.0
-
 signal moving(moving: bool)
 var is_moving: bool = false:
 	set(value):
@@ -115,34 +113,37 @@ var is_moving: bool = false:
 		moving.emit(is_moving)
 
 var move_tween: Tween
-func move(coords) -> void:
+func move_through(path: Array[Vector2i]) -> void:
+	if path.size() == 0 or path.size() > unit_resource.movement:
+		return
 	if move_tween:
 		move_tween.kill()
 	move_tween = create_tween().set_process_mode(Tween.TWEEN_PROCESS_PHYSICS)
-	for i in range(coords.size() -1, -1, -1):
+	is_moving = true
+	# Visually move the sprite but instantly move the unit to avoid two units going to same tile
+	var temp = global_position
+	global_position = TileMapUtils.get_tile_center_position_from_coord(path[0])
+	animatedSprite.global_position = temp
+
+	for i in range(path.size() -1, -1, -1):
 		move_tween.tween_property(
 			animatedSprite, 
-			"global_position", 
-			TileMapUtils.get_tile_center_position_from_coord(coords[i]), 
-			1.0 / moves_per_second).set_trans(Tween.TRANS_SINE)
+			"global_position",
+			TileMapUtils.get_tile_center_position_from_coord(path[i]), 
+			1.0 / Constants.MOVES_PER_SECOND).set_trans(Tween.TRANS_SINE)
+	await move_tween.finished
+	unit_resource.movement -= path.size()
+	is_moving = false
 
 func move_to(coord: Vector2i) -> void:
-	if is_moving or not coord:
+	if is_moving or not coord or not can_move_to(coord):
 		return
-
 	var path: Array[Vector2i] = aStar.find_path(tile_coord, coord)
-	
-	if path.size() > 0 and path.size() <= unit_resource.move_speed and walkable_tiles.has(coord):
-		is_moving = true
-		# Visually move the sprite but instantly move the unit to avoid two units going to same tile
-		var temp = global_position
-		global_position = TileMapUtils.get_tile_center_position_from_coord(coord)
-		animatedSprite.global_position = temp
+	await move_through(path)
+	print("Finished moving to: ", coord)
 
-		move(path)
-		await move_tween.finished
-		print("Finished moving to: ", coord)
-		is_moving = false
+func can_move_to(coord: Vector2i):
+	return walkable_tiles.has(coord)
 #endregion
 
 #region ATTACK
@@ -161,7 +162,7 @@ func attack() -> void:
 func get_max_attack_range_coord(target: Vector2i):
 	var walkable_tiles_with_move_cost: Dictionary[Vector2i, int] = TileMapUtils.get_tiles_in_range_with_distances(
 		[tile_coord],
-		unit_resource.move_speed,
+		unit_resource.movement,
 		is_walkable,
 		Level.instance.tile_contains_player
 	)

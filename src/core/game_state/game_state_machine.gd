@@ -7,6 +7,7 @@ enum GameState {
 	PLAYER_SELECTED,
 	ENEMY_TURN
 }
+var turn: int = 1
 var current_state: GameState = GameState.PLAYER_TURN
 @onready var unitManager: UnitManager = %UnitManager
 

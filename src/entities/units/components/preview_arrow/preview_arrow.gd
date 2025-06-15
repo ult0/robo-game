@@ -24,7 +24,7 @@ func _draw() -> void:
 		var end := selector_coord
 		var path := unit.aStar.find_path(start, end).map(func (coord: Vector2i) -> Vector2: return TileMapUtils.get_tile_center_position_from_coord(coord))
 		
-		if (path.is_empty() or path.size() > unit.unit_resource.move_speed):
+		if (path.is_empty() or path.size() > unit.unit_resource.movement):
 			return
 
 		# Draw the path
