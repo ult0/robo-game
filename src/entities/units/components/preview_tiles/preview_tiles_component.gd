@@ -15,6 +15,7 @@ enum PreviewTile {
 @export var tile_order: Array[PreviewTile]
 
 func setup(_unit) -> void:
+	EventBus.unit_action_completed_connect(update)
 	if _unit is Unit:
 		unit = _unit
 		unit.selected.connect(func (_selected: bool) -> void: update())

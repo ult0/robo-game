@@ -1,5 +1,17 @@
 extends Node
 
+signal _turn_start(turn_num: int)
+func turn_start_connect(c: Callable):
+	_turn_start.connect(c)
+func turn_start_emit(turn_num: int):
+	_turn_start.emit(turn_num)
+
+signal _unit_action_completed()
+func unit_action_completed_connect(c: Callable):
+	_unit_action_completed.connect(c)
+func unit_action_completed_emit():
+	_unit_action_completed.emit()
+
 signal _selector_coord_changed(coord: Vector2i)
 func selector_coord_changed_connect(c: Callable):
 	_selector_coord_changed.connect(c)

@@ -136,7 +136,11 @@ func _exit_state(state: GameState):
 			print("Exited PLAYER_SELECTED")
 		GameState.PLAYER_ACTION:
 			print("Exited PLAYER_ACTION")
+			EventBus.unit_action_completed_emit()
 		GameState.ENEMY_TURN:
 			print("Exited ENEMY_TURN")
+			# Increment Turn Count
+			turn += 1
+			EventBus.turn_start_emit(turn)
 		_:
 			print("Exited unknown state: ", state)

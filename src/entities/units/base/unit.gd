@@ -27,6 +27,7 @@ func _ready() -> void:
 	# TODO: Change AStar to take in additional arguments for walkable overrides
 	# Potentially will make more sense after introducing unit state machine
 	aStar = AStar.create()
+	EventBus.unit_action_completed_connect(update)
 	setup_animation()
 
 	for child in get_children():
@@ -37,6 +38,9 @@ func _ready() -> void:
 func setup_animation() -> void:
 	animatedSprite.sprite_frames = unit_resource.animation_resource
 	animatedSprite.play("idle")
+
+func update() -> void:
+	update_action_tiles()
 
 #region NAVIGATION
 
@@ -108,7 +112,6 @@ var is_moving: bool = false:
 		if is_moving:
 			animatedSprite.play("walk")
 		else:
-			update_action_tiles()
 			animatedSprite.play("idle")
 		moving.emit(is_moving)
 
