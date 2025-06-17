@@ -65,6 +65,8 @@ folder_colors={
 [global_group]
 
 unit=""
+player=""
+enemy=""
 
 [input]
 

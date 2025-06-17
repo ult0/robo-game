@@ -54,13 +54,12 @@ func handle_mouse_button_input(event: InputEventMouseButton) -> void:
 				elif unitManager.is_enemy_at_coord(mouse_coord):
 					var clicked_enemy = unitManager.get_enemy_at_coord(mouse_coord)
 					# SELECT ENEMY
-					if unitManager.enemy_group.selected_unit != clicked_enemy:
+					if unitManager.selected_enemy != clicked_enemy:
 						unitManager.select_enemy_at_coord(mouse_coord)
 					# ATTACK SELECTED ENEMY
 					else:
-						var selected_player = unitManager.player_group.selected_unit
-						if selected_player.can_attack_after_moving(clicked_enemy.tile_coord):
-							command_queue.append(unitManager.resolve_combat.bind(selected_player, clicked_enemy))
+						if unitManager.selected_player.can_attack_after_moving(clicked_enemy.tile_coord):
+							command_queue.append(unitManager.resolve_combat.bind(unitManager.selected_player, clicked_enemy))
 							set_state(GameState.PLAYER_ACTION)
 				# TILE
 				elif Level.instance.tile_contains_navtile(mouse_coord):
@@ -123,25 +122,38 @@ func _enter_state(state: GameState):
 			print("Entered PLAYER_SELECTED")
 		GameState.PLAYER_ACTION:
 			print("Entered PLAYER_ACTION")
+			# Execute Actions
 			for i: int in range(command_queue.size()):
 				print("Executing Command: ", command_queue[i])
 				var command = command_queue.pop_front()
 				await command.call()
 				# Update everything after action is completed
 				EventBus.unit_action_completed_emit()
-			if can_player_turn_continue():
+
+			# Check if all enemies are dead to end level
+			if unitManager.are_all_enemies_dead():
+				print("LEVEL COMPLETE")
+			# Check if all players are dead for game over
+			elif unitManager.are_all_players_dead():
+				print("GAME OVER")
+			# Check if player can continue turn
+			elif can_player_turn_continue():
 				set_state(GameState.PLAYER_SELECTED)
-			# Check if all enemies are dead to end game
+			# Check if turn should be force ended
 			else:
 				set_state(GameState.ENEMY_TURN)
 		GameState.ENEMY_TURN:
 			print("Entered ENEMY_TURN")
+			
+			EventBus.enemy_turn_start_emit(turn)
+
 			for enemy in unitManager.enemy_group.current_units:
 				# Focus on enemy
 				await camera.focus(enemy.global_position)
 				# Execute enemy turn
 				print(enemy, " executing turn...")
-				await enemy.move_to(enemy.tile_coord + Vector2i.LEFT)
+				await unitManager.handle_enemy_turn(enemy)
+				EventBus.unit_action_completed_emit()
 			print("Enemy turn finished")
 			set_state(GameState.PLAYER_TURN)
 		_:
@@ -159,7 +171,8 @@ func _exit_state(state: GameState):
 			print("Exited ENEMY_TURN")
 			# Increment Turn Count
 			turn += 1
-			EventBus.turn_start_emit(turn)
+			EventBus.player_turn_start_emit(turn)
+			print("TURN ", turn)
 		_:
 			print("Exited unknown state: ", state)
 

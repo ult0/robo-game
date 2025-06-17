@@ -44,7 +44,7 @@ func on_unit_selected(unit: Unit) -> void:
 		connect_signals()
 		update()
 		visible = true
-	else:
+	elif selected_unit:
 		disconnect_signals()
 		selected_unit = null
 		visible = false

@@ -5,7 +5,7 @@
 [ext_resource type="Resource" uid="uid://uyywr0ds7k1q" path="res://src/data/presets/units/enemy/orc/enemy_unit.tres" id="3_c4w8v"]
 [ext_resource type="SpriteFrames" uid="uid://cabom1rcnfn8o" path="res://src/data/presets/units/enemy/orc/orc_animations.tres" id="4_xwavj"]
 
-[node name="Enemy" instance=ExtResource("1_5uy6h")]
+[node name="Enemy" groups=["enemy"] instance=ExtResource("1_5uy6h")]
 script = ExtResource("1_md0e3")
 unit_resource = ExtResource("3_c4w8v")
 

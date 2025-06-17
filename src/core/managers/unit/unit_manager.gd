@@ -2,7 +2,13 @@ extends Node2D
 class_name UnitManager
 
 var player_group: UnitGroup
+var selected_player: Player:
+	get: return player_group.selected_unit
+
 var enemy_group: UnitGroup
+var selected_enemy: Enemy:
+	get:
+		return enemy_group.selected_unit
 
 func _ready() -> void:
 	for child in get_children():
@@ -32,8 +38,31 @@ func resolve_combat(attacker: Unit, target: Unit) -> void:
 	if target.dead:
 		print(target.name, " died!")
 
+func handle_enemy_turn(enemy: Enemy) -> void:
+	# Find nearest player
+	print(enemy, " looking for nearest player...")
+	var target: Unit = enemy.choose_target(player_group.current_units)
+	if not target:
+		print("No target found!")
+		return
+
+	# If possible, attack nearest player
+	if enemy.can_attack_after_moving(target.tile_coord):
+		print(enemy, " attacking nearest player...")
+		await resolve_combat(enemy, target)
+	# Otherwise, move towards nearest player
+	else:
+		print(enemy, " moving towards nearest player...")
+		await enemy.move_towards(target.tile_coord)
+
 func calculate_damage(attacker: Unit, target: Unit) -> int:
 	return maxi(0, attacker.unit_resource.attack - target.unit_resource.defense)
+
+func are_all_enemies_dead() -> bool:
+	return enemy_group.current_units.is_empty() and enemy_group.spawners.size() == enemy_group.dead_units.size()
+
+func are_all_players_dead() -> bool:
+	return player_group.current_units.is_empty() and player_group.spawners.size() == player_group.dead_units.size()
 
 func move_player_to_coord(coord: Vector2i) -> void:
 	await player_group.move_unit_to_coord(coord)

@@ -6,7 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://dahi8q4meed7e" path="res://src/entities/units/components/preview_arrow/preview_arrow_component.tscn" id="4_ggyb8"]
 [ext_resource type="SpriteFrames" uid="uid://bx10cdxnkvwb1" path="res://src/data/presets/units/player/melee/warrior_animations.tres" id="4_qlg0r"]
 
-[node name="Player" instance=ExtResource("1_g2els")]
+[node name="Player" groups=["player"] instance=ExtResource("1_g2els")]
 script = ExtResource("2_qhqgy")
 unit_resource = ExtResource("3_dqkch")
 

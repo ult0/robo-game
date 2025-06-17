@@ -12,16 +12,15 @@ var unit_components: Dictionary[String, UnitComponent] = {}
 
 var aStar: AStar
 
+var walkable_tile_dict: Dictionary[Vector2i, int] = {}
 var walkable_tiles: Array[Vector2i]: 
 	get: return walkable_tile_dict.keys()
+var attackable_tile_dict: Dictionary[Vector2i, int] = {}
 var attackable_tiles: Array[Vector2i]:
 	get: return attackable_tile_dict.keys()
-var friendly_tiles: Array[Vector2i] = []:
-	get: return friendly_tile_dict.keys()
-
-var walkable_tile_dict: Dictionary[Vector2i, int] = {}
-var attackable_tile_dict: Dictionary[Vector2i, int] = {}
 var friendly_tile_dict: Dictionary[Vector2i, int] = {}
+var friendly_tiles: Array[Vector2i]:
+	get: return friendly_tile_dict.keys()
 
 func _ready() -> void:
 	# TODO: Change AStar to take in additional arguments for walkable overrides
@@ -43,6 +42,9 @@ func update() -> void:
 	update_action_tiles()
 
 #region NAVIGATION
+
+func get_walkable_path(coord: Vector2i) -> Array[Vector2i]:
+	return aStar.find_path(tile_coord, coord, is_walkable)
 
 func get_tile_path(coord: Vector2i) -> Array[Vector2i]:
 	return aStar.find_path(tile_coord, coord)
@@ -141,9 +143,26 @@ func move_through(path: Array[Vector2i]) -> void:
 func move_to(coord: Vector2i) -> void:
 	if is_moving or coord == null or not can_move_to(coord):
 		return
-	var path: Array[Vector2i] = aStar.find_path(tile_coord, coord)
+	var path: Array[Vector2i] = get_walkable_path(coord)
 	await move_through(path)
 	print("Finished moving to: ", coord)
+
+func move_towards(coord: Vector2i) -> void:
+	var path: Array[Vector2i] = get_tile_path(coord)
+	if path.size() > 0:
+		while not can_move_to(path[0]):
+			if path.size() > 0:
+				path.pop_front()
+			else:
+				break
+
+			if path.is_empty():
+				break
+	
+	if path.size() > 0:
+		await move_through(path)
+	else:
+		print(self.name, " unable to move towards ", coord)
 
 func can_move_to(coord: Vector2i):
 	return walkable_tiles.has(coord)

@@ -3,7 +3,9 @@ class_name UnitGroup
 
 var force_show_attack_range: bool = false
 @export var unit_type: Constants.UnitType = Constants.UnitType.PLAYER
+var spawners: Array[Spawner] = []
 var current_units: Array[Unit] = []
+var dead_units: Array[Unit] = []
 var selected_unit: Unit
 
 func _ready() -> void:
@@ -24,7 +26,6 @@ func on_unit_unselected(unit: Unit) -> void:
 		selected_unit = null
 
 func initialize_units() -> void:
-	var spawners: Array[Spawner] = []
 	for child in get_children():
 		if child is Spawner:
 			spawners.push_back(child)
@@ -43,7 +44,7 @@ func add_unit(unit: Unit) -> void:
 
 func remove_unit(unit: Unit) -> void:
 	current_units.erase(unit)
-	unit.queue_free()
+	dead_units.append(unit)
 
 func move_unit_to_coord(coord: Vector2i) -> void:
 	if selected_unit and !selected_unit.is_moving:

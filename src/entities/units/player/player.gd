@@ -3,7 +3,7 @@ extends Unit
 
 func _ready() -> void:
 	super()
-	EventBus.turn_start_connect(on_turn_start)
+	EventBus.player_turn_start_connect(on_turn_start)
 
 func select() -> void:
 	super()

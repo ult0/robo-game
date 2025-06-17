@@ -1,10 +1,16 @@
 extends Node
 
-signal _turn_start(turn_num: int)
-func turn_start_connect(c: Callable):
-	_turn_start.connect(c)
-func turn_start_emit(turn_num: int):
-	_turn_start.emit(turn_num)
+signal _player_turn_start(turn_num: int)
+func player_turn_start_connect(c: Callable):
+	_player_turn_start.connect(c)
+func player_turn_start_emit(turn_num: int):
+	_player_turn_start.emit(turn_num)
+
+signal _enemy_turn_start(turn_num: int)
+func enemy_turn_start_connect(c: Callable):
+	_enemy_turn_start.connect(c)
+func enemy_turn_start_emit(turn_num: int):
+	_enemy_turn_start.emit(turn_num)
 
 signal _unit_action_completed()
 func unit_action_completed_connect(c: Callable):

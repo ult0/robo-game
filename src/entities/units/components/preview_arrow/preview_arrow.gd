@@ -22,7 +22,7 @@ func _draw() -> void:
 	if unit and !unit.is_moving and unit.is_selected and unit.walkable_tiles.has(selector_coord):
 		var start = unit.tile_coord
 		var end := selector_coord
-		var path := unit.aStar.find_path(start, end).map(func (coord: Vector2i) -> Vector2: return TileMapUtils.get_tile_center_position_from_coord(coord))
+		var path := unit.aStar.find_path(start, end, unit.is_walkable).map(func (coord: Vector2i) -> Vector2: return TileMapUtils.get_tile_center_position_from_coord(coord))
 		
 		if (path.is_empty() or path.size() > unit.unit_resource.movement):
 			return

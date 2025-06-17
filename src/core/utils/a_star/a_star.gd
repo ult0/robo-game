@@ -13,7 +13,7 @@ static func create(_is_walkable: Callable = Level.instance.is_walkable) -> AStar
 	astar.is_walkable = _is_walkable
 	return astar
 
-func find_path(start: Vector2i, target: Vector2i) -> Array[Vector2i]:
+func find_path(start: Vector2i, target: Vector2i, is_walkable_override: Callable = is_walkable) -> Array[Vector2i]:
 	_frontier.insert(AStarNode.create(start), 0)
 
 	while !_frontier.is_empty():
@@ -32,7 +32,7 @@ func find_path(start: Vector2i, target: Vector2i) -> Array[Vector2i]:
 
 		# If the current node is not the target node, get its neighbors
 		# and add them to the frontier if they are not in the closed list
-		for neighbor in get_neighbors(_current):
+		for neighbor in get_neighbors(_current, is_walkable_override):
 			# If the neighbor is already in the closed list, skip it
 			if _closed_list.find(neighbor.coord) != -1:
 				continue
@@ -57,11 +57,11 @@ func find_path(start: Vector2i, target: Vector2i) -> Array[Vector2i]:
 	reset()
 	return []
 
-func get_neighbors(current: AStarNode) -> Array[AStarNode]:
+func get_neighbors(current: AStarNode, is_pathable: Callable = is_walkable) -> Array[AStarNode]:
 	var neighbors: Array[AStarNode] = []
 	for direction in TileMapUtils.movement_directions:
 		var neighbor := current.coord + direction
-		if is_walkable.call(neighbor):
+		if is_pathable.call(neighbor):
 			neighbors.append(AStarNode.create(neighbor, current))
 	return neighbors
 
