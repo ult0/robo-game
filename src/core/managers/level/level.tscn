@@ -2057,6 +2057,7 @@ script = ExtResource("3_jrb88")
 unique_name_in_owner = true
 script = ExtResource("4_b5a4u")
 bounding_layer = NodePath("../LayerManager/NavigationLayer")
+tile_margin = 4
 camera_speed = 250.0
 
 [node name="LayerManager" type="Node2D" parent="."]

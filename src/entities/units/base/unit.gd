@@ -139,7 +139,7 @@ func move_through(path: Array[Vector2i]) -> void:
 	is_moving = false
 
 func move_to(coord: Vector2i) -> void:
-	if is_moving or not coord or not can_move_to(coord):
+	if is_moving or coord == null or not can_move_to(coord):
 		return
 	var path: Array[Vector2i] = aStar.find_path(tile_coord, coord)
 	await move_through(path)

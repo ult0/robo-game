@@ -9,7 +9,9 @@ enum GameState {
 }
 var turn: int = 1
 var current_state: GameState = GameState.PLAYER_TURN
+var command_queue: Array[Callable] = []
 @onready var unitManager: UnitManager = %UnitManager
+@onready var camera: Camera = %Camera
 
 func _ready() -> void:
 	set_state(GameState.PLAYER_TURN)
@@ -58,16 +60,14 @@ func handle_mouse_button_input(event: InputEventMouseButton) -> void:
 					else:
 						var selected_player = unitManager.player_group.selected_unit
 						if selected_player.can_attack_after_moving(clicked_enemy.tile_coord):
+							command_queue.append(unitManager.resolve_combat.bind(selected_player, clicked_enemy))
 							set_state(GameState.PLAYER_ACTION)
-							await unitManager.resolve_combat(selected_player, clicked_enemy)
-							set_state(GameState.PLAYER_SELECTED)
 				# TILE
 				elif Level.instance.tile_contains_navtile(mouse_coord):
 					# MOVE UNIT
 					if unitManager.is_player_selected():
+						command_queue.append(unitManager.move_player_to_coord.bind(mouse_coord))
 						set_state(GameState.PLAYER_ACTION)
-						await unitManager.move_player_to_coord(mouse_coord)
-						set_state(GameState.PLAYER_SELECTED)
 			
 			# CANCEL
 			elif event.is_action_pressed('right-click'):
@@ -123,8 +123,27 @@ func _enter_state(state: GameState):
 			print("Entered PLAYER_SELECTED")
 		GameState.PLAYER_ACTION:
 			print("Entered PLAYER_ACTION")
+			for i: int in range(command_queue.size()):
+				print("Executing Command: ", command_queue[i])
+				var command = command_queue.pop_front()
+				await command.call()
+				# Update everything after action is completed
+				EventBus.unit_action_completed_emit()
+			if can_player_turn_continue():
+				set_state(GameState.PLAYER_SELECTED)
+			# Check if all enemies are dead to end game
+			else:
+				set_state(GameState.ENEMY_TURN)
 		GameState.ENEMY_TURN:
 			print("Entered ENEMY_TURN")
+			for enemy in unitManager.enemy_group.current_units:
+				# Focus on enemy
+				await camera.focus(enemy.global_position)
+				# Execute enemy turn
+				print(enemy, " executing turn...")
+				await enemy.move_to(enemy.tile_coord + Vector2i.LEFT)
+			print("Enemy turn finished")
+			set_state(GameState.PLAYER_TURN)
 		_:
 			print("Entered unknown state: ", state)
 
@@ -136,7 +155,6 @@ func _exit_state(state: GameState):
 			print("Exited PLAYER_SELECTED")
 		GameState.PLAYER_ACTION:
 			print("Exited PLAYER_ACTION")
-			EventBus.unit_action_completed_emit()
 		GameState.ENEMY_TURN:
 			print("Exited ENEMY_TURN")
 			# Increment Turn Count
@@ -144,3 +162,11 @@ func _exit_state(state: GameState):
 			EventBus.turn_start_emit(turn)
 		_:
 			print("Exited unknown state: ", state)
+
+func can_player_turn_continue() -> bool:
+	# Check if player units have no more options
+	var can_continue: bool = false
+	for unit in unitManager.player_group.current_units:
+		if unit.unit_resource.movement > 0:
+			can_continue = true
+	return can_continue

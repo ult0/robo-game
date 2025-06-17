@@ -11,7 +11,6 @@ func _ready() -> void:
 	var bounding_rect: Rect2i = bounding_layer.get_used_rect().grow(tile_margin)
 	var bounding_top_left = TileMapUtils.get_global_position_from_tile(bounding_rect.position)
 	var bounding_bottom_right = TileMapUtils.get_global_position_from_tile(bounding_rect.end)
-	print(bounding_rect)
 	limit_top = bounding_top_left.y
 	limit_left = bounding_top_left.x
 	limit_bottom = bounding_bottom_right.y
@@ -43,6 +42,7 @@ func handle_input(delta: float) -> void:
 		camera_vector += Vector2.DOWN
 
 	if camera_vector != Vector2.ZERO:
+		if focus_tween: focus_tween.kill()
 		position += (camera_vector.normalized() * camera_speed * delta)
 		snap_in_limit()
 
