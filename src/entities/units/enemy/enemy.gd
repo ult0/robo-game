@@ -10,7 +10,7 @@ var force_show_attack_range: bool = false:
 
 func _ready() -> void:
 	super()
-	EventBus.enemy_turn_start_connect(on_turn_start)
+	EventBus.player_turn_start_connect(on_player_turn_start)
 
 func select() -> void:
 	super()
@@ -26,7 +26,7 @@ func tile_contains_opposing_unit(coord: Vector2i) -> bool:
 func tile_contains_friendly_unit(coord: Vector2i) -> bool:
 	return Level.instance.tile_contains_enemy(coord)
 
-func on_turn_start(_turn_num: int) -> void:
+func on_player_turn_start(_turn_num: int) -> void:
 	unit_resource.movement = unit_resource.max_movement
 
 #region AI

@@ -5,7 +5,9 @@ enum GameState {
 	PLAYER_TURN,
 	PLAYER_ACTION,
 	PLAYER_SELECTED,
-	ENEMY_TURN
+	ENEMY_TURN,
+	GAME_OVER,
+	LEVEL_COMPLETE
 }
 var turn: int = 1
 var current_state: GameState = GameState.PLAYER_TURN
@@ -89,14 +91,15 @@ func handle_mouse_button_input(event: InputEventMouseButton) -> void:
 		GameState.PLAYER_ACTION:
 			# CONFIRM
 			if event.is_action_pressed('left-click'):
-				pass
-			# CANCEL
-			elif event.is_action_pressed('right-click'):
-				# TODO: Maybe add undo here?
-				pass
+				var move_tween = unitManager.selected_player.move_tween
+				if move_tween and move_tween.is_valid() and move_tween.is_running():
+					move_tween.set_speed_scale(10)
 
 		GameState.ENEMY_TURN:
-			pass
+			if event.is_action_pressed('left-click'):
+				for enemy in unitManager.enemy_group.current_units:
+					if enemy.move_tween and enemy.move_tween.is_valid() and enemy.move_tween.is_running():
+						enemy.move_tween.set_speed_scale(10)
 
 func handle_key_input(event: InputEventKey):
 	match current_state:
@@ -108,6 +111,10 @@ func handle_key_input(event: InputEventKey):
 					unitManager.enemy_group.set_force_show_attack_range(false)
 				else:
 					unitManager.enemy_group.set_force_show_attack_range(true)
+			# E
+			if event.is_pressed() and event.keycode == KEY_E:
+				# END TURN
+				set_state(GameState.ENEMY_TURN)
 
 func set_state(new_state: GameState):
 	_exit_state(current_state)
@@ -132,10 +139,10 @@ func _enter_state(state: GameState):
 
 			# Check if all enemies are dead to end level
 			if unitManager.are_all_enemies_dead():
-				print("LEVEL COMPLETE")
+				set_state(GameState.LEVEL_COMPLETE)
 			# Check if all players are dead for game over
 			elif unitManager.are_all_players_dead():
-				print("GAME OVER")
+				set_state(GameState.GAME_OVER)
 			# Check if player can continue turn
 			elif can_player_turn_continue():
 				set_state(GameState.PLAYER_SELECTED)
@@ -144,6 +151,12 @@ func _enter_state(state: GameState):
 				set_state(GameState.ENEMY_TURN)
 		GameState.ENEMY_TURN:
 			print("Entered ENEMY_TURN")
+
+			# UNSELECT ALL
+			if unitManager.is_player_selected():
+				unitManager.unselect_current_selected_player()
+			if unitManager.is_enemy_selected():
+				unitManager.unselect_current_selected_enemy()
 			
 			EventBus.enemy_turn_start_emit(turn)
 
@@ -156,6 +169,10 @@ func _enter_state(state: GameState):
 				EventBus.unit_action_completed_emit()
 			print("Enemy turn finished")
 			set_state(GameState.PLAYER_TURN)
+		GameState.GAME_OVER:
+			print("GAME OVER")
+		GameState.LEVEL_COMPLETE:
+			print("LEVEL COMPLETE")
 		_:
 			print("Entered unknown state: ", state)
 

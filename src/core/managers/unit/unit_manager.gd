@@ -25,7 +25,8 @@ func _ready() -> void:
 
 func resolve_combat(attacker: Unit, target: Unit) -> void:
 	if not attacker.can_attack_from(target.tile_coord):
-		await attacker.move_to(attacker.get_max_attack_range_coord(target.tile_coord))
+		var moved_successfully = await attacker.move_to(attacker.get_max_attack_range_coord(target.tile_coord))
+		assert(moved_successfully, "Failed to move during combat")
 
 	var damage = calculate_damage(attacker, target)
 

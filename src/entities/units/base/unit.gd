@@ -62,7 +62,7 @@ func update_action_tiles() -> void:
 	attackable_tile_dict.clear()
 	friendly_tile_dict.clear()
 
-	var walkable_and_friendly_tile_dict = get_walkable_tiles(tile_coord)
+	var walkable_and_friendly_tile_dict = get_walkable_and_friendly_tiles(tile_coord)
 	for tile in walkable_and_friendly_tile_dict:
 		if tile_contains_friendly_unit(tile) and tile != tile_coord:
 			friendly_tile_dict.set(tile, walkable_and_friendly_tile_dict[tile])
@@ -75,11 +75,19 @@ func is_walkable(coord: Vector2i) -> bool:
 	var exists := Level.instance.tile_contains_navtile(coord)
 	return exists and !containsObstacle and !tile_contains_opposing_unit(coord)
 
-func get_walkable_tiles(coord: Vector2i) -> Dictionary[Vector2i, int]:
+func get_walkable_and_friendly_tiles(coord: Vector2i) -> Dictionary[Vector2i, int]:
 	return TileMapUtils.get_tiles_in_range_with_distances(
 		[coord],
 		unit_resource.movement,
 		is_walkable
+	)
+
+func get_walkable_tiles(coord: Vector2i) -> Dictionary[Vector2i, int]:
+	return TileMapUtils.get_tiles_in_range_with_distances(
+		[coord],
+		unit_resource.movement,
+		is_walkable,
+		tile_contains_friendly_unit
 	)
 
 func get_attackable_tiles(starting_tiles: Array[Vector2i]) -> Dictionary[Vector2i, int]:
@@ -118,9 +126,9 @@ var is_moving: bool = false:
 		moving.emit(is_moving)
 
 var move_tween: Tween
-func move_through(path: Array[Vector2i]) -> void:
+func move_through(path: Array[Vector2i]) -> bool:
 	if path.size() == 0 or path.size() > unit_resource.movement:
-		return
+		return false
 	if move_tween:
 		move_tween.kill()
 	move_tween = create_tween().set_process_mode(Tween.TWEEN_PROCESS_PHYSICS)
@@ -139,15 +147,21 @@ func move_through(path: Array[Vector2i]) -> void:
 	await move_tween.finished
 	unit_resource.movement -= path.size()
 	is_moving = false
+	if tile_coord == path[0]:
+		return true
+	else:
+		printerr(self.name, " failed to move_through to ", path[0])
+		return false
 
-func move_to(coord: Vector2i) -> void:
+func move_to(coord: Vector2i) -> bool:
 	if is_moving or coord == null or not can_move_to(coord):
-		return
+		return false
 	var path: Array[Vector2i] = get_walkable_path(coord)
 	await move_through(path)
 	print("Finished moving to: ", coord)
+	return true
 
-func move_towards(coord: Vector2i) -> void:
+func move_towards(coord: Vector2i) -> bool:
 	var path: Array[Vector2i] = get_tile_path(coord)
 	if path.size() > 0:
 		while not can_move_to(path[0]):
@@ -161,8 +175,10 @@ func move_towards(coord: Vector2i) -> void:
 	
 	if path.size() > 0:
 		await move_through(path)
+		return true
 	else:
 		print(self.name, " unable to move towards ", coord)
+		return false
 
 func can_move_to(coord: Vector2i):
 	return walkable_tiles.has(coord)
@@ -182,17 +198,11 @@ func attack() -> void:
 	attacking.emit(false)
 
 func get_max_attack_range_coord(target: Vector2i):
-	var walkable_tiles_with_move_cost: Dictionary[Vector2i, int] = TileMapUtils.get_tiles_in_range_with_distances(
-		[tile_coord],
-		unit_resource.movement,
-		is_walkable,
-		Level.instance.tile_contains_player
-	)
 	var max_attack_range_coord: Vector2i = Vector2i.MAX
 	var distance: int = max_attack_range_coord.x
-	for coord in walkable_tiles_with_move_cost:
-		if can_attack_from(target, coord) and walkable_tiles_with_move_cost[coord] < distance:
-			distance = walkable_tiles_with_move_cost[coord]
+	for coord in walkable_tiles:
+		if can_attack_from(target, coord) and walkable_tile_dict[coord] < distance:
+			distance = walkable_tile_dict[coord]
 			max_attack_range_coord = coord
 	return max_attack_range_coord
 
