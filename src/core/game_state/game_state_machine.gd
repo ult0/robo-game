@@ -152,15 +152,13 @@ func _enter_state(state: GameState):
 		GameState.ENEMY_TURN:
 			print("Entered ENEMY_TURN")
 
-			# UNSELECT ALL
-			if unitManager.is_player_selected():
-				unitManager.unselect_current_selected_player()
-			if unitManager.is_enemy_selected():
-				unitManager.unselect_current_selected_enemy()
+			unitManager.unselect_all_current_selected_units()
 			
 			EventBus.enemy_turn_start_emit(turn)
 
 			for enemy in unitManager.enemy_group.current_units:
+				if unitManager.are_all_players_dead():
+					break
 				# Focus on enemy
 				await camera.focus(enemy.global_position)
 				# Execute enemy turn
@@ -168,13 +166,27 @@ func _enter_state(state: GameState):
 				await unitManager.handle_enemy_turn(enemy)
 				EventBus.unit_action_completed_emit()
 			print("Enemy turn finished")
-			set_state(GameState.PLAYER_TURN)
+
+			# Check if all enemies are dead to end level
+			if unitManager.are_all_enemies_dead():
+				set_state(GameState.LEVEL_COMPLETE)
+			# Check if all players are dead for game over
+			elif unitManager.are_all_players_dead():
+				set_state(GameState.GAME_OVER)
+			# Return to player turn
+			else:
+				set_state(GameState.PLAYER_TURN)
 		GameState.GAME_OVER:
+			unitManager.unselect_all_current_selected_units()
+			EventBus.game_over_emit()
 			print("GAME OVER")
 		GameState.LEVEL_COMPLETE:
+			unitManager.unselect_all_current_selected_units()
+			EventBus.level_completed_emit()
 			print("LEVEL COMPLETE")
 		_:
 			print("Entered unknown state: ", state)
+			assert(false)
 
 func _exit_state(state: GameState):
 	match state:
@@ -192,6 +204,7 @@ func _exit_state(state: GameState):
 			print("TURN ", turn)
 		_:
 			print("Exited unknown state: ", state)
+			assert(false)
 
 func can_player_turn_continue() -> bool:
 	# Check if player units have no more options

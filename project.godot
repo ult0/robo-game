@@ -23,7 +23,7 @@ resources_spreadsheet_view/freeze_first_column=true
 
 [application]
 
-config/name="Robot Game"
+config/name="TRPG"
 run/main_scene="res://src/core/managers/level/level.tscn"
 config/features=PackedStringArray("4.4", "Forward Plus")
 config/icon="res://src/assets/icon.svg"
@@ -45,6 +45,7 @@ window/size/always_on_top=true
 window/size/window_width_override=1920
 window/size/window_height_override=1080
 window/stretch/mode="canvas_items"
+mouse_cursor/custom_image="uid://d1rbipymj4tck"
 
 [editor_plugins]
 

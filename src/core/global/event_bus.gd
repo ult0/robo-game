@@ -1,5 +1,17 @@
 extends Node
 
+signal _level_completed()
+func level_completed_connect(c: Callable):
+	_level_completed.connect(c)
+func level_completed_emit():
+	_level_completed.emit()
+
+signal _game_over()
+func game_over_connect(c: Callable):
+	_game_over.connect(c)
+func game_over_emit():
+	_game_over.emit()
+
 signal _player_turn_start(turn_num: int)
 func player_turn_start_connect(c: Callable):
 	_player_turn_start.connect(c)

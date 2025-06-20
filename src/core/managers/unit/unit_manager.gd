@@ -44,6 +44,7 @@ func handle_enemy_turn(enemy: Enemy) -> void:
 	print(enemy, " looking for nearest player...")
 	var target: Unit = enemy.choose_target(player_group.current_units)
 	if not target:
+		assert(target)
 		print("No target found!")
 		return
 
@@ -108,6 +109,10 @@ func unselect_enemy_at_coord(coord: Vector2i) -> Enemy:
 
 func unselect_current_selected_enemy() -> Enemy:
 	return enemy_group.unselect_current_selected_unit()
+
+func unselect_all_current_selected_units() -> void:
+	unselect_current_selected_player()
+	unselect_current_selected_enemy()
 
 func get_unit_at_coord(coord: Vector2i) -> Unit:	
 	var player: Player = get_player_at_coord(coord)

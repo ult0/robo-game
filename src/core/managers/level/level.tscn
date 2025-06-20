@@ -2082,44 +2082,48 @@ script = ExtResource("15_ae7c6")
 unit_type = 1
 
 [node name="Spawner" parent="UnitManager/EnemyUnits" instance=ExtResource("17_fv33o")]
-position = Vector2(-56, -72)
+position = Vector2(-23, -88)
 unit_resource = ExtResource("22_b8pr1")
 
 [node name="Spawner2" parent="UnitManager/EnemyUnits" instance=ExtResource("17_fv33o")]
-position = Vector2(-50, 8)
+position = Vector2(-55, -72)
 unit_resource = ExtResource("22_b8pr1")
 
 [node name="Spawner3" parent="UnitManager/EnemyUnits" instance=ExtResource("17_fv33o")]
-position = Vector2(152, 58)
+position = Vector2(-39, -57)
 unit_resource = ExtResource("22_b8pr1")
 
 [node name="Spawner4" parent="UnitManager/EnemyUnits" instance=ExtResource("17_fv33o")]
-position = Vector2(39, -59)
+position = Vector2(-39, -72)
 unit_resource = ExtResource("22_b8pr1")
 
 [node name="Spawner5" parent="UnitManager/EnemyUnits" instance=ExtResource("17_fv33o")]
-position = Vector2(-8, 103)
+position = Vector2(-23, -72)
 unit_resource = ExtResource("22_b8pr1")
 
 [node name="Spawner6" parent="UnitManager/EnemyUnits" instance=ExtResource("17_fv33o")]
-position = Vector2(8, 103)
+position = Vector2(-23, -57)
 unit_resource = ExtResource("22_b8pr1")
 
 [node name="PlayerUnits" parent="UnitManager" instance=ExtResource("16_or6ma")]
 
 [node name="Spawner" parent="UnitManager/PlayerUnits" instance=ExtResource("17_fv33o")]
-position = Vector2(-216, -8)
+position = Vector2(-19, -23)
+scale = Vector2(1.03234, 1.00394)
 
 [node name="Spawner2" parent="UnitManager/PlayerUnits" instance=ExtResource("17_fv33o")]
-position = Vector2(-216, 8)
+position = Vector2(-19, -7)
+scale = Vector2(1.03234, 1.00394)
 unit_resource = ExtResource("19_7ggv0")
 
 [node name="Spawner3" parent="UnitManager/PlayerUnits" instance=ExtResource("17_fv33o")]
-position = Vector2(-216, 24)
+position = Vector2(-19, 9)
+scale = Vector2(1.03234, 1.00394)
 unit_resource = ExtResource("20_qxri1")
 
 [node name="Spawner4" parent="UnitManager/PlayerUnits" instance=ExtResource("17_fv33o")]
-position = Vector2(-216, 40)
+position = Vector2(-19, 25)
+scale = Vector2(1.03234, 1.00394)
 unit_resource = ExtResource("21_4f5du")
 
 [node name="UI" parent="." instance=ExtResource("23_7mtkk")]

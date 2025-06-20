@@ -11,7 +11,6 @@ atlas = ExtResource("3_b5n3s")
 region = Rect2(0, 0, 32, 32)
 
 [node name="SelectedUnitDisplay" type="MarginContainer"]
-custom_minimum_size = Vector2(32, 32)
 offset_right = 136.0
 offset_bottom = 40.0
 theme = ExtResource("1_8suvh")

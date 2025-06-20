@@ -6,6 +6,7 @@ class_name Camera
 @export var camera_speed: float = 20.0
 var input_actions: Array[StringName] = ["left", "right", "up", "down"];
 var focus_tween: Tween
+var locked = false
 
 func _ready() -> void:
 	var bounding_rect: Rect2i = bounding_layer.get_used_rect().grow(tile_margin)
@@ -17,6 +18,11 @@ func _ready() -> void:
 	limit_right = bounding_bottom_right.x
 	EventBus.player_selected_connect(on_unit_selected)
 	EventBus.enemy_selected_connect(on_unit_selected)
+	EventBus.level_completed_connect(lock)
+	EventBus.game_over_connect(lock)
+
+func lock() -> void:
+	locked = true
 
 func on_unit_selected(unit: Unit) -> void:
 	if unit:
@@ -31,6 +37,7 @@ func focus(_position: Vector2) -> void:
 	snap_in_limit()
 
 func handle_input(delta: float) -> void:
+	if locked: return
 	var camera_vector: Vector2 = Vector2.ZERO
 	if Input.is_action_pressed("left"):
 		camera_vector += Vector2.LEFT
