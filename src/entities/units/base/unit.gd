@@ -26,7 +26,7 @@ func _ready() -> void:
 	# TODO: Change AStar to take in additional arguments for walkable overrides
 	# Potentially will make more sense after introducing unit state machine
 	aStar = AStar.create()
-	EventBus.unit_action_completed_connect(update)
+	EventBus.update_connect(update)
 	setup_animation()
 	update.call_deferred()
 
@@ -44,11 +44,14 @@ func update() -> void:
 
 #region NAVIGATION
 
-func get_walkable_path(coord: Vector2i) -> Array[Vector2i]:
-	return aStar.find_path(tile_coord, coord, is_walkable)
+## Get path that traverses through only friendly units.
+func get_walkable_path(target: Vector2i, start: Vector2i = tile_coord) -> Array[Vector2i]:
+	return aStar.find_path(start, target, is_walkable)
 
-func get_tile_path(coord: Vector2i) -> Array[Vector2i]:
-	return aStar.find_path(tile_coord, coord)
+## Get path that traverses through any unit.
+## Used for targeting other units in order to get a valid path
+func get_tile_path(target: Vector2i, start: Vector2i = tile_coord) -> Array[Vector2i]:
+	return aStar.find_path(start, target)
 
 func tile_contains_opposing_unit(_coord: Vector2i) -> bool:
 	printerr("tile_contains_opposing_unit not implemented in Unit base class")
@@ -105,7 +108,7 @@ signal selected(selected: bool)
 var is_selected: bool = false:
 	set(value):
 		is_selected = value
-		update_action_tiles()
+		update()
 		selected.emit(is_selected)
 func select() -> void:
 	z_index += 1
@@ -162,29 +165,39 @@ func move_to(coord: Vector2i) -> bool:
 	print("Finished moving to: ", coord)
 	return true
 
-func move_towards(coord: Vector2i) -> bool:
-	var path: Array[Vector2i] = get_tile_path(coord)
-	if path.size() > 0:
-		while not can_move_to(path[0]):
-			if path.size() > 0:
-				path.pop_front()
-			else:
-				break
-
-			if path.is_empty():
-				break
-	
-	if path.size() > 0:
-		await move_through(path)
-		return true
+## Moves unit to walkable tile with the most movement cost and shortest path to target.
+## Optionally provide amount of movement to save when moving towards the target.
+func move_towards(target: Vector2i, saved_movement: int = 0) -> bool:
+	# Get all walkable tiles with all movement cost minus saved_movement
+	var movement = unit_resource.movement - saved_movement
+	var max_walk_tiles: Array[Vector2i]
+	# TODO: Add case if all max movement are not available
+	for tile in walkable_tiles:
+		if walkable_tile_dict[tile] == movement:
+			max_walk_tiles.append(tile)
+		elif target == tile:
+			# If the target is just a walkable tile then move there
+			assert(false, "Move Towards was used on target tile already in walkable tiles")
+			return await move_through(get_walkable_path(target))
+	# Find shortest path to target from walkable tiles with movement cost
+	var destination = null
+	var shortest_path = null
+	for tile in max_walk_tiles:
+		# TODO: Update to use walkable_path instead
+		var path = get_tile_path(target, tile)
+		if not path.is_empty() and (shortest_path == null or path.size() <= shortest_path.size()):
+			shortest_path = path
+			destination = tile
+	# Use the shortest path's starting tile as the destination
+	if destination != null:
+		return await move_to(destination)
 	else:
-		# Should only happen if there are no walkable tiles or all walkable tiles have a friendly unit
-		print(self.name, " unable to move towards ", coord)
-		assert(false)
+		# Should only happen if there are no walkable tiles or its impossible to get to target
+		assert(false, self.name + " unable to move towards " + str(target))
 		return false
 
 func can_move_to(coord: Vector2i):
-	return walkable_tiles.has(coord)
+	return walkable_tile_dict.has(coord)
 #endregion
 
 #region ATTACK
@@ -214,7 +227,7 @@ func can_attack_from(target: Vector2i, starting_tile: Vector2i = tile_coord) -> 
 	return attack_range.has(target)
 
 func can_attack_after_moving(target: Vector2i) -> bool:
-	return attackable_tiles.has(target)
+	return attackable_tile_dict.has(target)
 #endregion
 
 #region DAMAGE

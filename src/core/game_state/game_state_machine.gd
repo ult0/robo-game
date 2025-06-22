@@ -139,7 +139,7 @@ func _enter_state(state: GameState):
 				var command = command_queue.pop_front()
 				await command.call()
 				# Update everything after action is completed
-				EventBus.unit_action_completed_emit()
+				EventBus.update_emit()
 
 			# Check if all enemies are dead to end level
 			if unitManager.are_all_enemies_dead():
@@ -157,8 +157,6 @@ func _enter_state(state: GameState):
 			print("Entered ENEMY_TURN")
 
 			unitManager.unselect_all_current_selected_units()
-			
-			EventBus.enemy_turn_start_emit(turn)
 
 			for enemy in unitManager.enemy_group.current_units:
 				if unitManager.are_all_players_dead():
@@ -168,7 +166,7 @@ func _enter_state(state: GameState):
 				# Execute enemy turn
 				print(enemy, " executing turn...")
 				await unitManager.handle_enemy_turn(enemy)
-				EventBus.unit_action_completed_emit()
+				EventBus.update_emit()
 			print("Enemy turn finished")
 
 			# Check if all enemies are dead to end level
@@ -204,11 +202,16 @@ func _exit_state(state: GameState):
 			print("Exited ENEMY_TURN")
 			# Increment Turn Count
 			turn += 1
+			# TODO: After updating game states move player turn start logic to player turn end
 			EventBus.player_turn_start_emit(turn)
+			EventBus.enemy_turn_end_emit(turn)
 			print("TURN ", turn)
 		_:
 			print("Exited unknown state: ", state)
 			assert(false)
+			
+	# After every state change, update
+	EventBus.update_emit()
 
 func can_player_turn_continue() -> bool:
 	# Check if player units have no more options

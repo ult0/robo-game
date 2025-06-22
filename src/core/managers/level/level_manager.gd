@@ -25,13 +25,16 @@ func is_walkable(coord: Vector2i) -> bool:
 	return exists and !containsObstacle
 
 func tile_contains_player(coord: Vector2i) -> bool:
-	return !!unitManager.get_player_at_coord(coord)
+	var player = unitManager.get_player_at_coord(coord)
+	return !!player and not player.dead
 
 func tile_contains_enemy(coord: Vector2i) -> bool:
-	return !!unitManager.get_enemy_at_coord(coord)
+	var enemy = unitManager.get_enemy_at_coord(coord)
+	return !!enemy and not enemy.dead
 		
 func tile_contains_unit(coord: Vector2i) -> bool:
-	return !!unitManager.get_unit_at_coord(coord)
+	var unit = unitManager.get_unit_at_coord(coord)
+	return !!unit and not unit.dead
 
 func tile_contains_obstacle(coord: Vector2i) -> bool:
 	return layerManager.obstacleLayer.get_cell_tile_data(coord) != null

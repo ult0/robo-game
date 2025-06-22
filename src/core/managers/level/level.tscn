@@ -2108,21 +2108,21 @@ unit_resource = ExtResource("22_b8pr1")
 [node name="PlayerUnits" parent="UnitManager" instance=ExtResource("16_or6ma")]
 
 [node name="Spawner" parent="UnitManager/PlayerUnits" instance=ExtResource("17_fv33o")]
-position = Vector2(-19, -23)
+position = Vector2(-24, 121)
 scale = Vector2(1.03234, 1.00394)
 
 [node name="Spawner2" parent="UnitManager/PlayerUnits" instance=ExtResource("17_fv33o")]
-position = Vector2(-19, -7)
+position = Vector2(-41, 120)
 scale = Vector2(1.03234, 1.00394)
 unit_resource = ExtResource("19_7ggv0")
 
 [node name="Spawner3" parent="UnitManager/PlayerUnits" instance=ExtResource("17_fv33o")]
-position = Vector2(-19, 9)
+position = Vector2(-58, 120)
 scale = Vector2(1.03234, 1.00394)
 unit_resource = ExtResource("20_qxri1")
 
 [node name="Spawner4" parent="UnitManager/PlayerUnits" instance=ExtResource("17_fv33o")]
-position = Vector2(-19, 25)
+position = Vector2(-75, 119)
 scale = Vector2(1.03234, 1.00394)
 unit_resource = ExtResource("21_4f5du")
 

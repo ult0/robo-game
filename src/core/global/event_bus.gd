@@ -1,5 +1,11 @@
 extends Node
 
+signal _update()
+func update_connect(c: Callable):
+	_update.connect(c)
+func update_emit():
+	_update.emit()
+
 signal _level_completed()
 func level_completed_connect(c: Callable):
 	_level_completed.connect(c)
@@ -18,17 +24,11 @@ func player_turn_start_connect(c: Callable):
 func player_turn_start_emit(turn_num: int):
 	_player_turn_start.emit(turn_num)
 
-signal _enemy_turn_start(turn_num: int)
-func enemy_turn_start_connect(c: Callable):
-	_enemy_turn_start.connect(c)
-func enemy_turn_start_emit(turn_num: int):
-	_enemy_turn_start.emit(turn_num)
-
-signal _unit_action_completed()
-func unit_action_completed_connect(c: Callable):
-	_unit_action_completed.connect(c)
-func unit_action_completed_emit():
-	_unit_action_completed.emit()
+signal _enemy_turn_end(turn_num: int)
+func enemy_turn_end_connect(c: Callable):
+	_enemy_turn_end.connect(c)
+func enemy_turn_end_emit(turn_num: int):
+	_enemy_turn_end.emit(turn_num)
 
 signal _selector_coord_changed(coord: Vector2i)
 func selector_coord_changed_connect(c: Callable):

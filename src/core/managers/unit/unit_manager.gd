@@ -48,6 +48,9 @@ func handle_enemy_turn(enemy: Enemy) -> void:
 		print("No target found!")
 		return
 
+	# Choose option: Offensive, Defensive, Strategic
+	# For now always be Offensive
+
 	# If possible, attack nearest player
 	if enemy.can_attack_after_moving(target.tile_coord):
 		print(enemy, " attacking nearest player...")
