@@ -28,6 +28,7 @@ func _ready() -> void:
 	aStar = AStar.create()
 	EventBus.unit_action_completed_connect(update)
 	setup_animation()
+	update.call_deferred()
 
 	for child in get_children():
 		if child is UnitComponent:
@@ -177,7 +178,9 @@ func move_towards(coord: Vector2i) -> bool:
 		await move_through(path)
 		return true
 	else:
+		# Should only happen if there are no walkable tiles or all walkable tiles have a friendly unit
 		print(self.name, " unable to move towards ", coord)
+		assert(false)
 		return false
 
 func can_move_to(coord: Vector2i):

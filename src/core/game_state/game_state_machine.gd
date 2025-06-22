@@ -3,14 +3,18 @@ extends Node2D
 
 enum GameState {
 	PLAYER_TURN,
-	PLAYER_ACTION,
 	PLAYER_SELECTED,
+	PLAYER_ACTION,
 	ENEMY_TURN,
 	GAME_OVER,
 	LEVEL_COMPLETE
 }
 var turn: int = 1
 var current_state: GameState = GameState.PLAYER_TURN
+var currently_interactable: bool:
+	get:
+		return not current_state >= GameState.PLAYER_ACTION
+
 var command_queue: Array[Callable] = []
 @onready var unitManager: UnitManager = %UnitManager
 @onready var camera: Camera = %Camera

@@ -6,6 +6,8 @@ extends Node2D
 
 # Using process for continuous input
 func _process(delta: float) -> void:
+	if not gameSM.currently_interactable:
+		return
 	# CAMERA
 	for action in camera.input_actions:
 		if Input.is_action_pressed(action):
