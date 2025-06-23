@@ -10,6 +10,11 @@ const tile_size_half_vector2: Vector2 = Vector2(tile_size_half, tile_size_half)
 
 const movement_directions: Array[Vector2i] = [Vector2i.UP, Vector2i.RIGHT, Vector2i.DOWN, Vector2i.LEFT]
 
+#region Distance
+static func euclidean(start: Vector2i, end: Vector2i) -> float: return (Vector2(end) - Vector2(start)).length()
+static func manhattan(start: Vector2i, end: Vector2i) -> int: return abs(start.x - end.x) + abs(start.y - end.y)
+#endregion
+
 #region Coordinate Conversion
 ## Takes a global coordinate and returns the tile coordinate as a Vector2i
 static func get_tile_coord(global_coord: Vector2) -> Vector2i:

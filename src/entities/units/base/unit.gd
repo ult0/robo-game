@@ -48,10 +48,13 @@ func update() -> void:
 func get_walkable_path(target: Vector2i, start: Vector2i = tile_coord) -> Array[Vector2i]:
 	return aStar.find_path(start, target, is_walkable)
 
-## Get path that traverses through any unit.
+## Get path that traverses through only friendly units + target.
 ## Used for targeting other units in order to get a valid path
-func get_tile_path(target: Vector2i, start: Vector2i = tile_coord) -> Array[Vector2i]:
-	return aStar.find_path(start, target)
+func get_target_path(target: Vector2i, start: Vector2i = tile_coord) -> Array[Vector2i]:
+	return aStar.find_path(
+		start, target, 
+		func (coord) -> bool: return is_walkable(coord) or target == coord
+	)
 
 func tile_contains_opposing_unit(_coord: Vector2i) -> bool:
 	printerr("tile_contains_opposing_unit not implemented in Unit base class")
@@ -130,6 +133,8 @@ var is_moving: bool = false:
 		moving.emit(is_moving)
 
 var move_tween: Tween
+## Moves a unit through an array of coordinates. 
+## Returns a boolean representing if the unit successfully moved through the entire path.
 func move_through(path: Array[Vector2i]) -> bool:
 	if path.size() == 0 or path.size() > unit_resource.movement:
 		return false
@@ -154,9 +159,11 @@ func move_through(path: Array[Vector2i]) -> bool:
 	if tile_coord == path[0]:
 		return true
 	else:
-		printerr(self.name, " failed to move_through to ", path[0])
+		assert(false, self.name + " failed to move_through to " + str(path[0]))
 		return false
 
+## Moves a unit to a specific coordinate if possible. 
+## Returns false if not possible or there is a failure to reach the destination
 func move_to(coord: Vector2i) -> bool:
 	if is_moving or coord == null or not can_move_to(coord):
 		return false
@@ -165,36 +172,35 @@ func move_to(coord: Vector2i) -> bool:
 	print("Finished moving to: ", coord)
 	return true
 
-## Moves unit to walkable tile with the most movement cost and shortest path to target.
-## Optionally provide amount of movement to save when moving towards the target.
-func move_towards(target: Vector2i, saved_movement: int = 0) -> bool:
-	# Get all walkable tiles with all movement cost minus saved_movement
-	var movement = unit_resource.movement - saved_movement
-	var max_walk_tiles: Array[Vector2i]
-	# TODO: Add case if all max movement are not available
+## Moves unit to walkable tile with the shortest path to target.
+## Will stand still if shortest path is from current position.
+## Returns a boolean representing if the unit successfully attempted to move towards the target.
+func move_towards(target: Vector2i) -> bool:
+	# Assume shortest path is from current position
+	var destination: Vector2i = tile_coord
+	var shortest_path: Array[Vector2i] = get_target_path(target)
+	var e_dis = TileMapUtils.euclidean(tile_coord, target)
+	# Find shortest path to target from walkable tiles or start
 	for tile in walkable_tiles:
-		if walkable_tile_dict[tile] == movement:
-			max_walk_tiles.append(tile)
-		elif target == tile:
-			# If the target is just a walkable tile then move there
-			assert(false, "Move Towards was used on target tile already in walkable tiles")
-			return await move_through(get_walkable_path(target))
-	# Find shortest path to target from walkable tiles with movement cost
-	var destination = null
-	var shortest_path = null
-	for tile in max_walk_tiles:
-		# TODO: Update to use walkable_path instead
-		var path = get_tile_path(target, tile)
-		if not path.is_empty() and (shortest_path == null or path.size() <= shortest_path.size()):
+		var path = get_target_path(target, tile)
+		var new_e_dis = TileMapUtils.euclidean(tile, target)
+		# If the target is just a walkable tile then move there
+		if target == tile:
+			assert(false, "move_towards was used on target tile already in walkable tiles")
+			return await move_through(path)
+		# Use shortest path or euclidean distance for tie break
+		if not path.is_empty() and (path.size() <= shortest_path.size() and new_e_dis < e_dis):
 			shortest_path = path
+			e_dis = new_e_dis
 			destination = tile
+	
+	# Do not move if the shortest path is from current position
+	if destination == tile_coord:
+		print(self.name, "staying still")
+		return true
 	# Use the shortest path's starting tile as the destination
-	if destination != null:
-		return await move_to(destination)
 	else:
-		# Should only happen if there are no walkable tiles or its impossible to get to target
-		assert(false, self.name + " unable to move towards " + str(target))
-		return false
+		return await move_to(destination)
 
 func can_move_to(coord: Vector2i):
 	return walkable_tile_dict.has(coord)

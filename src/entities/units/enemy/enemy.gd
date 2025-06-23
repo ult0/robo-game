@@ -28,7 +28,6 @@ func tile_contains_friendly_unit(coord: Vector2i) -> bool:
 
 func on_turn_start(_turn_num: int) -> void:
 	unit_resource.movement = unit_resource.max_movement
-	print(self.name, 'Updated movement', unit_resource.movement)
 
 #region AI
 

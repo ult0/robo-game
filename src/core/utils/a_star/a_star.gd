@@ -41,7 +41,7 @@ func find_path(start: Vector2i, target: Vector2i, is_walkable_override: Callable
 			neighbor.g = _current.g + 1.0
 
 			# Euclidean distance
-			neighbor.h = (Vector2(target) - Vector2(neighbor.coord)).length()
+			neighbor.h = TileMapUtils.euclidean(neighbor.coord, target)
 
 			neighbor.parent = _current
 

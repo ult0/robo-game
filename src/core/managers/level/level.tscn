@@ -2082,27 +2082,27 @@ script = ExtResource("15_ae7c6")
 unit_type = 1
 
 [node name="Spawner" parent="UnitManager/EnemyUnits" instance=ExtResource("17_fv33o")]
-position = Vector2(-23, -88)
+position = Vector2(9, 121)
 unit_resource = ExtResource("22_b8pr1")
 
 [node name="Spawner2" parent="UnitManager/EnemyUnits" instance=ExtResource("17_fv33o")]
-position = Vector2(-55, -72)
+position = Vector2(9, 136)
 unit_resource = ExtResource("22_b8pr1")
 
 [node name="Spawner3" parent="UnitManager/EnemyUnits" instance=ExtResource("17_fv33o")]
-position = Vector2(-39, -57)
+position = Vector2(24, 120)
 unit_resource = ExtResource("22_b8pr1")
 
 [node name="Spawner4" parent="UnitManager/EnemyUnits" instance=ExtResource("17_fv33o")]
-position = Vector2(-39, -72)
+position = Vector2(24, 135)
 unit_resource = ExtResource("22_b8pr1")
 
 [node name="Spawner5" parent="UnitManager/EnemyUnits" instance=ExtResource("17_fv33o")]
-position = Vector2(-23, -72)
+position = Vector2(56, 121)
 unit_resource = ExtResource("22_b8pr1")
 
 [node name="Spawner6" parent="UnitManager/EnemyUnits" instance=ExtResource("17_fv33o")]
-position = Vector2(-23, -57)
+position = Vector2(56, 136)
 unit_resource = ExtResource("22_b8pr1")
 
 [node name="PlayerUnits" parent="UnitManager" instance=ExtResource("16_or6ma")]
@@ -2112,17 +2112,17 @@ position = Vector2(-24, 121)
 scale = Vector2(1.03234, 1.00394)
 
 [node name="Spawner2" parent="UnitManager/PlayerUnits" instance=ExtResource("17_fv33o")]
-position = Vector2(-41, 120)
+position = Vector2(-24, 135)
 scale = Vector2(1.03234, 1.00394)
 unit_resource = ExtResource("19_7ggv0")
 
 [node name="Spawner3" parent="UnitManager/PlayerUnits" instance=ExtResource("17_fv33o")]
-position = Vector2(-58, 120)
+position = Vector2(-39, 121)
 scale = Vector2(1.03234, 1.00394)
 unit_resource = ExtResource("20_qxri1")
 
 [node name="Spawner4" parent="UnitManager/PlayerUnits" instance=ExtResource("17_fv33o")]
-position = Vector2(-75, 119)
+position = Vector2(-40, 135)
 scale = Vector2(1.03234, 1.00394)
 unit_resource = ExtResource("21_4f5du")
 

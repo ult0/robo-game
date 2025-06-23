@@ -64,9 +64,8 @@ func handle_mouse_button_input(event: InputEventMouseButton) -> void:
 						unitManager.select_enemy_at_coord(mouse_coord)
 					# ATTACK SELECTED ENEMY
 					else:
-						if unitManager.selected_player.can_attack_after_moving(clicked_enemy.tile_coord):
-							command_queue.append(unitManager.resolve_combat.bind(unitManager.selected_player, clicked_enemy))
-							set_state(GameState.PLAYER_ACTION)
+						command_queue.append(unitManager.try_combat.bind(unitManager.selected_player, clicked_enemy))
+						set_state(GameState.PLAYER_ACTION)
 				# TILE
 				elif Level.instance.tile_contains_navtile(mouse_coord):
 					# MOVE UNIT

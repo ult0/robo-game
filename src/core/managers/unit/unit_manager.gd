@@ -23,25 +23,31 @@ func _ready() -> void:
 	print("Player units: ", player_group.current_units)
 	print("Enemy units: ", enemy_group.current_units)
 
-func resolve_combat(attacker: Unit, target: Unit) -> void:
-	if not attacker.can_attack_from(target.tile_coord):
-		var moved_successfully = await attacker.move_to(attacker.get_max_attack_range_coord(target.tile_coord))
-		assert(moved_successfully, "Failed to move during combat")
+## Handles combat between attacker and target unit
+func try_combat(attacker: Unit, target: Unit) -> bool:
+	if attacker.can_attack_after_moving(target.tile_coord):
+		if not attacker.can_attack_from(target.tile_coord):
+			var moved_successfully = await attacker.move_to(attacker.get_max_attack_range_coord(target.tile_coord))
+			assert(moved_successfully, "Failed to move during combat")
 
-	var damage = calculate_damage(attacker, target)
+		var damage = calculate_damage(attacker, target)
 
-	print("Attacker: ", attacker.name, " attacks Target: ", target.name, " and deals ", damage, " damage")
+		print(attacker.name, " attacks ", target.name, " and deals ", damage, " damage!")
 
-	await attacker.attack()
+		await attacker.attack()
 
-	await target.damage(damage)
+		await target.damage(damage)
 
-	if target.dead:
-		print(target.name, " died!")
+		if target.dead:
+			print(target.name, " died!")
+
+		return true
+	else:
+		return false
 
 func handle_enemy_turn(enemy: Enemy) -> void:
 	# Find nearest player
-	print(enemy, " looking for nearest player...")
+	print(enemy.name, " looking for nearest player...")
 	var target: Unit = enemy.choose_target(player_group.current_units)
 	if not target:
 		assert(target)
@@ -51,13 +57,12 @@ func handle_enemy_turn(enemy: Enemy) -> void:
 	# Choose option: Offensive, Defensive, Strategic
 	# For now always be Offensive
 
-	# If possible, attack nearest player
-	if enemy.can_attack_after_moving(target.tile_coord):
-		print(enemy, " attacking nearest player...")
-		await resolve_combat(enemy, target)
-	# Otherwise, move towards nearest player
-	else:
-		print(enemy, " moving towards nearest player...")
+	# Try to attack nearest player
+	var combat_successful = await try_combat(enemy, target)
+
+	# If not successful, move towards nearest player
+	if not combat_successful:
+		print(enemy.name, " moving towards nearest player...")
 		await enemy.move_towards(target.tile_coord)
 
 func calculate_damage(attacker: Unit, target: Unit) -> int:
