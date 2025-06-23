@@ -2082,47 +2082,71 @@ script = ExtResource("15_ae7c6")
 unit_type = 1
 
 [node name="Spawner" parent="UnitManager/EnemyUnits" instance=ExtResource("17_fv33o")]
-position = Vector2(9, 121)
+position = Vector2(57, 56)
 unit_resource = ExtResource("22_b8pr1")
 
 [node name="Spawner2" parent="UnitManager/EnemyUnits" instance=ExtResource("17_fv33o")]
-position = Vector2(9, 136)
+position = Vector2(57, 71)
 unit_resource = ExtResource("22_b8pr1")
 
 [node name="Spawner3" parent="UnitManager/EnemyUnits" instance=ExtResource("17_fv33o")]
-position = Vector2(24, 120)
+position = Vector2(72, 55)
 unit_resource = ExtResource("22_b8pr1")
 
 [node name="Spawner4" parent="UnitManager/EnemyUnits" instance=ExtResource("17_fv33o")]
-position = Vector2(24, 135)
+position = Vector2(72, 70)
 unit_resource = ExtResource("22_b8pr1")
 
 [node name="Spawner5" parent="UnitManager/EnemyUnits" instance=ExtResource("17_fv33o")]
-position = Vector2(56, 121)
+position = Vector2(104, 56)
 unit_resource = ExtResource("22_b8pr1")
 
 [node name="Spawner6" parent="UnitManager/EnemyUnits" instance=ExtResource("17_fv33o")]
-position = Vector2(56, 136)
+position = Vector2(104, 71)
+unit_resource = ExtResource("22_b8pr1")
+
+[node name="Spawner7" parent="UnitManager/EnemyUnits" instance=ExtResource("17_fv33o")]
+position = Vector2(-9, -29)
+unit_resource = ExtResource("22_b8pr1")
+
+[node name="Spawner8" parent="UnitManager/EnemyUnits" instance=ExtResource("17_fv33o")]
+position = Vector2(-55, -72)
+unit_resource = ExtResource("22_b8pr1")
+
+[node name="Spawner9" parent="UnitManager/EnemyUnits" instance=ExtResource("17_fv33o")]
+position = Vector2(-88, 39)
+unit_resource = ExtResource("22_b8pr1")
+
+[node name="Spawner10" parent="UnitManager/EnemyUnits" instance=ExtResource("17_fv33o")]
+position = Vector2(-8, 104)
+unit_resource = ExtResource("22_b8pr1")
+
+[node name="Spawner11" parent="UnitManager/EnemyUnits" instance=ExtResource("17_fv33o")]
+position = Vector2(40, -58)
+unit_resource = ExtResource("22_b8pr1")
+
+[node name="Spawner12" parent="UnitManager/EnemyUnits" instance=ExtResource("17_fv33o")]
+position = Vector2(71, -56)
 unit_resource = ExtResource("22_b8pr1")
 
 [node name="PlayerUnits" parent="UnitManager" instance=ExtResource("16_or6ma")]
 
 [node name="Spawner" parent="UnitManager/PlayerUnits" instance=ExtResource("17_fv33o")]
-position = Vector2(-24, 121)
+position = Vector2(-2, 40)
 scale = Vector2(1.03234, 1.00394)
 
 [node name="Spawner2" parent="UnitManager/PlayerUnits" instance=ExtResource("17_fv33o")]
-position = Vector2(-24, 135)
+position = Vector2(-2, 54)
 scale = Vector2(1.03234, 1.00394)
 unit_resource = ExtResource("19_7ggv0")
 
 [node name="Spawner3" parent="UnitManager/PlayerUnits" instance=ExtResource("17_fv33o")]
-position = Vector2(-39, 121)
+position = Vector2(-17, 40)
 scale = Vector2(1.03234, 1.00394)
 unit_resource = ExtResource("20_qxri1")
 
 [node name="Spawner4" parent="UnitManager/PlayerUnits" instance=ExtResource("17_fv33o")]
-position = Vector2(-40, 135)
+position = Vector2(-18, 54)
 scale = Vector2(1.03234, 1.00394)
 unit_resource = ExtResource("21_4f5du")
 

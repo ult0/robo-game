@@ -7,11 +7,11 @@
 script = ExtResource("1_q2b87")
 name = "Enemy"
 animation_resource = ExtResource("1_ivxaw")
-max_health = 50
-health = 50
+max_health = 2
+health = 2.0
 max_movement = 3
-movement = 3
-attack = 100
-defense = 5
+movement = 3.0
+attack = 2
+defense = 1
 attack_range = 1
 metadata/_custom_type_script = "uid://phs2bfwqjgda"
