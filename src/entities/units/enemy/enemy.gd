@@ -32,8 +32,38 @@ func on_turn_start(_turn_num: int) -> void:
 #region AI
 
 func choose_target(players: Array[Unit]) -> Unit:
-	if not players.is_empty():
+	for player in players:
+		if player.dead:
+			assert(false, "Enemy was given a dead player as target")
+			return null
+	if players.is_empty():
+		assert(false, "Enemy was given a dead player as target")
+		return null
+
+	# Sort by distance
+	players.sort_custom(
+		func (a: Unit, b: Unit) -> bool:
+			return TileMapUtils.euclidean(tile_coord, a.tile_coord) < TileMapUtils.euclidean(tile_coord, b.tile_coord)
+	)
+	 
+	# In Range
+	var units_in_range_by_distance: Array[Unit] = get_units_in_attack_range(players)
+	
+	# If no units in range, return closest
+	if units_in_range_by_distance.is_empty():
 		return players[0]
-	return null
+	# Else, return closest in range
+	else:
+		return units_in_range_by_distance[0]
+
+func get_units_in_attack_range(players: Array[Unit]) -> Array[Unit]:
+	var units_in_range: Array[Unit] = []
+	for player in players:
+		if can_attack_after_moving(player.tile_coord):
+			units_in_range.append(player)
+	return units_in_range
+		
+
+
 
 #endregion

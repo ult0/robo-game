@@ -12,6 +12,6 @@ health = 12.0
 max_movement = 5
 movement = 5.0
 attack = 3
-defense = 2
+defense = 1
 attack_range = 1
 metadata/_custom_type_script = "uid://phs2bfwqjgda"
