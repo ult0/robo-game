@@ -17,7 +17,7 @@ func _process(delta: float) -> void:
 # Using unhandled input for discrete inputs
 func _unhandled_input(event: InputEvent) -> void:
 	# MOUSE
-	if event is InputEventMouseButton and event.pressed:
+	if event is InputEventMouseButton and (event.pressed):
 		gameSM.handle_mouse_button_input(event)
 	# KEYS
 	elif event is InputEventKey:
